@@ -1,0 +1,6 @@
+[
+  {"fecha": "2025-08-01", "dispositivo": "Aire acondicionado", "consumo_kwh": 8.5},
+  {"fecha": "2025-08-01", "dispositivo": "Horno eléctrico", "consumo_kwh": 4.2},
+  {"fecha": "2025-08-02", "dispositivo": "Aire acondicionado", "consumo_kwh": 7.9},
+  {"fecha": "2025-08-02", "dispositivo": "Lavadora", "consumo_kwh": 2.3}
+]

@@ -1,0 +1,16 @@
+import dspy
+import pandas as pd
+from cargar_Json import buscarConsumo
+# Prueba con LM genérico de Ollama
+
+lm = dspy.LM('ollama_chat/llama3.1', api_base='http://localhost:11434', api_key='')
+dspy.configure(lm=lm)
+
+class Explicador(dspy.Signature):
+    pregunta = dspy.InputField()
+    respuesta = dspy.OutputField()
+
+explicador = dspy.Predict(Explicador)
+ejemplo = explicador(pregunta="¿Cuánto consumió el aire acondicionado ayer?")
+print("Respuesta:", ejemplo.respuesta)
+    
