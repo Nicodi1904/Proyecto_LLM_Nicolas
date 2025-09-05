@@ -77,4 +77,4 @@ with open("consumo_hogar.csv", mode="w", newline="") as file:
             consumo = 0
         writer.writerow([timestamp.isoformat(), "Microondas", consumo])
 
-print("✅ Dataset realista generado en 'consumo_hogar.csv'")
+
