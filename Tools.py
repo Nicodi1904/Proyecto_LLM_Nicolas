@@ -8,7 +8,23 @@ def restar(a: int, b: int) -> int:
     print(f"[TOOL_USE] Ejecutando restar({a}, {b})") #Mensaje para saber si la tool fue usada
     return a - b
 
+def calcular_min(valores: list[float]) -> float:
+    print(f"[TOOL_USE] Ejecutando calcular_min({valores})")
+    return min(valores)
+
+
+def calcular_max(valores: list[float]) -> float:
+    print(f"[TOOL_USE] Ejecutando calcular_max({valores})")
+    return max(valores)
+
+
+def calcular_promedio(valores: list[float]) -> float:
+    print(f"[TOOL_USE] Ejecutando calcular_promedio({valores})")
+    return sum(valores) / len(valores)
+
 def consumo_rango_horas(df: pd.DataFrame, dispositivo: str ,hora_inicio: int, hora_fin: int, dia:int, mes:int, año:int ) -> float:
+    print(f"[TOOL_USE] Ejecutando consumo_rango_horas(dispositivo={dispositivo}, hora_inicio={hora_inicio}, hora_fin={hora_fin}, dia={dia}, mes={mes}, año={año})")
+    
     if dispositivo not in df.columns:
         raise ValueError(f"No existe la columna de dispositivo '{dispositivo}' en el DataFrame. Columnas disponibles: {list(df.columns)}")
     
@@ -36,7 +52,10 @@ def consumo_rango_horas(df: pd.DataFrame, dispositivo: str ,hora_inicio: int, ho
 
     return consumo_total
 
+
 def consumo_rango_dias(df: pd.DataFrame, dispositivo: str, dia_inicio: int, dia_fin: int, mes: int, año: int) -> float:
+    print(f"[TOOL_USE] Ejecutando consumo_rango_dias(dispositivo={dispositivo}, dia_inicio={dia_inicio}, dia_fin={dia_fin}, mes={mes}, año={año})")
+    
     if dispositivo not in df.columns:
         raise ValueError(f"No existe la columna de dispositivo '{dispositivo}' en el DataFrame. Columnas disponibles: {list(df.columns)}")
 
@@ -58,7 +77,10 @@ def consumo_rango_dias(df: pd.DataFrame, dispositivo: str, dia_inicio: int, dia_
     consumo_total = df_filtrado[dispositivo].sum()
     return consumo_total
 
+
 def consumo_rango_meses(df: pd.DataFrame, dispositivo: str, mes_inicio: int, mes_fin: int, año: int) -> float:
+    print(f"[TOOL_USE] Ejecutando consumo_rango_meses(dispositivo={dispositivo}, mes_inicio={mes_inicio}, mes_fin={mes_fin}, año={año})")
+    
     if dispositivo not in df.columns:
         raise ValueError(f"No existe la columna de dispositivo '{dispositivo}' en el DataFrame. Columnas disponibles: {list(df.columns)}")
 
@@ -78,4 +100,3 @@ def consumo_rango_meses(df: pd.DataFrame, dispositivo: str, mes_inicio: int, mes
 
     consumo_total = df_filtrado[dispositivo].sum()
     return consumo_total
-
