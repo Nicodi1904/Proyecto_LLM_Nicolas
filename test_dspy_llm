@@ -14,7 +14,10 @@ class Explicador(dspy.Signature):
     
 
 explicador = dspy.Predict(Explicador)
-ejemplo = explicador(pregunta="cuánto quedó Colombia Ayer", pregunta2="qué te acabo de preguntar?")
+ejemplo = explicador(pregunta2="cuánto quedó Colombia Ayer", pregunta="qué te acabé de preguntar?")
 print("Respuesta:", ejemplo.respuesta)
 print("Respuesta:", ejemplo.respuesta2)
     
+#Importantísimo notar que en DSPY, el orden en que se ingresan las preguntas importa. Primero se procesa "pregunta" luego "pregunta2"
+
+#si le pregunto el resultado de Colombia en "pregunta" al hacerle la segunda pregunta, recordará la anterior interacción.

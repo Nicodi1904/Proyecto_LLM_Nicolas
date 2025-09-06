@@ -26,23 +26,63 @@ class ConsumoRangoMesesModule(dspy.Module):
 
 class Planificador(dspy.Signature):
     """
-    El modelo debe identificar todas las operaciones matemáticas
-    (sumas o restas) dentro de la pregunta.
+    Descompone la pregunta del usuario en subtareas lógicas necesarias
+    para llegar a una respuesta óptima. 
+
+    - No ejecuta nada.
+    - No asigna herramientas.
+    - Solo define el flujo de razonamiento y qué variables son importantes.
     """
-    pregunta: str = dspy.InputField()
-    operaciones: list[dict] = dspy.OutputField(
-        desc="Lista de diccionarios con las indicaciones a realizar, cada diccionario traerá: 'tipo', 'reasoning', variables necesarias. Ejemplo de respuesta:  [{'tipo': 'resta', 'reasoning': el usuario solicitó una resta ,'a': 10, 'b': 3}, ...] "
+
+    pregunta:str = dspy.InputField(desc="Pregunta original del usuario en lenguaje natural")
+    plan:list[dict]= dspy.OutputField(desc="Lista de subtareas en formato estructurado. \
+        Cada subtarea debe ser un diccionario con: \
+        - descripcion: explicación clara de la acción \
+        - variables: parámetros que serán útiles (ej. dispositivo, fecha, rango de horas, etc.) \
+        - dependencias: si la subtarea depende de resultados anteriores")
+
+class Gerente(dspy.Signature):
+    """
+    Asigna herramientas específicas a las subtareas generadas por el planner.
+    """
+    tools_disponibles: list[dict] = dspy.InputField(
+        desc=(
+            "Catálogo de herramientas disponibles. "
+            "Cada tool es un diccionario con llaves: "
+            "'nombre' (str), 'descripcion' (str que explica qué hace la tool "
+            "y qué variables espera)."
+        )
     )
-    respuesta: str = dspy.OutputField(desc="Respuesta final para el usuario")
+
+    plan: list[dict] = dspy.InputField(
+        desc="Lista de subtareas en formato estandarizado (con 'descripcion', 'variables', 'dependencias')."
+    )
+
+    procesos: list[dict] = dspy.OutputField(
+       desc=(
+            "Lista de subtareas con tool asignada. "
+            "Cada subtarea es un diccionario con llaves: "
+            "'tarea' (str, descripcion clara de la subtarea), "
+            "'tool' (str, nombre de la tool seleccionada del catálogo), "
+            "'variables' (dict con los parámetros necesarios), "
+            "'dependencias' (list de dependencias si aplica)."
+        )
+    )
 
 
-#Lógica del agente
+
+
+
+
+#Módulo principal
 class Agente(dspy.Module):
     #Se declaran variables y funciones propias que el agente puede tener
     def __init__(self):
         super().__init__()
         self.sumar = SumarModule()
         self.restar = RestarModule()
+
+        #Posibles Roles a interpretar
         self.planificador = dspy.ChainOfThought(Planificador)
 
     #Se declara el "Accionador" que llamará las tools creadas
@@ -71,6 +111,8 @@ class Agente(dspy.Module):
         # Si no hay operaciones, devolver la respuesta normal
         return plan.respuesta
     
+
+
 #Cargar LLM
 lm = dspy.LM('ollama_chat/llama3.1', api_base='http://localhost:11434', api_key='')
 dspy.configure(lm=lm)
