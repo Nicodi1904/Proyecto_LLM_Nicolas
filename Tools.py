@@ -100,3 +100,58 @@ def consumo_rango_meses(df: pd.DataFrame, dispositivo: str, mes_inicio: int, mes
 
     consumo_total = df_filtrado[dispositivo].sum()
     return consumo_total
+
+
+
+#######-------------------------------------------------------CATALOGO---------------------------------------------###########
+tools_catalogo = [
+    {
+        "nombre": "sumar",
+        "descripcion": "Suma dos números enteros. Variables: a (int), b (int).",
+        "funcion": sumar
+    },
+    {
+        "nombre": "restar",
+        "descripcion": "Resta dos números enteros. Variables: a (int), b (int).",
+        "funcion": restar
+    },
+    {
+        "nombre": "calcular_min",
+        "descripcion": "Calcula el valor mínimo en una lista de números flotantes. Variables: valores (list[float]).",
+        "funcion": calcular_min
+    },
+    {
+        "nombre": "calcular_max",
+        "descripcion": "Calcula el valor máximo en una lista de números flotantes. Variables: valores (list[float]).",
+        "funcion": calcular_max
+    },
+    {
+        "nombre": "calcular_promedio",
+        "descripcion": "Calcula el promedio de una lista de números flotantes. Variables: valores (list[float]).",
+        "funcion": calcular_promedio
+    },
+    {
+        "nombre": "consumo_rango_horas",
+        "descripcion": (
+            "Calcula el consumo energético en kWh de un dispositivo en un rango específico de horas de un día. "
+            "Variables: dispositivo (str), hora_inicio (int), hora_fin (int), dia (int), mes (int), año (int)."
+        ),
+        "funcion": consumo_rango_horas
+    },
+    {
+        "nombre": "consumo_rango_dias",
+        "descripcion": (
+            "Calcula el consumo energético en kWh de un dispositivo en un rango de días dentro de un mismo mes y año. "
+            "Variables: dispositivo (str), dia_inicio (int), dia_fin (int), mes (int), año (int)."
+        ),
+        "funcion": consumo_rango_dias
+    },
+    {
+        "nombre": "consumo_rango_meses",
+        "descripcion": (
+            "Calcula el consumo energético en kWh de un dispositivo en un rango de meses dentro de un mismo año. "
+            "Variables: dispositivo (str), mes_inicio (int), mes_fin (int), año (int)."
+        ),
+        "funcion": consumo_rango_meses
+    }
+]
