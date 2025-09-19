@@ -111,46 +111,61 @@ def consumo_rango_meses(df: pd.DataFrame, dispositivo: str, mes_inicio: int, mes
     return consumo_total
     
 
+def plan_inviable(razon: str) -> str:
+    print(f"[TOOL_USE] Plan marcado como inviable. Razón: {razon}")
+    return f"Plan inviable: {razon}"
+
+
+def faltan_datos(dato_faltante: str) -> str:
+    print(f"[TOOL_USE] Faltan datos: {dato_faltante}")
+    return f"Faltan datos: {dato_faltante}"
+
 #######-------------------------------------------------------CATALOGO---------------------------------------------###########
-tools_catalogo = [
-    {
-        "nombre": "sumar",
-        "descripcion": "Suma dos números enteros y devuelve el resultado. Usar cuando se necesite realizar una suma simple.",
-        "variables_entrada": ["a: int", "b: int"],
-        "variables_salida": ["resultado: int"],
+tools_catalogo = {
+    "sumar": {
+        "descripcion": "Suma dos números y devuelve el resultado. Usar únicamente para realizar una suma simple.",
+        "variables_entrada": ["a: float", "b: float"],
+        "variables_salida": ["resultado: float"],
         "funcion": sumar
     },
-    {
-        "nombre": "restar",
-        "descripcion": "Resta el segundo número entero del primero y devuelve el resultado. Usar cuando se necesite una resta simple.",
-        "variables_entrada": ["a: int", "b: int"],
-        "variables_salida": ["resultado: int"],
+    "restar": {
+        "descripcion": "Resta el segundo número al primero y devuelve el resultado. Usar únicamente para realizar una resta simple.",
+        "variables_entrada": ["a: float", "b: float"],
+        "variables_salida": ["resultado: float"],
         "funcion": restar
     },
-    {
-        "nombre": "calcular_min",
-        "descripcion": "Devuelve el valor mínimo de una lista de números flotantes. Usar para obtener el valor más bajo en una serie de datos.",
+    "multiplicar": {
+        "descripcion": "Multiplica dos números y devuelve el resultado.",
+        "variables_entrada": ["a: float", "b: float"],
+        "variables_salida": ["resultado: float"],
+        "funcion": multiplicar
+    },
+    "dividir": {
+        "descripcion": "Divide el primer número entre el segundo y devuelve el resultado. No usar si b=0.",
+        "variables_entrada": ["a: float", "b: float"],
+        "variables_salida": ["resultado: float"],
+        "funcion": dividir
+    },
+    "calcular_min": {
+        "descripcion": "Devuelve el valor mínimo de una lista de números.",
         "variables_entrada": ["valores: list[float]"],
         "variables_salida": ["minimo: float"],
         "funcion": calcular_min
     },
-    {
-        "nombre": "calcular_max",
-        "descripcion": "Devuelve el valor máximo de una lista de números flotantes. Usar para obtener el valor más alto en una serie de datos.",
+    "calcular_max": {
+        "descripcion": "Devuelve el valor máximo de una lista de números.",
         "variables_entrada": ["valores: list[float]"],
         "variables_salida": ["maximo: float"],
         "funcion": calcular_max
     },
-    {
-        "nombre": "calcular_promedio",
-        "descripcion": "Calcula y devuelve el promedio de una lista de números flotantes. Usar cuando se requiera el valor medio.",
+    "calcular_promedio": {
+        "descripcion": "Calcula y devuelve el promedio de una lista de números.",
         "variables_entrada": ["valores: list[float]"],
         "variables_salida": ["promedio: float"],
         "funcion": calcular_promedio
     },
-    {
-        "nombre": "consumo_rango_horas",
-        "descripcion": "Calcula el consumo total de un dispositivo en un rango específico de horas de un día en particular.",
+    "consumo_rango_horas": {
+        "descripcion": "Calcula el consumo total de un dispositivo en un rango específico de horas de un día dado.",
         "variables_entrada": [
             "dispositivo: str",
             "hora_inicio: int",
@@ -162,9 +177,8 @@ tools_catalogo = [
         "variables_salida": ["consumo_total: float"],
         "funcion": consumo_rango_horas
     },
-    {
-        "nombre": "consumo_rango_dias",
-        "descripcion": "Calcula el consumo total de un dispositivo en un rango de días dentro de un mismo mes y año.",
+    "consumo_rango_dias": {
+        "descripcion": "Calcula el consumo total de un dispositivo en un rango de días dentro de un mes y año.",
         "variables_entrada": [
             "dispositivo: str",
             "dia_inicio: int",
@@ -175,9 +189,8 @@ tools_catalogo = [
         "variables_salida": ["consumo_total: float"],
         "funcion": consumo_rango_dias
     },
-    {
-        "nombre": "consumo_rango_meses",
-        "descripcion": "Calcula el consumo total de un dispositivo en un rango de meses dentro de un mismo año.",
+    "consumo_rango_meses": {
+        "descripcion": "Calcula el consumo total de un dispositivo en un rango de meses dentro de un año.",
         "variables_entrada": [
             "dispositivo: str",
             "mes_inicio: int",
@@ -187,18 +200,16 @@ tools_catalogo = [
         "variables_salida": ["consumo_total: float"],
         "funcion": consumo_rango_meses
     },
-    {
-        "nombre": "dividir",
-        "descripcion": "Divide el primer número entre el segundo y devuelve el resultado. Usar cuando se requiera calcular un cociente.",
-        "variables_entrada": ["a: float", "b: float"],
-        "variables_salida": ["resultado: float"],
-        "funcion": dividir
+    "plan_inviable": {
+        "descripcion": "Se usa cuando la consulta no puede resolverse con las herramientas disponibles o excede las capacidades del sistema.",
+        "variables_entrada": ["razon: str"],
+        "variables_salida": ["mensaje: str"],
+        "funcion": plan_inviable
     },
-    {
-        "nombre": "multiplicar",
-        "descripcion": "Multiplica dos números y devuelve el resultado. Usar cuando se necesite calcular un producto.",
-        "variables_entrada": ["a: float", "b: float"],
-        "variables_salida": ["resultado: float"],
-        "funcion": multiplicar
+    "faltan_datos": {
+        "descripcion": "Se usa cuando no hay suficiente información en la entrada del usuario para ejecutar la consulta.",
+        "variables_entrada": ["dato_faltante: str"],
+        "variables_salida": ["mensaje: str"],
+        "funcion": faltan_datos
     }
-]
+}
