@@ -94,7 +94,7 @@ planificador = trainer.compile(
 # Ejemplo de uso
 # ---------------------------
 resultado = planificador(
-    pregunta="cuánto fue el consumo de mi aire acondicionado el 5 de marzo y el del PC el 8 de octubre, cuál de ellos consume menos?",
+    pregunta="cuánto fue el consumo de mi aire acondicionado el 5 de marzo y el del PC el 8 de octubre, cuál de ellos consume menos y en promedio cuánto consumen en un mes cada uno?",
     tools_disponibles=tools_catalogo
 )
 

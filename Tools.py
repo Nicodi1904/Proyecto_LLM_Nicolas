@@ -7,6 +7,15 @@ def sumar(a: int, b: int) -> int:
 def restar(a: int, b: int) -> int:
     print(f"[TOOL_USE] Ejecutando restar({a}, {b})") #Mensaje para saber si la tool fue usada
     return a - b
+def dividir(a: float, b: float) -> float:
+    print(f"[TOOL_USE] Ejecutando dividir({a}, {b})")  # Mensaje para saber si la tool fue usada
+    if b == 0:
+        raise ValueError("No se puede dividir por cero")
+    return a / b
+def multiplicar(a: float, b: float) -> float:
+    print(f"[TOOL_USE] Ejecutando multiplicar({a}, {b})")  # Mensaje para saber si la tool fue usada
+    return a * b
+
 
 def calcular_min(valores: list[float]) -> float:
     print(f"[TOOL_USE] Ejecutando calcular_min({valores})")
@@ -109,35 +118,35 @@ tools_catalogo = [
         "descripcion": "Suma dos números enteros y devuelve el resultado. Usar cuando se necesite realizar una suma simple.",
         "variables_entrada": ["a: int", "b: int"],
         "variables_salida": ["resultado: int"],
-        "funcion":sumar
+        "funcion": sumar
     },
     {
         "nombre": "restar",
         "descripcion": "Resta el segundo número entero del primero y devuelve el resultado. Usar cuando se necesite una resta simple.",
         "variables_entrada": ["a: int", "b: int"],
         "variables_salida": ["resultado: int"],
-        "funcion":restar
+        "funcion": restar
     },
     {
         "nombre": "calcular_min",
         "descripcion": "Devuelve el valor mínimo de una lista de números flotantes. Usar para obtener el valor más bajo en una serie de datos.",
         "variables_entrada": ["valores: list[float]"],
         "variables_salida": ["minimo: float"],
-        "funcion":calcular_min
+        "funcion": calcular_min
     },
     {
         "nombre": "calcular_max",
         "descripcion": "Devuelve el valor máximo de una lista de números flotantes. Usar para obtener el valor más alto en una serie de datos.",
         "variables_entrada": ["valores: list[float]"],
         "variables_salida": ["maximo: float"],
-        "funcion":calcular_max
+        "funcion": calcular_max
     },
     {
         "nombre": "calcular_promedio",
         "descripcion": "Calcula y devuelve el promedio de una lista de números flotantes. Usar cuando se requiera el valor medio.",
         "variables_entrada": ["valores: list[float]"],
         "variables_salida": ["promedio: float"],
-        "funcion":calcular_promedio
+        "funcion": calcular_promedio
     },
     {
         "nombre": "consumo_rango_horas",
@@ -151,7 +160,7 @@ tools_catalogo = [
             "año: int"
         ],
         "variables_salida": ["consumo_total: float"],
-        "funcion":consumo_rango_horas
+        "funcion": consumo_rango_horas
     },
     {
         "nombre": "consumo_rango_dias",
@@ -164,7 +173,7 @@ tools_catalogo = [
             "año: int"
         ],
         "variables_salida": ["consumo_total: float"],
-        "funcion":consumo_rango_dias
+        "funcion": consumo_rango_dias
     },
     {
         "nombre": "consumo_rango_meses",
@@ -176,6 +185,20 @@ tools_catalogo = [
             "año: int"
         ],
         "variables_salida": ["consumo_total: float"],
-        "funcion":consumo_rango_meses
+        "funcion": consumo_rango_meses
+    },
+    {
+        "nombre": "dividir",
+        "descripcion": "Divide el primer número entre el segundo y devuelve el resultado. Usar cuando se requiera calcular un cociente.",
+        "variables_entrada": ["a: float", "b: float"],
+        "variables_salida": ["resultado: float"],
+        "funcion": dividir
+    },
+    {
+        "nombre": "multiplicar",
+        "descripcion": "Multiplica dos números y devuelve el resultado. Usar cuando se necesite calcular un producto.",
+        "variables_entrada": ["a: float", "b: float"],
+        "variables_salida": ["resultado: float"],
+        "funcion": multiplicar
     }
 ]
