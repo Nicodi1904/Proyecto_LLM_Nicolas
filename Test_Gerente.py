@@ -1,44 +1,47 @@
-import Tools 
-#El gerente se ha de encargar de dar la lista  de tools a ser procesadas, pero eso ya hace el planeador entonces por que es necesario?
-#El planeador ya se encarga de hacer una lista de los procesos a seguir y asignar las variables a las tools, sin embargo tenemos el problema de las tareas con dependencias
-#Pienso que luego de salir del planeador, hay que pasar por código de python que realice las tareas sin dependencias, a esas tareas podrá acceder el gerente y así dar una nueva lista con las nuevas tareas a realizar
+import numpy as np
+import dspy
 
-ejemplo_plan=[
-            {"id": 0, "funcion": "consumo_rango_horas", "desc": "Calcular consumo del televisor entre 14 y 20 horas del 10 de mayo de 2024", "dependencias": {"dispositivo": "televisor", "hora_inicio": int(14), "hora_fin": int(20), "dia": int(10), "mes": int(5), "año": int(2024)}},
-            {"id": 1, "funcion": "consumo_rango_horas", "desc": "Calcular consumo de la consola entre 14 y 20 horas del 10 de mayo de 2024", "dependencias": {"dispositivo": "consola", "hora_inicio": int(14), "hora_fin": int(20), "dia": int(10), "mes": int(5), "año": int(2024)}},
-            {"id": 2, "funcion": "sumar", "desc": "Sumar los consumos del televisor y la consola", "dependencias": {"a": "@0", "b": "@1"}}
-        ]
-
-def ejecutar_plan(plan, tools_catalogo):
-    
-    #Se hace un diccionario donde se guardarán los resultados respectivos de cada proceso, se identificarán como id:resultado
-    resultados = {}
-    #Es necesario colocar este bloque que revisa si tiene dependencias primero, porque si no, puede que se ejecute una función con dependencias lo que daría error
-    for proceso in plan:
-        #Pasamos los procesos 1 por uno y extraemos los datos relevantes
-        id_paso = proceso["id"]
-        nombre_tool = proceso["funcion"]
-        dependencias = proceso["dependencias"]
-
-        #Revisamos qué procesos dependen de otros con el @ que mandó el planeador, si no dependen de ninguno entonces se dejan los mismos argumentos que tenía
-        new_args = {}
-        for var_key, var in dependencias.items():
-            if isinstance(var, str) and var.startswith("@"):  
-                #sí hay dependencia, entonces extraemos la id de la dependencia encontrada 
-                ref_id = int(var[1:]) #extraemos todo menos el @, ha de ser un número con la id, por eso int
-                new_args[var_key] = resultados[ref_id] #guardamos el nuevo diccionario que tendrá los resultados de las dependencias
-            else:
-                new_args[var_key] = var #En caso de que no haya un @, osea no hayan dependencias los argumentos permanecen iguales
+planeacion=("El usuario pide el consumo conjunto de dos dispositivos en un rango horario específico. "
+                    "Se debe calcular el consumo del televisor y de la consola en el mismo rango de horas y fecha "
+                    "usando consumo_rango_horas, y luego sumar ambos resultados con la tool sumar.")
+informe_worker={0: {'desc': 'Calcular consumo del televisor entre 14 y 20 horas del 10 de mayo de 2024','resultado': np.float64(0.1705)},
+                1: {'desc': 'Calcular consumo de la lampara entre 14 y 20 horas del 10 de mayo de 2024','resultado': np.float64(0.07269999999999999)},
+                2: {'desc': 'Sumar los consumos del televisor y la consola','resultado': np.float64(0.2432)}}
+##########
+planeacion2=("El usuario quiere encontrar el valor mínimo dentro de una lista de números. "
+                    "La tool apropiada es calcular_min, que recibe una lista de valores y devuelve el mínimo. "
+                    "Solo se necesita un paso."),
+informe_worker2={0: {'desc': 'Obtener el mínimo de [3.5, 7.8, 2.1]','resultado': 2.1}}
+#########
+planeacion3=("Aunque el usuario da rodeos, la intención central es encontrar el valor máximo de una lista de números. "
+                    "Se ignoran las frases irrelevantes y se utiliza calcular_max directamente.")
+informe_worker3={0: {'desc': 'Obtener el máximo de [12.5, 8.3, 15.9, 11.1]','resultado': 15.9}}
+##########
+planeacion4=("El usuario busca la diferencia de consumos entre dos dispositivos en un rango de días. "
+                    "Se calcula el consumo de la lavadora y de la secadora con consumo_rango_dias, luego se obtiene la diferencia con la tool restar.")
+informe_worker4={0: {'desc': 'Calcular consumo de la lavadora del 1 al 7 de abril de 2024','resultado': np.float64(61.4751)},
+                 1: {'desc': 'Calcular consumo de la secadora del 1 al 7 de abril de 2024','resultado': np.float64(7.1804)},
+                 2: {'desc': 'Restar el consumo de la secadora al de la lavadora','resultado': np.float64(54.2947)}}
 
 
-        #Se ejecuta las función mencionada en la lista dada mediante el catálogo
-        funcion = tools_catalogo[nombre_tool]["funcion"]
-        resultado = funcion(**new_args)
+# Configuración del LM
+lm = dspy.LM('ollama_chat/llama3.1', api_base='http://localhost:11434', api_key='')
+dspy.configure(lm=lm)
 
-        # Guardar salida con el id
-        resultados[id] = resultado
+class Gerente(dspy.Signature):
+    """El gerente toma la planeación y los resultados del worker, y genera una respuesta clara y comprensible para el usuario final."""
 
-        print(f"proceso {id} ({nombre_tool}): {resultado}")
+    planeacion = dspy.InputField(dtype=str,desc="Explicación del plan que el planeador generó según la intención del usuario.")
+    informe_worker = dspy.InputField(dtype=dict,desc="Diccionario con los pasos ejecutados: id, descripción y resultado de cada tool.")
 
-    return resultados
+    respuesta_usuario = dspy.OutputField(dtype=str,desc="Explicación en lenguaje natural, clara y resumida, con el resultado final y contexto si es necesario.")
 
+
+gerente = dspy.Predict(Gerente)
+
+resultado = gerente(
+    planeacion=planeacion4,
+    informe_worker=informe_worker4  # 👈 pásalo como string serializado
+)
+
+print(resultado)
