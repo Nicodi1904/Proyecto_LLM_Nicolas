@@ -32,5 +32,7 @@ resultado = planificador(
     tools_disponibles=tools_catalogo
 )
 
-print("planeación:\n", resultado.planeacion)
-print("lista procesos:\n", resultado.plan)
+planeacion=resultado.planeacion
+plan=resultado.plan
+print("razonamiento para la planeación:\n", planeacion)
+print("plan con la lista de procesos:\n", plan)

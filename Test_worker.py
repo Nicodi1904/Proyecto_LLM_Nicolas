@@ -1,15 +1,20 @@
-import Tools 
+from Tools import consumo_rango_dias,consumo_rango_horas,sumar
+from Tools import tools_catalogo
+from cargar_CSV import cargar_dataset_sinselejo
 #El gerente se ha de encargar de dar la lista  de tools a ser procesadas, pero eso ya hace el planeador entonces por que es necesario?
 #El planeador ya se encarga de hacer una lista de los procesos a seguir y asignar las variables a las tools, sin embargo tenemos el problema de las tareas con dependencias
 #Pienso que luego de salir del planeador, hay que pasar por código de python que realice las tareas sin dependencias, a esas tareas podrá acceder el gerente y así dar una nueva lista con las nuevas tareas a realizar
 
+df=cargar_dataset_sinselejo("Energy Consumption in KWh of a Typical House Sincelejo Colombia.csv")
+
 ejemplo_plan=[
-            {"id": 0, "funcion": "consumo_rango_horas", "desc": "Calcular consumo del televisor entre 14 y 20 horas del 10 de mayo de 2024", "dependencias": {"dispositivo": "televisor", "hora_inicio": int(14), "hora_fin": int(20), "dia": int(10), "mes": int(5), "año": int(2024)}},
-            {"id": 1, "funcion": "consumo_rango_horas", "desc": "Calcular consumo de la consola entre 14 y 20 horas del 10 de mayo de 2024", "dependencias": {"dispositivo": "consola", "hora_inicio": int(14), "hora_fin": int(20), "dia": int(10), "mes": int(5), "año": int(2024)}},
+            {"id": 0, "funcion": "consumo_rango_horas", "desc": "Calcular consumo del televisor entre 14 y 20 horas del 10 de mayo de 2024", "dependencias": {"dispositivo": "TV", "hora_inicio": int(14), "hora_fin": int(20), "dia": int(10), "mes": int(5), "año": int(2024)}},
+            {"id": 1, "funcion": "consumo_rango_horas", "desc": "Calcular consumo de la lampara entre 14 y 20 horas del 10 de mayo de 2024", "dependencias": {"dispositivo": "Lampara", "hora_inicio": int(14), "hora_fin": int(20), "dia": int(10), "mes": int(5), "año": int(2024)}},
             {"id": 2, "funcion": "sumar", "desc": "Sumar los consumos del televisor y la consola", "dependencias": {"a": "@0", "b": "@1"}}
         ]
 
-def ejecutar_plan(plan, tools_catalogo):
+
+def ejecutar_plan(plan, tools_catalogo,df=None):
     
     #Se hace un diccionario donde se guardarán los resultados respectivos de cada proceso, se identificarán como id:resultado
     resultados = {}
@@ -32,13 +37,19 @@ def ejecutar_plan(plan, tools_catalogo):
 
 
         #Se ejecuta las función mencionada en la lista dada mediante el catálogo
+        
         funcion = tools_catalogo[nombre_tool]["funcion"]
+
+        if "df" in funcion.__code__.co_varnames: # pero antes verificamos si la función necesita la base de datos "df"
+            new_args["df"] = df
+
         resultado = funcion(**new_args)
 
         # Guardar salida con el id
-        resultados[id] = resultado
+        resultados[id_paso] = resultado
 
-        print(f"proceso {id} ({nombre_tool}): {resultado}")
+        print(f"proceso {id_paso} ({nombre_tool}): {resultado}")
 
     return resultados
 
+ejecutar_plan(ejemplo_plan,tools_catalogo,df)
