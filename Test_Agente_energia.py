@@ -1,14 +1,15 @@
 from Tools import sumar,restar,consumo_rango_horas,consumo_rango_dias,consumo_rango_meses,calcular_min,calcular_max,calcular_promedio
 from Tools import tools_catalogo
+from Wrapped_Tools import fewshot_ejemplos
 from cargar_CSV import cargar_dataset_sinselejo
 import dspy
 import pandas as pd
 
 
 ########################################################################################################################  
-#Contratos (me parece que es la mejor definición)
+#Contratos o guías (me parece que son las mejores definiciones)
 
-class Planificador(dspy.Signature):
+class Signature_Planificador(dspy.Signature):
     """
     Descompone una pregunta de usuario en subtareas claras y estructuradas,
     considerando el catálogo de herramientas disponibles.
@@ -24,163 +25,154 @@ class Planificador(dspy.Signature):
             "  - nombre (str)\n"
             "  - descripcion (str): explicación de qué hace y qué variables espera\n"
             "  - funcion (callable): función Python a ejecutar\n"
-            "El Planificador debe usar este catálogo para decidir qué subtareas y secuencia generar."
+            "Se debe usar este catálogo para decidir qué subtareas y secuencia generar así como los argumentos que se le pasan a la función."
         )
     )
+    planeacion: str = dspy.OutputField(
+        desc="Explicación breve en lenguaje natural de la estrategia y uso de tools antes del plan."
+    )
+
 
     plan: list[dict] = dspy.OutputField(
         desc=(
-            "Lista de subtareas en formato estrictamente definido. Cada subtarea es un diccionario con:\n"
-            "  - id: identificador único de la subtarea (p.ej., 't1', 't2')\n"
-            "  - descripcion: explicación clara y concisa de la acción a realizar\n"
-            "  - variables: diccionario con variables abstractas necesarias (p.ej., dispositivo, dia_inicio, dia_fin, mes, año, hora_inicio, hora_fin)\n"
-            "  - dependencias: lista de ids de subtareas previas de las cuales depende esta"
+            "Lista de subtareas estrictamente definida. Cada subtarea es un diccionario con:\n"
+            "  - id: identificador único entero (0, 1, 2...)\n"
+            "  - funcion: nombre exacto de la tool\n"
+            "  - desc: explicación breve\n"
+            "  - dependencias: diccionario con parámetros de entrada.\n"
+            "    * Los nombres de las claves deben ser EXACTAMENTE los argumentos de la función. Nunca inventar nombres. \n"
+            "    * Los valores pueden ser directos o referencias '@id'."
         )
-    )
+)
 
-class Gerente(dspy.Signature):
-    """
-    Asigna herramientas específicas a las subtareas generadas por el planner.
-    IMPORTANTE: 
-        -Los únicos dispositivos que existen en el dataset son: 
-            Ventilador, PC, AC, Lampara, TV. 
-        -Usa siempre los nombres exactamente como están escritos (respeta mayúsculas y sin tildes).
-    """
-    tools_disponibles: list[dict] = dspy.InputField(
-        desc=(
-            "Catálogo de herramientas disponibles. "
-            "Cada tool es un diccionario con llaves: "
-            "'nombre' (str), 'descripcion' (str que explica qué hace la tool "
-            "y qué variables espera)."
-        )
-    )
+class Signature_Gerente(dspy.Signature):
+    """El gerente toma la planeación y los resultados del worker, y genera una respuesta clara y comprensible para el usuario final."""
+    
+    pregunta_usuario=dspy.InputField(dtype=str,desc="Pregunta o solicitud hecha por el usuario")
+    planeacion = dspy.InputField(dtype=str,desc="Explicación del plan que el planeador generó según la intención del usuario.")
+    informe_worker = dspy.InputField(dtype=dict,desc="Diccionario con los pasos ejecutados: id, descripción y resultado de cada tool.")
 
-    plan: list[dict] = dspy.InputField(
-        desc="Lista de subtareas en formato estandarizado (con 'descripcion', 'variables', 'dependencias')."
-    )
+    respuesta_usuario = dspy.OutputField(dtype=str,desc="Explicación en lenguaje natural, clara y resumida, con el resultado final y contexto.")
 
-    procesos: list[dict] = dspy.OutputField(
-       desc=(
-            "Lista de subtareas con tool asignada. "
-            "Cada subtarea es un diccionario con llaves: "
-            "'tarea' (str, descripcion clara de la subtarea), "
-            "'tool' (str, nombre de la tool seleccionada del catálogo), "
-            "'variables' (dict con los parámetros necesarios), "
-            "'dependencias' (list de dependencias si aplica)."
-        )
-    )
+###############################################################################################################################
+#WORKER
+
+def worker(plan, tools_catalogo,df=None):
+    
+    #Se hace un diccionario donde se guardarán los resultados respectivos de cada proceso y datos relevantes del mismo
+    resultados = {}
+    #Es necesario colocar este bloque que revisa si tiene dependencias primero, porque si no, puede que se ejecute una función con dependencias lo que daría error
+    for proceso in plan:
+        #Pasamos los procesos 1 por uno y extraemos los datos relevantes
+        id_paso = proceso["id"]
+        nombre_tool = proceso["funcion"]
+        dependencias = proceso["dependencias"]
+        descripcion = proceso["desc"]
+
+        #Revisamos qué procesos dependen de otros con el @ que mandó el planeador, si no dependen de ninguno entonces se dejan los mismos argumentos que tenía
+        new_args = {}
+        for var_key, var in dependencias.items():
+            if isinstance(var, str) and var.startswith("@"):  
+                #sí hay dependencia, entonces extraemos la id de la dependencia encontrada 
+                ref_id = int(var[1:]) #extraemos todo menos el @, ha de ser un número con la id, por eso int
+                new_args[var_key] = resultados[ref_id]["resultado"] #guardamos el nuevo diccionario que tendrá los resultados de las dependencias
+            else:
+                new_args[var_key] = var #En caso de que no haya un @, osea no hayan dependencias los argumentos permanecen iguales
+
+
+        #Se ejecuta las función mencionada en la lista dada mediante el catálogo
+        
+        funcion = tools_catalogo[nombre_tool]["funcion"]
+
+        if "df" in funcion.__code__.co_varnames: # pero antes verificamos si la función necesita la base de datos "df"
+            new_args["df"] = df
+
+        resultado = funcion(**new_args)
+
+        # Guardar salida con id + desc + resultado
+        resultados[id_paso] = {
+            "desc": descripcion,
+            "resultado": resultado
+        }
+
+    return resultados
 
 ##############################################################################################################################
 #Módulo principal
+
 class Agente(dspy.Module):
     #Se declaran variables y funciones propias que el agente puede tener
     def __init__(self, tools_catalogo: list[dict], df: pd.DataFrame = None): #el dataframe puede que no siempre se solicite, entonces se inicializa en none
         #Se hereda clase padre módulo de dspy
         super().__init__()
         #Se cargan los roles de los LLMs
-        self.planificador = dspy.ChainOfThought(Planificador)
-        self.gerente = dspy.ChainOfThought(Gerente)
-        #Cargar catalogo de tools (Se podría decir que esto ya cuenta como módulo de RAG..)
+        self.planificador = dspy.ChainOfThought(Signature_Planificador)
+        trainer = dspy.BootstrapFewShot()
+        self.planificador_esp = trainer.compile(
+            student=dspy.Predict(Signature_Planificador),
+            trainset=fewshot_ejemplos
+        )
+        self.gerente = dspy.ChainOfThought(Signature_Gerente)
+        #Cargar catalogo de tools (Se podría decir que esto ya cuenta como módulo de RAG...verdad?)
         self.tools_catalogo = tools_catalogo
         #Se cargan los datos
         self.df = df
-        #más eficiente separar este dict al crear el objeto 
-        self.funciones = {tool["nombre"]: tool.get("funcion") for tool in tools_catalogo}
     
-    def __call__(self, pregunta: str): 
+    def __call__(self, pregunta: str):
+        # 1. Planificador
+        salida_planificador = self.planificador_esp(pregunta=pregunta,tools_disponibles=self.tools_catalogo)
+        planeacion = salida_planificador.planeacion
+        plan = salida_planificador.plan
 
-        #LLM1 genera un plan armando subtareas####
-        reporte_planificador = self.planificador(pregunta=pregunta,tools_disponibles=self.tools_catalogo)
-        print("Output LLM PLANIFICADOR\n",reporte_planificador)
+        # 2. Worker
+        informe_worker = worker(plan, self.tools_catalogo, self.df)
+        # 3. Gerente
+        respuesta = self.gerente(pregunta_usuario=pregunta,planeacion=str(planeacion), informe_worker=informe_worker).respuesta_usuario
 
-        #LLM2 recibe nombre y descripcion de las subtareas y genera un reporte de tools por tarea####
-        reporte_gerente = self.gerente(plan=reporte_planificador.plan, tools_disponibles=self.tools_catalogo)
-        print("Output LLM GERENTE\n",reporte_gerente)
+        return respuesta
 
-        #Se recogen los procesos hechos por el genrente y se le pasan al WORKER
-        procesos = reporte_gerente.procesos
-        #-----------------------------------------------------------WORKER----------------------------------------------
-        # ----------------------------------------(Lógica de python que ejecutará las tareas)----------------------------------------------------
-       
-        work=[] #lista donde se almacenarán los trabajos hechos por cada worker (En realidad solo hay un worker acá, se podrán ejecutar operaciones en paralelo?)
-        
-        #Se recorren todos los procesos dejados por el gerente
-        for proceso in procesos:
-            nombre_tool = proceso["tool"] #Se extrae la tool de cada proceso
-            variables = proceso.get("variables", {}) #Se extraen las variables necesarias para usar cada tool
-            
-            #Se usa "try" por si alguna tarea falla no afecte las demás
-            try:
-                # Normalizar y validar dispositivo si aplica
-                if "dispositivo" in variables:
-                    variables["dispositivo"] = self._validar_dispositivo(variables["dispositivo"])
+##############################################################################################################################
 
-                if "df" in self.funciones[nombre_tool].__code__.co_varnames:
-                    if self.df is None:
-                        raise ValueError(f"La tool {nombre_tool} requiere un DataFrame pero no se cargó ninguno")
-                    variables["df"] = self.df
-
-                resultado = self.funciones[nombre_tool](**variables) #Agarra la función de la tool del proceso y le pasa las variables extraidas
-                work.append({
-                    "tarea": proceso["tarea"],
-                    "tool": nombre_tool,
-                    "variables": variables,
-                    "resultado": resultado
-                })
-            #Si el Try falla, avisa que falló y guarda en qué tool falló
-            except Exception as e:
-                print(f"[ERROR] Fallo al ejecutar tool '{nombre_tool}': {e}")
-                work.append({
-                    "tarea": proceso["tarea"],
-                    "tool": nombre_tool,
-                    "variables": variables,
-                    "resultado": None,
-                    "error": str(e)
-                }) 
-        return work
-    #Función parche para evitar problemas de nombre con los dispositivos del dataset
-    def _validar_dispositivo(self, nombre: str) -> str:
-        """
-        Normaliza y valida el nombre de un dispositivo.
-        Lanza ValueError si el dispositivo no es válido.
-        """
-        NORMALIZACION_DISPOSITIVOS = {
-            "ventilador": "Ventilador",
-            "pc": "PC",
-            "ac": "AC",
-            "lampara": "Lampara",
-            "tv": "TV"
-        }
-
-        nombre_lower = nombre.lower().strip()
-        if nombre_lower in NORMALIZACION_DISPOSITIVOS:
-            return NORMALIZACION_DISPOSITIVOS[nombre_lower]
-        else:
-            raise ValueError(f"Dispositivo inválido: {nombre}")
-
-
-
-#Cargar LLM
-lm = dspy.LM('ollama_chat/llama3.1', api_base='http://localhost:11434', api_key='')
-dspy.configure(lm=lm)
-
-#Cargar DataFrame hogar inteligente
 df=cargar_dataset_sinselejo("Energy Consumption in KWh of a Typical House Sincelejo Colombia.csv")
 
-#Crear agente
-agente = Agente(tools_catalogo=tools_catalogo, df=df)
+# ---------------------- PRUEBA CON LLAMA3.1 ----------------------
+print("\n========== Prueba con Llama3.1 ==========")
 
-# ---------------------- PRUEBAS ----------------------
-# Pregunta sencilla (1 subtarea, 1 tool)
-print("\n[PREGUNTA 1]")
-resultado1 = agente("¿Cuánto consumió el ventilador entre las 8 am y 5 pm del 15 de enero del 2024?")
-for r in resultado1:
-    print(r)
+lm_llama = dspy.LM('ollama_chat/llama3.1', api_base='http://localhost:11434', api_key='')
+dspy.configure(lm=lm_llama)
 
-# Pregunta intermedia (requiere promedio)
-print("\n[PREGUNTA 2]")
-resultado2 = agente("¿Cuál fue el consumo promedio del TV durante febrero del 2024?")
-for r in resultado2:
-    print(r)
+# Crear agente con llama3.1
+agente_llama = Agente(tools_catalogo=tools_catalogo, df=df)
+
+print("\n[PREGUNTA 1:¿Cuánto consumió el AC entre las 8 am y 5 pm del 15 de enero del 2024?]")
+resultado1 = agente_llama("¿Cuánto consumió el AC entre las 8 am y 5 pm del 15 de enero del 2024?")
+print(resultado1)
+ 
+# ---------------------- PRUEBA CON tinyllama ----------------------
+""" print("\n========== Prueba con tinyllama ==========")
+
+lm_deepseek = dspy.LM('ollama_chat/tinyllama', api_base='http://localhost:11434', api_key='')
+dspy.configure(lm=lm_deepseek)
+
+# Crear agente con tinyllama
+agente_deepseek = Agente(tools_catalogo=tools_catalogo, df=df)
+
+print("\n[PREGUNTA 1: ¿Cuánto consumió el AC entre las 8 am y 5 pm del 15 de enero del 2024?]")
+resultado3 = agente_deepseek("¿Cuánto consumió el AC entre las 8 am y 5 pm del 15 de enero del 2024?")
+print(resultado3) """
 
 
+""" # ---------------------- PRUEBA CON DEEPSEEK-R1:8B ----------------------
+print("\n========== Prueba con Deepseek-R1:8B ==========")
+
+lm_deepseek = dspy.LM('ollama_chat/deepseek-r1:8b', api_base='http://localhost:11434', api_key='')
+dspy.configure(lm=lm_deepseek)
+
+# Crear agente con deepseek-r1:8b
+agente_deepseek = Agente(tools_catalogo=tools_catalogo, df=df)
+
+print("\n[PREGUNTA 1: ¿Cuánto consumió el AC entre las 8 am y 5 pm del 15 de enero del 2024? ")
+resultado3 = agente_deepseek("¿Cuánto consumió el AC entre las 8 am y 5 pm del 15 de enero del 2024?")
+print(resultado3)
+
+ """

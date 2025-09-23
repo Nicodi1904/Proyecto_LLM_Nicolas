@@ -6,13 +6,35 @@ from Wrapped_Tools import fewshot_ejemplos
 lm = dspy.LM('ollama_chat/llama3.1', api_base='http://localhost:11434', api_key='')
 dspy.configure(lm=lm)
 
-class PlanificarProceso(dspy.Signature):
-    pregunta = dspy.InputField(dtype=str, desc="La pregunta o petición realizada por el usuario.")
-    tools_disponibles = dspy.InputField(dtype=list[dict], desc="Lista de funciones disponibles con su descripción y entradas/salidas.")
+class Guia_Planificador(dspy.Signature):
+    """
+    Descompone una pregunta de usuario en subtareas claras y estructuradas,
+    considerando el catálogo de herramientas disponibles.
+    """
 
-    planeacion = dspy.OutputField(dtype=str, desc="Explicación en lenguaje natural de cómo se resolverá la petición usando las funciones disponibles.")
-    plan = dspy.OutputField(dtype=list[dict], desc="Lista de pasos con id, funcion, desc y dependencias.")
+    pregunta: str = dspy.InputField(
+        desc="Pregunta original del usuario en lenguaje natural sobre consumo energético"
+    )
 
+    tools_disponibles: list[dict] = dspy.InputField(
+        desc=(
+            "Catálogo de herramientas disponibles. Cada tool es un diccionario con:\n"
+            "  - nombre (str)\n"
+            "  - descripcion (str): explicación de qué hace y qué variables espera\n"
+            "  - funcion (callable): función Python a ejecutar\n"
+            "El Planificador debe usar este catálogo para decidir qué subtareas y secuencia generar."
+        )
+    )
+
+    plan: list[dict] = dspy.OutputField(
+        desc=(
+            "Lista de subtareas en formato estrictamente definido. Cada subtarea es un diccionario con:\n"
+            "  - id: identificador único de la subtarea (p.ej., 't1', 't2')\n"
+            "  - descripcion: explicación clara y concisa de la acción a realizar\n"
+            "  - variables: diccionario con variables abstractas necesarias (p.ej., dispositivo, dia_inicio, dia_fin, mes, año, hora_inicio, hora_fin)\n"
+            "  - dependencias: lista de ids de subtareas previas de las cuales depende esta"
+        )
+    )
 
 # ---------------------------
 # Entrenamiento con BootstrapFewShot
@@ -20,7 +42,7 @@ class PlanificarProceso(dspy.Signature):
 trainer = dspy.BootstrapFewShot()
 
 planificador = trainer.compile(
-    student=dspy.Predict(PlanificarProceso),
+    student=dspy.Predict(Guia_Planificador),
     trainset=fewshot_ejemplos
 )
     
