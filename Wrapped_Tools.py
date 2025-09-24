@@ -68,8 +68,6 @@ fewshot_ejemplos = [
 ]
 
 
-
-
 class SumarModule(dspy.Module):
     def __call__(self, a: int, b: int) -> int:
         return sumar(a, b)

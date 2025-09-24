@@ -41,7 +41,7 @@ class Signature_Planificador(dspy.Signature):
             "  - desc: explicación breve\n"
             "  - dependencias: diccionario con parámetros de entrada.\n"
             "    * Los nombres de las claves deben ser EXACTAMENTE los argumentos de la función. Nunca inventar nombres. \n"
-            "    * Los valores pueden ser directos o referencias '@id'."
+            "    * Los valores pueden ser directos o referencias a procesos anteriores usando '@id'."
         )
 )
 
@@ -123,7 +123,10 @@ class Agente(dspy.Module):
         salida_planificador = self.planificador_esp(pregunta=pregunta,tools_disponibles=self.tools_catalogo)
         planeacion = salida_planificador.planeacion
         plan = salida_planificador.plan
-
+        print("------------------------------------------------------------\nPlaneación LLM\n--------------------------------------")
+        print(planeacion,"\n--------------------------------------")
+        print("------------------------------------------------------------\nPlan LLM\n--------------------------------------")
+        print(plan,"\n--------------------------------------")
         # 2. Worker
         informe_worker = worker(plan, self.tools_catalogo, self.df)
         # 3. Gerente
@@ -145,8 +148,12 @@ dspy.configure(lm=lm_llama)
 agente_llama = Agente(tools_catalogo=tools_catalogo, df=df)
 
 print("\n[PREGUNTA 1:¿Cuánto consumió el AC entre las 8 am y 5 pm del 15 de enero del 2024?]")
-resultado1 = agente_llama("¿Cuánto consumió el AC entre las 8 am y 5 pm del 15 de enero del 2024?")
+resultado1 = agente_llama("hola cómo estás, ¿Cuánto consumió el AC entre las 8 am y 8 pm del 10 de enero del 2024?, me urge saber porque mi mamá me lo está preguntando")
 print(resultado1)
+
+print("\n[PREGUNTA 2: ¿Cuánto consumió el AC entre las 8 am y 5 pm del 15 de enero del 2024? y el TV en ese mismo rango de tiempo, cuál consumió más? ")
+resultado2 = agente_llama("¿Cuánto consumió el AC entre las 8 am y 5 pm del 15 de enero del 2024? y el TV en ese mismo rango de tiempo, cuál consumió más? ")
+print(resultado2)
  
 # ---------------------- PRUEBA CON tinyllama ----------------------
 """ print("\n========== Prueba con tinyllama ==========")
