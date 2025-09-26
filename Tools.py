@@ -1,10 +1,10 @@
 import pandas as pd
 #Se definen las funciones propias de python que el agente usará
-def sumar(a: int, b: int) -> int:
+def sumar(a: float, b: float) -> float:
     print(f"[TOOL_USE] Ejecutando sumar({a}, {b})") #Mensaje para saber si la tool fue usada
     return a + b
 
-def restar(a: int, b: int) -> int:
+def restar(a: float, b: float) -> float:
     print(f"[TOOL_USE] Ejecutando restar({a}, {b})") #Mensaje para saber si la tool fue usada
     return a - b
 def dividir(a: float, b: float) -> float:
@@ -116,9 +116,9 @@ def plan_inviable(razon: str) -> str:
     return f"Plan inviable: {razon}"
 
 
-def faltan_datos(dato_faltante: str) -> str:
-    print(f"[TOOL_USE] Faltan datos: {dato_faltante}")
-    return f"Faltan datos: {dato_faltante}"
+def falta_informacion(datos_faltante: str) -> str:
+    print(f"[TOOL_USE] Faltan datos: {datos_faltante}")
+    return f"Faltan datos: {datos_faltante}"
 
 #######-------------------------------------------------------CATALOGO---------------------------------------------###########
 tools_catalogo = {
@@ -206,10 +206,10 @@ tools_catalogo = {
         "variables_salida": ["mensaje: str"],
         "funcion": plan_inviable
     },
-    "faltan_datos": {
+    "falta_informacion": {
         "descripcion": "Se usa cuando no hay suficiente información en la entrada del usuario para ejecutar la consulta.",
-        "variables_entrada": ["dato_faltante: str"],
+        "variables_entrada": ["datos_faltante: str"],
         "variables_salida": ["mensaje: str"],
-        "funcion": faltan_datos
+        "funcion": falta_informacion
     }
 }

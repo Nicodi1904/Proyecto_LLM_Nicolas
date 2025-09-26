@@ -46,7 +46,7 @@ class Signature_Planificador(dspy.Signature):
 )
 
 class Signature_Gerente(dspy.Signature):
-    """El gerente toma la planeación y los resultados del worker, y genera una respuesta clara y comprensible para el usuario final."""
+    """Recibe la planeación y los resultados del worker, y genera una respuesta clara y comprensible para el usuario final."""
     
     pregunta_usuario=dspy.InputField(dtype=str,desc="Pregunta o solicitud hecha por el usuario")
     planeacion = dspy.InputField(dtype=str,desc="Explicación del plan que el planeador generó según la intención del usuario.")
@@ -56,6 +56,44 @@ class Signature_Gerente(dspy.Signature):
 
 ###############################################################################################################################
 #WORKER
+sinonimos = {
+    # --- TV ---
+    "tv": "TV",
+    "Tv":"TV",
+    "televisor": "TV",
+    "tele": "TV",
+    "television": "TV",
+    
+
+    # --- AC ---
+    "ac": "AC",
+    "aire": "AC",
+    "aire acondicionado": "AC",
+
+    # --- Ventilador ---
+    "ventilador": "Ventilador",
+    "fan": "Ventilador",
+    "venti": "Ventilador",
+
+    # --- PC ---
+    "pc": "PC",
+    "computador": "PC",
+    "computadora": "PC",
+    "ordenador": "PC",
+
+    # --- Lámpara ---
+    "lampara": "Lampara",      # sin tilde
+    "lámpara": "Lampara",      # con tilde
+    "foco": "Lampara",
+    "bombillo": "Lampara"
+}
+
+def normalizar_dispositivo(nombre: str):
+    if not isinstance(nombre, str):
+        return nombre
+    clave = nombre.strip().lower()
+    return sinonimos.get(clave, nombre)
+
 
 def worker(plan, tools_catalogo,df=None):
     
@@ -77,7 +115,11 @@ def worker(plan, tools_catalogo,df=None):
                 ref_id = int(var[1:]) #extraemos todo menos el @, ha de ser un número con la id, por eso int
                 new_args[var_key] = resultados[ref_id]["resultado"] #guardamos el nuevo diccionario que tendrá los resultados de las dependencias
             else:
-                new_args[var_key] = var #En caso de que no haya un @, osea no hayan dependencias los argumentos permanecen iguales
+                if var_key=="dispositivo":
+                        new_args[var_key] = normalizar_dispositivo(var)
+
+                else:
+                    new_args[var_key] = var #En caso de que no haya un @, osea no hayan dependencias los argumentos permanecen iguales
 
 
         #Se ejecuta las función mencionada en la lista dada mediante el catálogo
@@ -147,30 +189,22 @@ dspy.configure(lm=lm_llama)
 # Crear agente con llama3.1
 agente_llama = Agente(tools_catalogo=tools_catalogo, df=df)
 
-print("\n[PREGUNTA 1:¿Cuánto consumió el AC entre las 8 am y 5 pm del 15 de enero del 2024?]")
-resultado1 = agente_llama("hola cómo estás, ¿Cuánto consumió el AC entre las 8 am y 8 pm del 10 de enero del 2024?, me urge saber porque mi mamá me lo está preguntando")
-print(resultado1)
+print("\n[PREGUNTA 1: hola cómo estás, ¿Cuánto consumió el aire acondicionado entre las 8 am y 8 pm del 10 de enero del 2024?, me urge saber porque mi mamá me lo está preguntando")
+resultado1 = agente_llama("hola cómo estás, ¿Cuánto consumió el aire acondicionado entre las 8 am y 8 pm del 10 de enero del 2024?, me urge saber porque mi mamá me lo está preguntando")
+print("--------------------------Respuesta al usuario--------------------------\n",resultado1)
 
-print("\n[PREGUNTA 2: ¿Cuánto consumió el AC entre las 8 am y 5 pm del 15 de enero del 2024? y el TV en ese mismo rango de tiempo, cuál consumió más? ")
-resultado2 = agente_llama("¿Cuánto consumió el AC entre las 8 am y 5 pm del 15 de enero del 2024? y el TV en ese mismo rango de tiempo, cuál consumió más? ")
-print(resultado2)
- 
-# ---------------------- PRUEBA CON tinyllama ----------------------
-""" print("\n========== Prueba con tinyllama ==========")
+""" print("\n[PREGUNTA 2: ¿Cuánto consumió el AC entre las 8 am y 5 pm del 15 de enero del 2024? y el TV en ese mismo rango de tiempo, cuál consumió menos? ")
+resultado2 = agente_llama("¿Cuánto consumió el TV entre las 8 am y 5 pm del 15 de enero del 2024? y el AC en ese mismo rango de tiempo, cuál consumió más? ")
+print("--------------------------Respuesta al usuario--------------------------\n",resultado2)
 
-lm_deepseek = dspy.LM('ollama_chat/tinyllama', api_base='http://localhost:11434', api_key='')
-dspy.configure(lm=lm_deepseek)
-
-# Crear agente con tinyllama
-agente_deepseek = Agente(tools_catalogo=tools_catalogo, df=df)
-
-print("\n[PREGUNTA 1: ¿Cuánto consumió el AC entre las 8 am y 5 pm del 15 de enero del 2024?]")
-resultado3 = agente_deepseek("¿Cuánto consumió el AC entre las 8 am y 5 pm del 15 de enero del 2024?")
-print(resultado3) """
+print("\n[PREGUNTA 3: ¿Cuánto más consume el AC frente a la Ventilador en todo el 2024?")
+resultado3 = agente_llama("¿Cuánto más consume el AC frente a la Ventilador en todo el 2024?") 
+print("--------------------------Respuesta al usuario--------------------------\n",resultado3)
+ """
 
 
-""" # ---------------------- PRUEBA CON DEEPSEEK-R1:8B ----------------------
-print("\n========== Prueba con Deepseek-R1:8B ==========")
+# ---------------------- PRUEBA CON DEEPSEEK-R1:8B ----------------------
+""" print("\n========== Prueba con Deepseek-R1:8B ==========")
 
 lm_deepseek = dspy.LM('ollama_chat/deepseek-r1:8b', api_base='http://localhost:11434', api_key='')
 dspy.configure(lm=lm_deepseek)
@@ -178,8 +212,10 @@ dspy.configure(lm=lm_deepseek)
 # Crear agente con deepseek-r1:8b
 agente_deepseek = Agente(tools_catalogo=tools_catalogo, df=df)
 
-print("\n[PREGUNTA 1: ¿Cuánto consumió el AC entre las 8 am y 5 pm del 15 de enero del 2024? ")
-resultado3 = agente_deepseek("¿Cuánto consumió el AC entre las 8 am y 5 pm del 15 de enero del 2024?")
+print("\n[PREGUNTA 1: ¿hola cómo estás, ¿Cuánto consumió el AC entre las 8 am y 8 pm del 10 de enero del 2024?, me urge saber porque mi mamá me lo está preguntando? ")
+resultado3 = agente_deepseek("¿hola cómo estás, ¿Cuánto consumió el AC entre las 8 am y 8 pm del 10 de enero del 2024?, me urge saber porque mi mamá me lo está preguntando?")
 print(resultado3)
 
- """
+print("\n[PREGUNTA 2: ¿Cuánto consumió el AC entre las 8 am y 5 pm del 15 de enero del 2024? y el TV en ese mismo rango de tiempo, cuál consumió más? ")
+resultado4 = agente_deepseek("¿Cuánto consumió el AC entre las 8 am y 5 pm del 15 de enero del 2024? y el TV en ese mismo rango de tiempo, cuál consumió más? ")
+print(resultado4) """
