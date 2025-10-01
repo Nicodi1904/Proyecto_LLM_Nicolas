@@ -14,7 +14,6 @@ class Signature_Planificador(dspy.Signature):
     Descompone una pregunta de usuario en subtareas claras y estructuradas,
     considerando el catálogo de herramientas disponibles.
     """
-
     pregunta: str = dspy.InputField(
         desc="Pregunta original del usuario en lenguaje natural sobre consumo energético"
     )
@@ -63,10 +62,12 @@ sinonimos = {
     "televisor": "TV",
     "tele": "TV",
     "television": "TV",
+    "televisión": "TV",
     
 
     # --- AC ---
     "ac": "AC",
+    "Ac": "AC",
     "aire": "AC",
     "aire acondicionado": "AC",
 
@@ -193,14 +194,14 @@ print("\n[PREGUNTA 1: hola cómo estás, ¿Cuánto consumió el aire acondiciona
 resultado1 = agente_llama("hola cómo estás, ¿Cuánto consumió el aire acondicionado entre las 8 am y 8 pm del 10 de enero del 2024?, me urge saber porque mi mamá me lo está preguntando")
 print("--------------------------Respuesta al usuario--------------------------\n",resultado1)
 
-""" print("\n[PREGUNTA 2: ¿Cuánto consumió el AC entre las 8 am y 5 pm del 15 de enero del 2024? y el TV en ese mismo rango de tiempo, cuál consumió menos? ")
+print("\n[PREGUNTA 2: ¿Cuánto consumió el AC entre las 8 am y 5 pm del 15 de enero del 2024? y el TV en ese mismo rango de tiempo, cuál consumió más? ")
 resultado2 = agente_llama("¿Cuánto consumió el TV entre las 8 am y 5 pm del 15 de enero del 2024? y el AC en ese mismo rango de tiempo, cuál consumió más? ")
 print("--------------------------Respuesta al usuario--------------------------\n",resultado2)
 
 print("\n[PREGUNTA 3: ¿Cuánto más consume el AC frente a la Ventilador en todo el 2024?")
 resultado3 = agente_llama("¿Cuánto más consume el AC frente a la Ventilador en todo el 2024?") 
 print("--------------------------Respuesta al usuario--------------------------\n",resultado3)
- """
+
 
 
 # ---------------------- PRUEBA CON DEEPSEEK-R1:8B ----------------------
