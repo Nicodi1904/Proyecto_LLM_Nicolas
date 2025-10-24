@@ -1,6 +1,3 @@
-#Le pasamos a la función de carga la ruta del archivo y luego la leemos
-
-#Ella obtiene 
 import pandas as pd
 
 def cargar_desde_json(ruta_archivo):

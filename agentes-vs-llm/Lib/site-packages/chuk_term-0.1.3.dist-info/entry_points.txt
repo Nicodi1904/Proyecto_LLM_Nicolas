@@ -1,0 +1,2 @@
+[console_scripts]
+chuk-term = chuk_term.cli:main

@@ -222,8 +222,8 @@ class Icon(BaseModel):
     mimeType: str | None = None
     """Optional MIME type for the icon."""
 
-    sizes: str | None = None
-    """Optional string specifying icon dimensions (e.g., "48x48 96x96")."""
+    sizes: list[str] | None = None
+    """Optional list of strings specifying icon dimensions (e.g., ["48x48", "96x96"])."""
 
     model_config = ConfigDict(extra="allow")
 
@@ -470,6 +470,8 @@ class ResourceTemplate(BaseMetadata):
     The MIME type for all resources that match this template. This should only be
     included if all resources matching this template have the same type.
     """
+    icons: list[Icon] | None = None
+    """An optional list of icons for this resource template."""
     annotations: Annotations | None = None
     meta: dict[str, Any] | None = Field(alias="_meta", default=None)
     """

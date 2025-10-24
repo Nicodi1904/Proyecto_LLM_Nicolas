@@ -1,4 +1,5 @@
-from mcp.server.fastmcp import FastMCP
+
+from fastmcp import FastMCP
 import pandas as pd
 from cargar_CSV import cargar_dataset_sinselejo
 # Initialize FastMCP server
@@ -116,4 +117,5 @@ def falta_informacion(datos_faltante: str) -> str:
     return f"Faltan datos: {datos_faltante}"
 
 if __name__ == "__main__":
-    mcp.run()
+    mcp.run(transport="sse") #Creo que por default se crea con los parámetros de red host='0.0.0.0', port=3000
+

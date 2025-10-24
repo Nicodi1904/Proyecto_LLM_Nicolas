@@ -1,0 +1,2 @@
+[console_scripts]
+chuk-llm = chuk_llm.cli:main
