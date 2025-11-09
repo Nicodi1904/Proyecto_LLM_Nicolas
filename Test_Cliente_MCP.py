@@ -5,22 +5,37 @@ from fastmcp import Client
 async def main():
     # Dirección en la que se abrió el servidor y tipo de comunicación
     client = Client("http://127.0.0.1:8000/sse")
+
     async with client:
         # Verificar conexión
-        await client.ping()
-        print("Conectado al servidor MCP")
-
-        ##########################################################################################
-        #Inicio de la sesión del cliente (Se podría manejar acá toda una lógica de programación, pero pienso que es mejor solo pedir lo esencial al server y cerrar la sesión, luego procesar los datos recibidos sin mantener la sesión)
-        ############################################################################################
-
-        # Listar herramientas
+        conexion=await client.ping()
+        print("=========================================")
+        print("Conectado al servidor MCP",": ",conexion)
+        print("=========================================")
+        
+        
+        # Listar herramientas expuesta@s en el servidor
         tools = await client.list_tools()
-        print("Herramientas disponibles:")
-        #print(tools)
+        print("=========================================")
+        print("Herramientas expuesta@s:")
+        print("=========================================")
         for tool in tools:
-            print(f" - {tool.name}")
+            print(f" - {tool}")
+        # Listar recursos expuesta@s en el servidor
+        resources = await client.list_resources()
+        print("=========================================")
+        print("Recursos expuesta@s:")
+        print("=========================================")
+        for resource in resources:
+            print(f" - {resource}")
 
+       
+        
+         # Pruebas
+        resources = await client.list_resources()
+        print("=========================================")
+        print("Pruebas")
+        print("=========================================")
         # Ejecutar una herramienta de ejemplo si existe
         if tools:
             tool_name = tools[0].name
@@ -29,3 +44,7 @@ async def main():
             print("Resultado:", result)
 
 asyncio.run(main())
+
+#Estructura de la info de la tool traida desde el cliente.
+
+#[name, title, description, imputschema={'properties':,'required':, 'type':}, outputSchema={'properties': {'result': {'type':}, required:, 'type':, 'x-fastmcp-wrap-result':}, icons=, annotations=, meta={'_fastmcp': {'tags': []}}]
