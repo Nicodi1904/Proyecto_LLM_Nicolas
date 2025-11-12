@@ -19,8 +19,8 @@ async def main():
         print("=========================================")
         print("Herramientas expuesta@s:")
         print("=========================================")
-        for tool in tools:
-            print(f" - {tool}")
+        for tool in tools: 
+            print(f" - {tool}") #Cada herramienta tiene una serie de metadatos compartidos en Json
         # Listar recursos expuesta@s en el servidor
         resources = await client.list_resources()
         print("=========================================")

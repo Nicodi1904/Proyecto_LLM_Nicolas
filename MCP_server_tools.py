@@ -10,6 +10,9 @@ mcp = FastMCP("MCP_server_tools")
 # -------------------------
 DATASET=cargar_dataset_sinselejo("Energy Consumption in KWh of a Typical House Sincelejo Colombia.csv") 
 
+
+
+#TOOLS
 @mcp.tool(
     meta={
         "input_schema": {
@@ -301,6 +304,78 @@ def falta_informacion(datos_faltante: str) -> str:
     """Se usa cuando no hay suficiente información en la entrada del usuario para ejecutar la consulta."""
     print(f"[TOOL_USE] Faltan datos: {datos_faltante}")
     return f"Faltan datos: {datos_faltante}"
+
+# =====================================================
+# Recursos de contexto del hogar inteligente Sincelejo
+# =====================================================
+
+@mcp.resource(
+    name="dispositivos_hogar_sincelejo",
+    description="Lista de dispositivos monitorizados en el hogar de Sincelejo (Colombia).",
+    mime_type="application/json",
+    uri="mcp://hogar/dispositivos"
+)
+def dispositivos_hogar_sincelejo():
+    """Recurso informativo que describe los dispositivos conectados al sistema energético."""
+    return {
+        "dispositivos": [
+            {"nombre": "Ventilador", "ubicacion": "Habitación principal", "tipo": "Electrodoméstico"},
+            {"nombre": "PC", "ubicacion": "Estudio", "tipo": "Equipo electrónico"},
+            {"nombre": "Aire acondicionado", "ubicacion": "Sala", "tipo": "Climatización"},
+            {"nombre": "Lámpara", "ubicacion": "Sala", "tipo": "Iluminación"},
+            {"nombre": "Televisor", "ubicacion": "Sala", "tipo": "Entretenimiento"}
+        ]
+    }
+
+@mcp.resource(
+    name="contexto_local_sincelejo",
+    description="Contexto general del hogar ubicado en Sincelejo: ubicación, condiciones y tiempo local.",
+    mime_type="application/json",
+    uri="mcp://hogar/contexto_local"
+)
+def contexto_local_sincelejo():
+    """Proporciona información contextual y temporal del entorno doméstico."""
+    return {
+        "ubicacion": {
+            "ciudad": "Sincelejo",
+            "pais": "Colombia",
+            "zona_horaria": "America/Bogota"
+        },
+        "clima_actual": {
+            "temperatura_promedio": "32°C",
+            "humedad": "70%",
+            "condiciones": "Soleado"
+        },
+        "tiempo_sistema": {
+            "hora_local": "14:30",
+            "fecha": "2025-11-09",
+            "dia_semana": "Domingo"
+        }
+    }
+
+
+@mcp.resource(
+    name="familia_sincelejo",
+    description="Información general sobre los habitantes del hogar, sin incluir datos personales sensibles.",
+    mime_type="application/json",
+    uri="mcp://hogar/familia"
+)
+def familia_sincelejo():
+    """Describe de forma general la composición del hogar y hábitos de uso energético."""
+    return {
+        "miembros": [
+            {"rol": "Padre", "edad_aprox": 40, "ocupacion": "Ingeniero"},
+            {"rol": "Madre", "edad_aprox": 38, "ocupacion": "Docente"},
+            {"rol": "Hijo", "edad_aprox": 14, "ocupacion": "Estudiante"},
+            {"rol": "Hija", "edad_aprox": 8, "ocupacion": "Estudiante"}
+        ],
+        "habitos_generales": [
+            "Uso frecuente del aire acondicionado en la tarde.",
+            "Televisor encendido durante la noche.",
+            "PC activo en horario laboral.",
+            "Lámpara encendida al anochecer."
+        ]
+    }
 
 
 if __name__ == "__main__":
