@@ -1,167 +1,250 @@
-
 from fastmcp import FastMCP
 import pandas as pd
 from cargar_CSV import cargar_dataset_sinselejo
+
 # Initialize FastMCP server
 mcp = FastMCP("MCP_server_tools")
 
 # -------------------------
 # Cargar dataset global
 # -------------------------
-DATASET=cargar_dataset_sinselejo("Energy Consumption in KWh of a Typical House Sincelejo Colombia.csv") 
+DATASET = cargar_dataset_sinselejo("Energy Consumption in KWh of a Typical House Sincelejo Colombia.csv")
 
 
+# =====================================================
+# Herramientas matemáticas auxiliares 
+# =====================================================
 
-#TOOLS
+common_math_meta = {
+    "categoria": "matematica_auxiliar",
+    "descripcion_funcional": (
+        "Herramienta auxiliar de bajo nivel usada únicamente dentro de "
+        "planes internos. Nunca debe emplearse para responder directamente "
+        "consultas energéticas del usuario."
+    ),
+    "seleccion": {
+        "usar_si": [
+            "Otra herramienta del dominio energético ya filtró datos y requiere una operación matemática explícita"
+        ],
+        "no_usar_si": [
+            "La intención del usuario involucra consumo energético",
+            "La consulta puede resolverse con herramientas energéticas de rango-horas, rango-días o rango-meses",
+            "La herramienta sería usada para interpretar la intención del usuario"
+        ],
+        "limitaciones": [
+            "Es una herramienta de propósito general",
+            "No contiene lógica energética",
+        ],
+        "proposito": "Permitir cálculos matemáticos simples dentro del planificador"
+    }
+}
+
+
 @mcp.tool(
     meta={
+        **common_math_meta,
         "input_schema": {
             "type": "object",
             "properties": {
-                "a": {"type": "number", "description": "Primer número a sumar."},
-                "b": {"type": "number", "description": "Segundo número a sumar."}
+                "a": {"type": "number"},
+                "b": {"type": "number"}
             },
             "required": ["a", "b"]
         },
         "output_schema": {
             "type": "object",
-            "properties": {"result": {"type": "number", "description": "Resultado de la suma."}},
+            "properties": {"result": {"type": "number"}},
             "x-fastmcp-wrap-result": True
         }
     }
 )
 def sumar(a: float, b: float) -> float:
-    """Suma dos números y devuelve el resultado. Usar únicamente para realizar una suma simple."""
-    print(f"[TOOL_USE] Ejecutando sumar({a}, {b})")
+    """Suma auxiliar."""
+    print(f"[TOOL_USE] sumar({a}, {b})")
     return a + b
+
 
 @mcp.tool(
     meta={
+        **common_math_meta,
         "input_schema": {
             "type": "object",
             "properties": {
-                "a": {"type": "number", "description": "Primer número a restar."},
-                "b": {"type": "number", "description": "Segundo número a restar."}
+                "a": {"type": "number"},
+                "b": {"type": "number"}
             },
             "required": ["a", "b"]
         },
         "output_schema": {
             "type": "object",
-            "properties": {"result": {"type": "number", "description": "Resultado de la resta."}},
+            "properties": {"result": {"type": "number"}},
             "x-fastmcp-wrap-result": True
         }
     }
 )
 def restar(a: float, b: float) -> float:
-    """Resta el segundo número al primero y devuelve el resultado. Usar únicamente para realizar una resta simple."""
-    print(f"[TOOL_USE] Ejecutando restar({a}, {b})")
+    """Resta auxiliar."""
+    print(f"[TOOL_USE] restar({a}, {b})")
     return a - b
+
 
 @mcp.tool(
     meta={
+        **common_math_meta,
         "input_schema": {
             "type": "object",
             "properties": {
-                "a": {"type": "number", "description": "Primer número a multiplicar."},
-                "b": {"type": "number", "description": "Segundo número a multiplicar."}
+                "a": {"type": "number"},
+                "b": {"type": "number"}
             },
             "required": ["a", "b"]
         },
         "output_schema": {
             "type": "object",
-            "properties": {"result": {"type": "number", "description": "Producto de la multiplicación."}},
+            "properties": {"result": {"type": "number"}},
             "x-fastmcp-wrap-result": True
         }
     }
 )
 def multiplicar(a: float, b: float) -> float:
-    """Multiplica dos números y devuelve el resultado."""
-    print(f"[TOOL_USE] Ejecutando multiplicar({a}, {b})")
+    """Multiplicación auxiliar."""
+    print(f"[TOOL_USE] multiplicar({a}, {b})")
     return a * b
+
 
 @mcp.tool(
     meta={
+        **common_math_meta,
         "input_schema": {
             "type": "object",
             "properties": {
-                "a": {"type": "number", "description": "Dividendo."},
-                "b": {"type": "number", "description": "Divisor."}
+                "a": {"type": "number"},
+                "b": {"type": "number"}
             },
             "required": ["a", "b"]
         },
         "output_schema": {
             "type": "object",
-            "properties": {"result": {"type": "number", "description": "Resultado de la división."}},
+            "properties": {"result": {"type": "number"}},
             "x-fastmcp-wrap-result": True
         }
     }
 )
 def dividir(a: float, b: float) -> float:
-    """Divide el primer número entre el segundo y devuelve el resultado. No usar si b=0."""
-    print(f"[TOOL_USE] Ejecutando dividir({a}, {b})")
+    """División auxiliar."""
+    print(f"[TOOL_USE] dividir({a}, {b})")
     if b == 0:
         raise ValueError("No se puede dividir por cero")
     return a / b
 
+
 @mcp.tool(
     meta={
+        **common_math_meta,
         "input_schema": {
             "type": "object",
-            "properties": {"valores": {"type": "array", "items": {"type": "number"}, "description": "Lista de números."}},
+            "properties": {
+                "valores": {"type": "array", "items": {"type": "number"}}
+            },
             "required": ["valores"]
         },
         "output_schema": {
             "type": "object",
-            "properties": {"result": {"type": "number", "description": "Valor mínimo encontrado."}},
+            "properties": {"result": {"type": "number"}},
             "x-fastmcp-wrap-result": True
         }
     }
 )
 def calcular_min(valores: list[float]) -> float:
-    """Devuelve el valor mínimo de una lista de números."""
-    print(f"[TOOL_USE] Ejecutando calcular_min({valores})")
+    """Mínimo auxiliar."""
+    print(f"[TOOL_USE] calcular_min({valores})")
     return min(valores)
+
 
 @mcp.tool(
     meta={
+        **common_math_meta,
         "input_schema": {
             "type": "object",
-            "properties": {"valores": {"type": "array", "items": {"type": "number"}, "description": "Lista de números."}},
+            "properties": {
+                "valores": {"type": "array", "items": {"type": "number"}}
+            },
             "required": ["valores"]
         },
         "output_schema": {
             "type": "object",
-            "properties": {"result": {"type": "number", "description": "Valor máximo encontrado."}},
+            "properties": {"result": {"type": "number"}},
             "x-fastmcp-wrap-result": True
         }
     }
 )
 def calcular_max(valores: list[float]) -> float:
-    """Devuelve el valor máximo de una lista de números."""
-    print(f"[TOOL_USE] Ejecutando calcular_max({valores})")
+    """Máximo auxiliar."""
+    print(f"[TOOL_USE] calcular_max({valores})")
     return max(valores)
+
 
 @mcp.tool(
     meta={
+        **common_math_meta,
         "input_schema": {
             "type": "object",
-            "properties": {"valores": {"type": "array", "items": {"type": "number"}, "description": "Lista de números."}},
+            "properties": {
+                "valores": {"type": "array", "items": {"type": "number"}}
+            },
             "required": ["valores"]
         },
         "output_schema": {
             "type": "object",
-            "properties": {"result": {"type": "number", "description": "Promedio de los valores."}},
+            "properties": {"result": {"type": "number"}},
             "x-fastmcp-wrap-result": True
         }
     }
 )
 def calcular_promedio(valores: list[float]) -> float:
-    """Calcula y devuelve el promedio de una lista de números."""
-    print(f"[TOOL_USE] Ejecutando calcular_promedio({valores})")
+    """Promedio auxiliar."""
+    print(f"[TOOL_USE] calcular_promedio({valores})")
     return sum(valores) / len(valores)
 
+
+# =====================================================
+# Herramientas del dominio energético
+# =====================================================
+
+def energy_meta(granularidad, usar_si, no_usar_si, limitaciones, proposito):
+    return {
+        "categoria": "energia",
+        "granularidad": granularidad,
+        "seleccion": {
+            "usar_si": usar_si,
+            "no_usar_si": no_usar_si,
+            "limitaciones": limitaciones,
+            "proposito": proposito
+        }
+    }
+
+
+# ------------------- RANGO HORAS --------------------
 @mcp.tool(
     meta={
+        **energy_meta(
+            granularidad="horaria",
+            usar_si=[
+                "El usuario pide consumo entre horas específicas",
+                "La consulta corresponde a un único día",
+                "La intención menciona horas explícitas"
+            ],
+            no_usar_si=[
+                "No se mencionan horas",
+                "El rango involucra más de un día",
+                "El usuario pide consumo diario o mensual"
+            ],
+            limitaciones=[
+                "La fecha debe existir en el dataset",
+                "Devuelve 0 si no hay registros"
+            ],
+            proposito="Obtener el consumo energético exacto en una ventana horaria"
+        ),
         "input_schema": {
             "type": "object",
             "properties": {
@@ -176,31 +259,49 @@ def calcular_promedio(valores: list[float]) -> float:
         },
         "output_schema": {
             "type": "object",
-            "properties": {"result": {"type": "number", "description": "Consumo total en kWh."}},
+            "properties": {"result": {"type": "number"}},
             "x-fastmcp-wrap-result": True
         }
     }
 )
-def consumo_rango_horas(dispositivo: str, hora_inicio: int, hora_fin: int, dia:int, mes:int, anio:int ) -> float:
-    """Calcula el consumo total de un dispositivo en un rango específico de horas de un día dado."""
-    df_dispositivo = DATASET[["TimeStamp", dispositivo]].copy()
-    df_dispositivo = df_dispositivo[
-        (df_dispositivo["TimeStamp"].dt.day == dia) & 
-        (df_dispositivo["TimeStamp"].dt.month == mes) & 
-        (df_dispositivo["TimeStamp"].dt.year == anio)
+def consumo_rango_horas(dispositivo: str, hora_inicio: int, hora_fin: int, dia: int, mes: int, anio: int) -> float:
+    """Cálculo de consumo horario."""
+    df = DATASET[["TimeStamp", dispositivo]].copy()
+    df = df[
+        (df["TimeStamp"].dt.day == dia) &
+        (df["TimeStamp"].dt.month == mes) &
+        (df["TimeStamp"].dt.year == anio)
     ]
-    df_filtrado = df_dispositivo[
-        (df_dispositivo["TimeStamp"].dt.hour >= hora_inicio) & 
-        (df_dispositivo["TimeStamp"].dt.hour < hora_fin)
+    df = df[
+        (df["TimeStamp"].dt.hour >= hora_inicio) &
+        (df["TimeStamp"].dt.hour < hora_fin)
     ]
-    if df_filtrado.empty:
-        print("No se encontraron registros para ese rango de horas.")
+    if df.empty:
         return 0.0
-    consumo_total = df_filtrado[dispositivo].sum()
-    return consumo_total
+    return df[dispositivo].sum()
 
+
+# ------------------- RANGO DÍAS --------------------
 @mcp.tool(
     meta={
+        **energy_meta(
+            granularidad="diaria",
+            usar_si=[
+                "El usuario pide consumo por días completos",
+                "No se mencionan horas",
+                "El rango está dentro de un mismo mes"
+            ],
+            no_usar_si=[
+                "El rango cruza meses",
+                "El usuario pide horas específicas",
+                "El usuario pide consumo mensual"
+            ],
+            limitaciones=[
+                "Días deben existir en el dataset",
+                "Devuelve 0 si no hay registros"
+            ],
+            proposito="Obtener el consumo energético agregado por días completos"
+        ),
         "input_schema": {
             "type": "object",
             "properties": {
@@ -214,28 +315,44 @@ def consumo_rango_horas(dispositivo: str, hora_inicio: int, hora_fin: int, dia:i
         },
         "output_schema": {
             "type": "object",
-            "properties": {"result": {"type": "number", "description": "Consumo total en kWh."}},
+            "properties": {"result": {"type": "number"}},
             "x-fastmcp-wrap-result": True
         }
     }
 )
 def consumo_rango_dias(dispositivo: str, dia_inicio: int, dia_fin: int, mes: int, anio: int) -> float:
-    """Calcula el consumo total de un dispositivo en un rango de días dentro de un mes y año."""
-    df_dispositivo = DATASET[["TimeStamp", dispositivo]].copy()
-    df_filtrado = df_dispositivo[
-        (df_dispositivo["TimeStamp"].dt.year == anio) & 
-        (df_dispositivo["TimeStamp"].dt.month == mes) & 
-        (df_dispositivo["TimeStamp"].dt.day >= dia_inicio) & 
-        (df_dispositivo["TimeStamp"].dt.day <= dia_fin)
+    """Cálculo de consumo por días."""
+    df = DATASET[["TimeStamp", dispositivo]].copy()
+    df = df[
+        (df["TimeStamp"].dt.year == anio) &
+        (df["TimeStamp"].dt.month == mes) &
+        (df["TimeStamp"].dt.day >= dia_inicio) &
+        (df["TimeStamp"].dt.day <= dia_fin)
     ]
-    if df_filtrado.empty:
-        print("No se encontraron registros para ese rango de días.")
+    if df.empty:
         return 0.0
-    consumo_total = df_filtrado[dispositivo].sum()
-    return consumo_total
+    return df[dispositivo].sum()
 
+
+# ------------------- RANGO MESES --------------------
 @mcp.tool(
     meta={
+        **energy_meta(
+            granularidad="mensual",
+            usar_si=[
+                "El usuario pide consumo mensual o multimes",
+                "No se requieren detalles diarios u horarios"
+            ],
+            no_usar_si=[
+                "El rango cruza años",
+                "El usuario pide días u horas"
+            ],
+            limitaciones=[
+                "Meses deben existir en el dataset",
+                "Devuelve 0 si no hay registros"
+            ],
+            proposito="Obtener el consumo energético agregado por meses completos"
+        ),
         "input_schema": {
             "type": "object",
             "properties": {
@@ -248,75 +365,95 @@ def consumo_rango_dias(dispositivo: str, dia_inicio: int, dia_fin: int, mes: int
         },
         "output_schema": {
             "type": "object",
-            "properties": {"result": {"type": "number", "description": "Consumo total en kWh."}},
+            "properties": {"result": {"type": "number"}},
             "x-fastmcp-wrap-result": True
         }
     }
 )
 def consumo_rango_meses(dispositivo: str, mes_inicio: int, mes_fin: int, anio: int) -> float:
-    """Calcula el consumo total de un dispositivo en un rango de meses dentro de un año."""
-    df_dispositivo = DATASET[["TimeStamp", dispositivo]].copy()
-    df_filtrado = df_dispositivo[
-        (df_dispositivo["TimeStamp"].dt.year == anio) & 
-        (df_dispositivo["TimeStamp"].dt.month >= mes_inicio) & 
-        (df_dispositivo["TimeStamp"].dt.month <= mes_fin)
+    """Cálculo de consumo mensual."""
+    df = DATASET[["TimeStamp", dispositivo]].copy()
+    df = df[
+        (df["TimeStamp"].dt.year == anio) &
+        (df["TimeStamp"].dt.month >= mes_inicio) &
+        (df["TimeStamp"].dt.month <= mes_fin)
     ]
-    if df_filtrado.empty:
-        print("No se encontraron registros para ese rango de meses.")
+    if df.empty:
         return 0.0
-    consumo_total = df_filtrado[dispositivo].sum()
-    return consumo_total
+    return df[dispositivo].sum()
+
+
+# ------------------- TOOLS ESPECIALES --------------------
 
 @mcp.tool(
     meta={
+        "categoria": "control",
+        "seleccion": {
+            "usar_si": ["La consulta no puede resolverse con ninguna herramienta disponible"],
+            "no_usar_si": [],
+            "limitaciones": ["Debe incluir una razón clara"],
+            "proposito": "Marcar explícitamente un plan como inviable"
+        },
         "input_schema": {
             "type": "object",
-            "properties": {"razon": {"type": "string", "description": "Descripción del motivo por el cual el plan es inviable."}},
+            "properties": {
+                "razon": {"type": "string"}
+            },
             "required": ["razon"]
         },
         "output_schema": {
             "type": "object",
-            "properties": {"result": {"type": "string", "description": "Mensaje de plan inviable."}},
+            "properties": {"result": {"type": "string"}},
             "x-fastmcp-wrap-result": True
         }
     }
 )
 def plan_inviable(razon: str) -> str:
-    """Se usa cuando la consulta no puede resolverse con las herramientas disponibles o excede las capacidades del sistema."""
-    print(f"[TOOL_USE] Plan marcado como inviable. Razón: {razon}")
+    """Marca un plan como inviable."""
+    print(f"[TOOL_USE] Plan inviable: {razon}")
     return f"Plan inviable: {razon}"
+
 
 @mcp.tool(
     meta={
+        "categoria": "control",
+        "seleccion": {
+            "usar_si": ["Faltan datos esenciales para ejecutar la consulta"],
+            "no_usar_si": [],
+            "limitaciones": [],
+            "proposito": "Informar al usuario o al sistema que faltan parámetros obligatorios"
+        },
         "input_schema": {
             "type": "object",
-            "properties": {"datos_faltante": {"type": "string", "description": "Datos faltantes requeridos para la consulta."}},
+            "properties": {
+                "datos_faltante": {"type": "string"}
+            },
             "required": ["datos_faltante"]
         },
         "output_schema": {
             "type": "object",
-            "properties": {"result": {"type": "string", "description": "Mensaje informando los datos faltantes."}},
+            "properties": {"result": {"type": "string"}},
             "x-fastmcp-wrap-result": True
         }
     }
 )
 def falta_informacion(datos_faltante: str) -> str:
-    """Se usa cuando no hay suficiente información en la entrada del usuario para ejecutar la consulta."""
+    """Indica que falta información."""
     print(f"[TOOL_USE] Faltan datos: {datos_faltante}")
     return f"Faltan datos: {datos_faltante}"
 
+
 # =====================================================
-# Recursos de contexto del hogar inteligente Sincelejo
+# Recursos del hogar inteligente
 # =====================================================
 
 @mcp.resource(
     name="dispositivos_hogar_sincelejo",
-    description="Lista de dispositivos monitorizados en el hogar de Sincelejo (Colombia).",
+    description="Lista de dispositivos monitorizados.",
     mime_type="application/json",
     uri="mcp://hogar/dispositivos"
 )
 def dispositivos_hogar_sincelejo():
-    """Recurso informativo que describe los dispositivos conectados al sistema energético."""
     return {
         "dispositivos": [
             {"nombre": "Ventilador", "ubicacion": "Habitación principal", "tipo": "Electrodoméstico"},
@@ -327,14 +464,14 @@ def dispositivos_hogar_sincelejo():
         ]
     }
 
+
 @mcp.resource(
     name="contexto_local_sincelejo",
-    description="Contexto general del hogar ubicado en Sincelejo: ubicación, condiciones y tiempo local.",
+    description="Contexto general del hogar ubicado en Sincelejo.",
     mime_type="application/json",
     uri="mcp://hogar/contexto_local"
 )
 def contexto_local_sincelejo():
-    """Proporciona información contextual y temporal del entorno doméstico."""
     return {
         "ubicacion": {
             "ciudad": "Sincelejo",
@@ -356,12 +493,11 @@ def contexto_local_sincelejo():
 
 @mcp.resource(
     name="familia_sincelejo",
-    description="Información general sobre los habitantes del hogar, sin incluir datos personales sensibles.",
+    description="Información general sobre los habitantes del hogar.",
     mime_type="application/json",
     uri="mcp://hogar/familia"
 )
 def familia_sincelejo():
-    """Describe de forma general la composición del hogar y hábitos de uso energético."""
     return {
         "miembros": [
             {"rol": "Padre", "edad_aprox": 40, "ocupacion": "Ingeniero"},
@@ -379,5 +515,4 @@ def familia_sincelejo():
 
 
 if __name__ == "__main__":
-    mcp.run(transport="sse") #Creo que por default se crea con los parámetros de red host='0.0.0.0', port=3000
-
+    mcp.run(transport="sse")

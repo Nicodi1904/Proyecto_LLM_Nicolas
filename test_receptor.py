@@ -4,91 +4,86 @@ from test_dump import system_summary
 
 class Receptor(dspy.Signature):
     """
-    Evalúa la intención principal y las posibles intenciones secundarias del usuario,
-    considerando el contexto conversacional, el estado del sistema y las capacidades disponibles.
+    Detecta y estructura en lenguaje natural las intenciones explícitas e implícitas 
+    del usuario, evitando generar datos inventados y manteniendo toda la información 
+    tal como el usuario la expresó.
     """
 
-    # ------------------------
+    # ============================
     # ENTRADAS
-    # ------------------------
-
+    # ============================
     pregunta: str = dspy.InputField(
-        desc="Mensaje original del usuario en lenguaje natural."
+        desc="Mensaje original del usuario sin modificaciones."
     )
 
     feedback: dict = dspy.InputField(
         default={},
-        desc=(
-            "Información contextual acumulada de interacciones previas o de otros SLMs. "
-            "Incluye observaciones, restricciones o aclaraciones históricas relevantes."
-        )
+        desc="Contexto previo relevante (historial, preferencias, restricciones, dispositivos conocidos)."
     )
 
     system_summary: dict = dspy.InputField(
         default={},
+        desc="Conjunto de herramientas disponibles para el sistema."
+    )
+
+    # ============================
+    # SALIDAS
+    # ============================
+    intenciones_principales: list = dspy.OutputField(
         desc=(
-            "Resumen global del sistema: herramientas y funciones disponibles, dominios cubiertos, "
-            "limitaciones generales y descripciones breves de cada capacidad."
+            "Lista de intenciones principales expresadas en lenguaje natural. "
+            "Una intención principal puede ser simple o compuesta. "
+            "Si el usuario solicita varios datos o pasos interrelacionados como parte del mismo propósito "
+            "(por ejemplo, obtener consumos y luego compararlos), todo debe considerarse una única "
+            "intención principal compuesta. "
+            "Cada intención principal debe describir claramente la acción deseada tal como fue escrita, "
+            "incluyendo dispositivos, eventos o expresiones temporales, sin interpretar, resumir ni modificar "
+            "la estructura temporal original usada por el usuario. "
+            "NO convertir fechas ni horas, NO normalizar texto, NO inventar detalles y NO usar formatos tipo JSON."
+        )
+    )
+
+    intenciones_secundarias: list = dspy.OutputField(
+        desc=(
+            "Lista en lenguaje natural de intenciones adicionales expresadas explícitamente por el usuario. "
+            "Una intención secundaria debe: "
+            "(1) ser una acción literal formulada por el usuario, "
+            "(2) NO ser necesaria para completar la intención principal, "
+            "(3) NO ser parte del objetivo principal del mensaje. "
+            "NO incluir narraciones, comentarios personales, emociones, humor, exageraciones o descripciones "
+            "que no expresen una acción concreta. "
+            "NO se permiten inferencias, suposiciones ni interpretaciones. "
+            "Si el usuario no escribió literalmente otra ACCIÓN independiente, la lista debe estar vacía."
         )
     )
 
 
-    # ------------------------
-    # SALIDAS
-    
-    intenciones_principales: list = dspy.OutputField(
-    desc=(
-        "Lista de intenciones principales detectadas (cada elemento es una cadena). "
-        "Cada intención debe formularse como la pregunta exacta que el sistema debe responder; "
-        "es decir, debe dejar claro: (1) la acción solicitada o métrica requerida (qué), "
-        "(2) las entidades o dispositivos involucrados (qué objetos), "
-        "(3) el alcance temporal o condición espacial si aplica (cuándo / rango), "
-        "(4) la forma de agregación o comparación requerida (cómo medir o comparar), "
-        "y (5) el formato de salida preferido si fue explícito (texto, tabla, gráfico). "
-    )
-)
 
-    intenciones_secundarias: list = dspy.OutputField(
-    desc=(
-        "Lista de intenciones complementarias o implícitas derivadas del mensaje del usuario. "
-        "Estas intenciones no son el objetivo principal, pero aportan contexto, precisión o valor agregado "
-        "a la solicitud original. Cada elemento debe representar una posible subpregunta o acción auxiliar "
-        "que el sistema podría ejecutar para mejorar la respuesta final, validar datos o ampliar el análisis. "
-        "Incluye, por ejemplo, peticiones comparativas, validaciones, condiciones no explícitas o posibles "
-        "interpretaciones alternativas del enunciado del usuario. "
-    )
-)
-    planeacion: str = dspy.OutputField(
-    desc=(
-        "Descripción en lenguaje natural del plan de acción propuesto para resolver la solicitud del usuario. "
-        "Debe detallar los pasos o estrategias a seguir, indicando qué información se requiere, qué operaciones "
-        "se ejecutarán (por ejemplo, cálculos, comparaciones o consultas), y en qué orden lógico se desarrollarán. "
-        "Debe ser comprensible, coherente y reflejar razonamiento causal —no solo una lista de tareas."
-    )
-)
+
 
 
     razonamiento: str = dspy.OutputField(
-        desc=(
-            "Análisis estructurado sobre la viabilidad de cumplir las intenciones detectadas. "
-            "Debe incluir: (1) si es posible cumplirlas con las herramientas disponibles, "
-            "(2) qué información falta o limita la ejecución, y "
-            "(3) sugerencias para resolver esas limitaciones."
-            )
+    desc=(
+    "Explicación clara del proceso de interpretación. Debe justificar por qué cada acción "
+    "fue clasificada como principal o secundaria, señalando si el usuario expresó o no un verbo rector. "
+    "Debe identificar qué información temporal o contextual falta, sin inventar nada. "
+    "Debe diferenciar entre información presente en feedback (que NO debe marcarse como faltante) "
+    "y datos realmente ausentes en el mensaje del usuario."
+)
 
     )
+
 
     confianza: float = dspy.OutputField(
-        desc=(
-            "Nivel de certeza (0 a 1) en la interpretación general de la intención del usuario "
-            "y la viabilidad de procesarla con el sistema actual."
-        )
+        desc="Nivel de certeza (0 a 1) sobre la interpretación final."
     )
+
 
 
 # Configurar LLM base
-llama_31 = dspy.LM('ollama_chat/llama3.1', api_base='http://localhost:11434', api_key='')
+llama_31 = dspy.LM('ollama_chat/llama3.1:latest', api_base='http://localhost:11434', api_key='')
 dspy.configure(lm=llama_31)
+
 
 # Crear el predictor semántico
 receptor = dspy.Predict(Receptor)
@@ -128,7 +123,7 @@ formato_feedback = {
     
 }
 
-feedback={"historial":None,
+""" feedback={"historial":None,
           "restricciones":None,
           "preferencias_usuario":"el usuario quiere que lo llamen con el nombre de cuchurrumin",
           "dispositivos de los que se tiene informacion": [
@@ -158,33 +153,40 @@ feedback={"historial":None,
             "tipo": "Equipo electrónico"
         }
     ]
-        }
+        } """
+
+
+
+pregunta=("Necesito saber cuánto consumió mi nevera ayer por la noche, "
+    "y también cuánto consumió mi lavadora el sábado pasado en la mañana. "
+    "Además quiero que me digas si entre esos dos días cuál gastó más energía. "
+    "Ah, y por cierto, mientras miraba esos consumos se me descargó el celular "
+    "y me dio mucha pereza pararme a buscar el cargador, pero igual quiero la comparación."
+    "Papá también pidió que le dijeras cuánto fue el consumo de todos los dispositivos en el año 2024, quiero ver gráficas de todo lo que se pueda")
+
 #Llamada al LLM
 resultado = receptor(
-    pregunta="cuánto fue el consumo de mi aire acondicionado el 5 de marzo y el del PC el 8 de octubre, cuál de ellos consume menos? YABA DABA DUUUUUUUUUUUUUUUUUU" \
-    "Ayer me comí un helado pero se me cayó, entonces quiero saber cuál entre mi televisor o mi computador consumio más de las 8 a las 3, es de vital importancia saber esto, no hay nada más importante en el planeta.",
-    feedback=feedback,
+    pregunta = pregunta,
+
+    feedback=None,
     system_summary=system_summary,
 )
 
 
-
-print("=== RAW RESULTADO ===")
-print(resultado)
-
-
 intenciones_principales=resultado.intenciones_principales
 intenciones_secundarias=resultado.intenciones_secundarias
-planeacion=resultado.planeacion
 razonamiento=resultado.razonamiento
 confianza=resultado.confianza
 
 
 
+print("==================Mensaje enviado por el usuario==================")
+print(pregunta)
+print("=====================")
+
 
 print("=== COOKED RESULTADO ===")
 print('las intenciones principales detectadas fueron:\n',intenciones_principales)
 print('las intenciones_secundarias detectadas fueron:\n',intenciones_secundarias)
-print('las intenciones_secundarias detectadas fueron:\n',planeacion)
 print('el razonamiento realizado fue:\n',razonamiento)
 print('la confianza es:\n',confianza)

@@ -1,18 +1,19 @@
 import asyncio
 from fastmcp import Client 
 
-# Se abre sesión del cliente
+# ---------------------------------------------------------
+# 1. EXTRAER METADATOS DEL SERVIDOR (tools + resources)
+# ---------------------------------------------------------
+
 async def extraer_metadatos_server():
-    # Dirección en la que se abrió el servidor y tipo de comunicación
     client = Client("http://127.0.0.1:8000/sse")
 
     async with client:
-        # Verificar conexión
         conexion = await client.ping()
         print("=========================================")
-        print("Conectado al servidor MCP, se procede a extraer metadatos", ": ", conexion)
+        print("Conectado al servidor MCP, se procede a extraer metadatos:", conexion)
         print("=========================================")
-        
+
         tools = await client.list_tools()
         resources = await client.list_resources()
 
@@ -20,41 +21,39 @@ async def extraer_metadatos_server():
         print("=========================================")
 
     return tools, resources
-
-
 tools, resources = asyncio.run(extraer_metadatos_server())
 
 
+# ---------------------------------------------------------
+# 2. PROCESAR TOOLS — SOLO LO QUE REALMENTE DEVUELVE EL SERVIDOR
+# ---------------------------------------------------------
+
 def separar_metadatos_tools_cliente(tools):
-    global tool_names, tool_descriptions, tool_input_schemas, tool_output_schemas, tool_examples, tool_metadata, tool_server_info
+    global tool_names, tool_descriptions, tool_input_schemas, tool_output_schemas
+
     tool_names = []
     tool_descriptions = []
     tool_input_schemas = []
     tool_output_schemas = []
-    tool_examples = []
-    tool_metadata = []
-    tool_server_info = []
 
     for tool in tools:
-        data = tool.model_dump()  # convertir a dict normal ya que MCP utiliza objetos pydantic
+        data = tool.model_dump()
 
-        # Extracción principal
         tool_names.append(data.get("name"))
         tool_descriptions.append(data.get("description"))
 
-        # Sacar el input y output schem desde metadatos directamente (Debido a error del servidor al no inferir correctamente estos squemas)
-        meta_data = data.get("meta", {})
-        if meta_data:
-            tool_input_schemas.append(meta_data.get("input_schema"))
-            tool_output_schemas.append(meta_data.get("output_schema"))
-        else:
-            tool_input_schemas.append(None)
-            tool_output_schemas.append(None)
+        # El servidor nuevo sí expone input/output Schema directamente
+        tool_input_schemas.append(data.get("input_schema") or {})
+        tool_output_schemas.append(data.get("output_schema") or {})
 
-        tool_examples.append(data.get("examples"))
-        tool_metadata.append(data.get("metadata"))
-        tool_server_info.append(data.get("server_info"))
+
 separar_metadatos_tools_cliente(tools)
+
+
+# ---------------------------------------------------------
+# 3. PROCESAR RESOURCES — OPCIONAL PERO ROBUSTO
+# ---------------------------------------------------------
+
 def separar_metadatos_resources_cliente(resources):
     global resource_names, resource_descriptions, resource_mime_types, resource_uris, resource_values
 
@@ -65,34 +64,37 @@ def separar_metadatos_resources_cliente(resources):
     resource_values = []
 
     for resource in resources:
-        data = resource.model_dump()  # convertir a dict normal, igual que con tools
+        data = resource.model_dump()
 
-        # Extracción principal
         resource_names.append(data.get("name"))
         resource_descriptions.append(data.get("description"))
         resource_mime_types.append(data.get("mime_type"))
         resource_uris.append(data.get("uri"))
 
-        # Algunos servidores pueden devolver el valor real del recurso bajo distintas claves
-        # dependiendo de la implementación (ej. "value", "data" o "content")
         resource_values.append(
-            data.get("value")
-            or data.get("data")
-            or data.get("content")
-            or None
+            data.get("value") or
+            data.get("content") or
+            data.get("data") or None
         )
+
+
 separar_metadatos_resources_cliente(resources)
 
-formato_system_summary = { #Lo que se le pasa al receptor
+
+# ---------------------------------------------------------
+# 4. FORMATO FINAL QUE CONSUME EL RECEPTOR
+# ---------------------------------------------------------
+
+formato_system_summary = { 
     "servers": [
         {
-            "server_id": str,   # identificador del servidor MCP (ej. "server_analisis")
+            "server_id": str,
             "tools": [
                 {
-                    "name": str,         # nombre interno de la herramienta
-                    "description": str,  # propósito o función general
-                    "inputs": dict,      # esquema JSON de entrada reportado por el servidor
-                    "outputs": dict      # esquema JSON de salida reportado por el servidor
+                    "name": str,
+                    "description": str,
+                    "inputs": dict,
+                    "outputs": dict
                 }
             ]
         }
@@ -100,19 +102,23 @@ formato_system_summary = { #Lo que se le pasa al receptor
 }
 
 
+# ---------------------------------------------------------
+# 5. CONSTRUCT SUMMARY — ADAPTADO AL NUEVO SERVIDOR
+# ---------------------------------------------------------
 
+def crear_summary(tool_names, tool_descriptions, tool_input_schemas, tool_output_schemas):
+    """
+    Crea un resumen del sistema usando únicamente los campos que el servidor MCP garantiza:
+    - name
+    - description
+    - input_schema
+    - output_schema
+    """
 
-def crear_summary(tool_names, tool_descriptions, tool_input_schemas, tool_output_schemas, tool_server_info):
-    """
-    Crea un resumen del sistema (system_summary) utilizando únicamente la información
-    obtenida directamente del servidor MCP.
-    """
     summary = {"servers": []}
 
-    # Identificador del servidor (o valor por defecto)
-    server_id = "server_desconocido"
-    if tool_server_info and tool_server_info[0]:
-        server_id = tool_server_info[0].get("id", "server_desconocido")
+    # El servidor actual NO expone server_info → ponemos identificador genérico
+    server_id = "mcp_local_server"
 
     server_data = {
         "server_id": server_id,
@@ -134,16 +140,16 @@ def crear_summary(tool_names, tool_descriptions, tool_input_schemas, tool_output
     return summary
 
 
-# Crear el resumen del sistema
+# ---------------------------------------------------------
+# 6. CREAR SUMMARY FINAL
+# ---------------------------------------------------------
+
 system_summary = crear_summary(
-    tool_names, tool_descriptions, tool_input_schemas, tool_output_schemas, tool_server_info
+    tool_names, 
+    tool_descriptions, 
+    tool_input_schemas, 
+    tool_output_schemas
 )
-
-
-
-
-
-
 
 
 
