@@ -11,10 +11,7 @@ mcp = FastMCP("MCP_server_tools")
 DATASET = cargar_dataset_sinselejo("Energy Consumption in KWh of a Typical House Sincelejo Colombia.csv")
 
 
-# =====================================================
-# Herramientas matemáticas auxiliares 
-# =====================================================
-
+#######################################################################################
 common_math_meta = {
     "categoria": "matematica_auxiliar",
     "descripcion_funcional": (
@@ -39,6 +36,7 @@ common_math_meta = {
     }
 }
 
+#################################################################################################################################3
 
 @mcp.tool(
     meta={
