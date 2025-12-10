@@ -49,17 +49,6 @@ class Rag_Generator(dspy.Signature):
         )
     )
 ################################################################
-
-# Configurar LLM base
-llama_31 = dspy.LM('ollama_chat/llama3.1:latest', api_base='http://localhost:11434', api_key='')
-dspy.configure(lm=llama_31)
-
-
-# Crear el predictor semántico
-Rag = dspy.Predict(Rag_Generator)
-
-################################################################
-
 pregunta=("Necesito saber cuánto consumió mi nevera ayer por la noche, "
     "y también cuánto consumió mi lavadora el sábado pasado en la mañana. "
     "Además quiero que me digas si entre esos dos días cuál gastó más energía. "
@@ -68,8 +57,60 @@ pregunta=("Necesito saber cuánto consumió mi nevera ayer por la noche, "
     "Papá también pidió que le dijeras cuánto fue el consumo de todos los dispositivos en el año 2024, quiero ver gráficas de todo lo que se pueda")
 
 ################################################################
+
+
+
+
+# Configurar LLMs 
+llama_31 = dspy.LM('ollama_chat/llama3.1:latest', api_base='http://localhost:11434', api_key='')
+deepseek = dspy.LM('ollama_chat/deepseek-r1:8b', api_base='http://localhost:11434', api_key='')
+mistral = dspy.LM('ollama_chat/mistral', api_base='http://localhost:11434', api_key='')
+gemma = dspy.LM('ollama_chat/gemma', api_base='http://localhost:11434', api_key='')
+
+
+
+################################################################
+print("inicializando LLMs")
+#inicializar la signature con LLAMA 3.1
+dspy.configure(lm=llama_31) 
+Rag_llama31 = dspy.Predict(Rag_Generator)
+
 #Llamada al LLM
-resultado = Rag(
+resultado = Rag_llama31(
+    pregunta = pregunta,
+    tiempo_actual="2025-5-15 16:30",
+    feedback=None,
+    system_summary=system_summary,
+)
+
+
+#inicializar la signature con LLAMA 3.1
+dspy.configure(lm=deepseek)
+Rag_deepseek = dspy.Predict(Rag_Generator)
+
+resultado2 = Rag_deepseek(
+    pregunta = pregunta,
+    tiempo_actual="2025-5-15 16:30",
+    feedback=None,
+    system_summary=system_summary,
+)
+
+#inicializar la signature con mistral
+dspy.configure(lm=mistral)
+Rag_mistral = dspy.Predict(Rag_Generator)
+
+resultado3 = Rag_mistral(
+    pregunta = pregunta,
+    tiempo_actual="2025-5-15 16:30",
+    feedback=None,
+    system_summary=system_summary,
+)
+
+#inicializar la signature con gemma
+dspy.configure(lm=gemma)
+Rag_gemma = dspy.Predict(Rag_Generator)
+
+resultado4 = Rag_gemma(
     pregunta = pregunta,
     tiempo_actual="2025-5-15 16:30",
     feedback=None,
@@ -81,6 +122,15 @@ resultado = Rag(
 intenciones_principales=resultado.intenciones_principales
 razonamiento=resultado.razonamiento
 
+intenciones_principales2=resultado2.intenciones_principales
+razonamiento2=resultado2.razonamiento
+
+intenciones_principales3=resultado3.intenciones_principales
+razonamiento3=resultado3.razonamiento
+
+intenciones_principales4=resultado4.intenciones_principales
+razonamiento4=resultado4.razonamiento
+
 ################################################################
 
 print("==================Mensaje enviado por el usuario==================")
@@ -88,6 +138,18 @@ print(pregunta)
 print("=====================")
 
 
-print("=== COOKED RESULTADO ===")
+print("=== COOKED Ollama 3.1 ===")
 print('las intenciones principales detectadas fueron:\n',intenciones_principales)
 print('el razonamiento realizado fue:\n',razonamiento)
+
+print("=== COOKED Deepseek ===")
+print('las intenciones principales detectadas fueron:\n',intenciones_principales2)
+print('el razonamiento realizado fue:\n',razonamiento2)
+
+print("=== COOKED Mistral ===")
+print('las intenciones principales detectadas fueron:\n',intenciones_principales3)
+print('el razonamiento realizado fue:\n',razonamiento3)
+
+print("=== COOKED Gemma ===")
+print('las intenciones principales detectadas fueron:\n',intenciones_principales4)
+print('el razonamiento realizado fue:\n',razonamiento4)
