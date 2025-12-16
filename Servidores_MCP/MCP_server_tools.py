@@ -1,6 +1,11 @@
 from fastmcp import FastMCP
 import pandas as pd
 from cargar_CSV import cargar_dataset_sinselejo
+import sys
+import os
+
+# Agregar directorio padre al path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # Initialize FastMCP server
 mcp = FastMCP("MCP_server_tools")
@@ -8,180 +13,19 @@ mcp = FastMCP("MCP_server_tools")
 # -------------------------
 # Cargar dataset global
 # -------------------------
-DATASET = cargar_dataset_sinselejo("Energy Consumption in KWh of a Typical House Sincelejo Colombia.csv")
+csv_path = os.path.join(os.path.dirname(__file__), '..', "Energy Consumption in KWh of a Typical House Sincelejo Colombia.csv")
+DATASET = cargar_dataset_sinselejo(csv_path)
 
 
-# =====================================================
-# 📌 METADATOS — FORMATO LIMPIO Y UNIFORME
-# =====================================================
 
-def meta_math(proposito: str):
-    return {
-        "proposito": proposito,
-        "usar_si": [
-            "Se necesita realizar una operación matemática simple después de filtrar datos energéticos"
-        ],
-        "no_usar_si": [
-            "La consulta del usuario puede resolverse usando directamente herramientas de consumo energético"
-        ],
-        "limitaciones": [
-            "No interpreta intenciones del usuario",
-            "No obtiene datos del dataset, solo opera sobre valores numéricos ya filtrados"
-        ]
-    }
-
-def meta_energy(proposito: str, usar_si: list, no_usar: str, limitaciones: list):
-    return {
-        "proposito": proposito,
+def meta_energy(proposito: str, usar_si: list, no_usar: list):
+    return { 
         "usar_si": usar_si,
-        "no_usar_si": [no_usar],   # exactamente una condición crítica
-        "limitaciones": limitaciones
+        "no_usar_si": no_usar   # exactamente una condición crítica
     }
 
 
-# =====================================================
-# 📌 HERRAMIENTAS AUXILIARES DE MATEMÁTICAS
-# =====================================================
-
-@mcp.tool(
-    meta={
-        **meta_math("Suma dos valores numéricos después de haber filtrado datos."),
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "a": {"type": "number"},
-                "b": {"type": "number"}
-            },
-            "required": ["a", "b"]
-        },
-        "output_schema": {
-            "type": "object",
-            "properties": {"result": {"type": "number"}},
-            "x-fastmcp-wrap-result": True
-        }
-    }
-)
-def sumar(a: float, b: float) -> float:
-    print(f"[TOOL_USE] sumar({a}, {b})")
-    return a + b
-
-
-@mcp.tool(
-    meta={
-        **meta_math("Resta dos valores numéricos después de haber filtrado datos."),
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "a": {"type": "number"},
-                "b": {"type": "number"}
-            },
-            "required": ["a", "b"]
-        },
-        "output_schema": {
-            "type": "object",
-            "properties": {"result": {"type": "number"}},
-            "x-fastmcp-wrap-result": True
-        }
-    }
-)
-def restar(a: float, b: float) -> float:
-    print(f"[TOOL_USE] restar({a}, {b})")
-    return a - b
-
-
-@mcp.tool(
-    meta={
-        **meta_math("Multiplica dos valores numéricos ya filtrados."),
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "a": {"type": "number"},
-                "b": {"type": "number"}
-            },
-            "required": ["a", "b"]
-        },
-        "output_schema": {
-            "type": "object",
-            "properties": {"result": {"type": "number"}},
-            "x-fastmcp-wrap-result": True
-        }
-    }
-)
-def multiplicar(a: float, b: float) -> float:
-    print(f"[TOOL_USE] multiplicar({a}, {b})")
-    return a * b
-
-
-@mcp.tool(
-    meta={
-        **meta_math("Obtiene el valor mínimo de una lista de números ya filtrados."),
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "valores": {"type": "array", "items": {"type": "number"}}
-            },
-            "required": ["valores"]
-        },
-        "output_schema": {
-            "type": "object",
-            "properties": {"result": {"type": "number"}},
-            "x-fastmcp-wrap-result": True
-        }
-    }
-)
-def calcular_min(valores: list[float]) -> float:
-    print(f"[TOOL_USE] calcular_min({valores})")
-    return min(valores)
-
-
-@mcp.tool(
-    meta={
-        **meta_math("Obtiene el valor máximo de una lista de números ya filtrados."),
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "valores": {"type": "array", "items": {"type": "number"}}
-            },
-            "required": ["valores"]
-        },
-        "output_schema": {
-            "type": "object",
-            "properties": {"result": {"type": "number"}},
-            "x-fastmcp-wrap-result": True
-        }
-    }
-)
-def calcular_max(valores: list[float]) -> float:
-    print(f"[TOOL_USE] calcular_max({valores})")
-    return max(valores)
-
-
-@mcp.tool(
-    meta={
-        **meta_math("Calcula el promedio de una lista de valores numéricos ya filtrados."),
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "valores": {"type": "array", "items": {"type": "number"}}
-            },
-            "required": ["valores"]
-        },
-        "output_schema": {
-            "type": "object",
-            "properties": {"result": {"type": "number"}},
-            "x-fastmcp-wrap-result": True
-        }
-    }
-)
-def calcular_promedio(valores: list[float]) -> float:
-    print(f"[TOOL_USE] calcular_promedio({valores})")
-    return sum(valores) / len(valores)
-
-
-# =====================================================
-# 📌 HERRAMIENTAS DEL DOMINIO ENERGÉTICO
-# =====================================================
-
+#Herramientas energéticas
 @mcp.tool(
     meta={
         **meta_energy(
@@ -189,11 +33,7 @@ def calcular_promedio(valores: list[float]) -> float:
             usar_si=[
                 "El usuario pide consumo entre dos horas dentro del mismo día"
             ],
-            no_usar="La consulta cubre más de un día",
-            limitaciones=[
-                "La fecha debe existir en el dataset",
-                "Retorna 0 si no hay registros en ese rango"
-            ]
+            no_usar="La consulta cubre más de un día"
         ),
         "input_schema": {
             "type": "object",
@@ -209,8 +49,7 @@ def calcular_promedio(valores: list[float]) -> float:
         },
         "output_schema": {
             "type": "object",
-            "properties": {"result": {"type": "number"}},
-            "x-fastmcp-wrap-result": True
+            "properties": {"result": {"type": "number"}}
         }
     }
 )
@@ -237,11 +76,7 @@ def consumo_rango_horas(dispositivo: str, hora_inicio: int, hora_fin: int, dia: 
             usar_si=[
                 "El usuario pide consumo de un día específico o un rango de días dentro del mismo mes"
             ],
-            no_usar="El rango solicitado cruza meses distintos",
-            limitaciones=[
-                "Los días deben existir en el dataset",
-                "Retorna 0 si no hay registros en ese rango"
-            ]
+            no_usar="El rango solicitado cruza meses distintos"
         ),
         "input_schema": {
             "type": "object",
@@ -256,8 +91,7 @@ def consumo_rango_horas(dispositivo: str, hora_inicio: int, hora_fin: int, dia: 
         },
         "output_schema": {
             "type": "object",
-            "properties": {"result": {"type": "number"}},
-            "x-fastmcp-wrap-result": True
+            "properties": {"result": {"type": "number"}}
         }
     }
 )
@@ -281,11 +115,7 @@ def consumo_rango_dias(dispositivo: str, dia_inicio: int, dia_fin: int, mes: int
             usar_si=[
                 "El usuario pide consumo mensual o de varios meses dentro del mismo año"
             ],
-            no_usar="El usuario pide un rango que cruza dos años distintos",
-            limitaciones=[
-                "Los meses deben existir en el dataset",
-                "Retorna 0 si no hay registros"
-            ]
+            no_usar="El usuario pide un rango que cruza dos años distintos"
         ),
         "input_schema": {
             "type": "object",
@@ -299,8 +129,7 @@ def consumo_rango_dias(dispositivo: str, dia_inicio: int, dia_fin: int, mes: int
         },
         "output_schema": {
             "type": "object",
-            "properties": {"result": {"type": "number"}},
-            "x-fastmcp-wrap-result": True
+            "properties": {"result": {"type": "number"}}
         }
     }
 )
@@ -322,16 +151,13 @@ def consumo_rango_meses(dispositivo: str, mes_inicio: int, mes_fin: int, anio: i
 
 @mcp.tool(
     meta={
-        "proposito": "Indica que la solicitud del usuario no puede resolverse con ninguna herramienta disponible.",
-        "usar_si": [
-            "No existe ninguna herramienta aplicable a la intención detectada"
-        ],
-        "no_usar_si": [
-            "Existe una herramienta del dominio energético o matemático capaz de resolver la intención"
-        ],
-        "limitaciones": [
-            "Debe incluir una razón explícita del por qué no puede resolverse"
-        ],
+        **meta_energy(
+            proposito="Indica que la solicitud del usuario no puede resolverse con ninguna herramienta disponible.",
+            usar_si=[
+                "No existe ninguna herramienta aplicable a la intención detectada"
+            ],
+            no_usar="Existe una herramienta del dominio energético o matemático capaz de resolver la intención"
+        ),
         "input_schema": {
             "type": "object",
             "properties": {
@@ -341,8 +167,7 @@ def consumo_rango_meses(dispositivo: str, mes_inicio: int, mes_fin: int, anio: i
         },
         "output_schema": {
             "type": "object",
-            "properties": {"result": {"type": "string"}},
-            "x-fastmcp-wrap-result": True
+            "properties": {"result": {"type": "string"}}
         }
     }
 )
@@ -353,16 +178,13 @@ def plan_inviable(razon: str) -> str:
 
 @mcp.tool(
     meta={
-        "proposito": "Indica que falta un dato obligatorio para ejecutar una acción del plan.",
-        "usar_si": [
-            "Falta un parámetro necesario para ejecutar una herramienta"
-        ],
-        "no_usar_si": [
-            "La intención puede resolverse con los datos disponibles"
-        ],
-        "limitaciones": [
-            "Solo comunica falta de datos, no ejecuta cálculos"
-        ],
+        **meta_energy(
+            proposito="Indica que falta un dato obligatorio para ejecutar una acción del plan.",
+            usar_si=[
+                "Falta un parámetro necesario para ejecutar una herramienta"
+            ],
+            no_usar="La intención puede resolverse con los datos disponibles"
+        ),
         "input_schema": {
             "type": "object",
             "properties": {
@@ -372,15 +194,13 @@ def plan_inviable(razon: str) -> str:
         },
         "output_schema": {
             "type": "object",
-            "properties": {"result": {"type": "string"}},
-            "x-fastmcp-wrap-result": True
+            "properties": {"result": {"type": "string"}}
         }
     }
 )
 def falta_informacion(datos_faltante: str) -> str:
     print(f"[TOOL_USE] Faltan datos: {datos_faltante}")
     return f"Faltan datos: {datos_faltante}"
-
 
 # =====================================================
 # Recursos del hogar inteligente

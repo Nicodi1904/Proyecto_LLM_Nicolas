@@ -1,0 +1,79 @@
+Descripción de los escenarios de entrada y salida de la herramienta
+
+Como se mencionó en la descripción de la herramienta, se propusieron 5 escenarios tanto para las entradas como para las salidas de la herramienta, para su propuesta, se tuvo en cuenta la problemática y objetivos del proyecto. Estos escenarios se exploran y profundizan a continuación.
+
+Los escenarios contemplados para las entradas del usuario en lenguaje natural son:
+
+Consultas de consumo energético básico: En este escenario, el usuario realiza solicitudes orientadas a conocer el consumo energético de uno o varios dispositivos, o del hogar en general, dentro de un periodo de tiempo específico. Estas consultas se caracterizan por ser precisas, cuantitativas y orientadas a la obtención de información puntual sobre el comportamiento energético. Constituyen la forma más elemental de interacción con el sistema, y permiten al usuario obtener datos históricos o instantáneos para su interpretación básica.
+
+ ¿Cuál fue el consumo promedio diario del televisor durante la última semana?
+
+ Muéstrame cuánta energía consumió la zona de la cocina ayer.
+
+¿Cuánta energía se utilizó en toda la casa entre las 6 p.m. y las 10 p.m.?
+
+Comparaciones entre dispositivos o periodos: Este escenario agrupa las consultas en las que el usuario busca establecer contrastes entre consumos de distintos dispositivos, periodos de tiempo o categorías de uso. Su propósito es facilitar la identificación de patrones diferenciales de consumo, detectar variaciones en el comportamiento energético y fomentar la toma de decisiones orientadas a la eficiencia. Estas solicitudes requieren que el sistema analice datos relativos y proporcione respuestas comparativas o analíticas.
+
+¿Qué consumió más energía, los electrodomésticos de la cocina o los del cuarto de lavado esta semana?
+
+¿El aire acondicionado consumió más este mes que el mes pasado?
+
+Compárame el consumo de todos los dispositivos durante el fin de semana frente a los días laborales.
+
+Detección de anomalías y tendencias: En este escenario, el usuario solicita la identificación de comportamientos anómalos o patrones consistentes en el consumo energético, tales como picos inesperados, incrementos sostenidos o consumos fuera de horario. Estas entradas implican que el sistema debe explorar los datos históricos para detectar desviaciones estadísticas, hábitos de uso ineficientes o posibles fallos en los dispositivos.
+
+ “Detecta si hubo picos de consumo anormales después de medianoche durante la última semana.
+
+ ¿Algún dispositivo ha mostrado un aumento constante en su consumo diario?
+
+¿Hay indicios de que algún electrodoméstico esté fallando por consumo irregular?
+
+Predicciones o estimaciones: Este escenario corresponde a solicitudes en las que el usuario busca anticipar el consumo futuro o estimar los efectos de posibles cambios en sus hábitos. Las respuestas del sistema deben basarse en la proyección de datos históricos y en el análisis de tendencias, con el fin de ofrecer información útil para la planificación y la gestión del uso energético. Este tipo de consultas representa el nivel más avanzado de interacción, al implicar la generación de inferencias o modelos predictivos.
+
+Estímame el consumo total del próximo mes si mantengo los mismos hábitos.
+
+¿Cuánto bajaría la factura si reemplazo las bombillas por LED?
+
+Predice el consumo promedio de la casa durante los próximos tres meses considerando las vacaciones de diciembre.
+
+Entradas inadmisibles: Este escenario contempla aquellas solicitudes que el sistema no puede procesar por estar fuera del dominio de la aplicación o por carecer de información suficiente para su interpretación. Incluye consultas irrelevantes al contexto energético, preguntas ambiguas o sin una intención claramente definida. Frente a este tipo de entradas, el sistema debe ser capaz de reconocer la inadmisibilidad y orientar al usuario hacia una formulación válida.
+
+Dime si estoy gastando mucho. (pregunta ambigua y sin contexto)
+
+ Hazme un gráfico bonito del clima. (fuera del dominio del sistema)
+
+Explica por qué el universo es tan grande. (completamente irrelevante al contexto energético)
+
+Los escenarios propuestos para las salidas del sistema a las entradas del usuario son:
+
+Respuestas informativas: Corresponden a las salidas generadas a partir de consultas básicas de consumo energético. El sistema entrega información puntual y cuantitativa sobre el consumo de energía de un dispositivo o conjunto de dispositivos en un periodo de tiempo determinado. 
+
+a. El televisor consumió 1.85 kWh durante la última semana, con un promedio diario de 0.26 kWh.b. El consumo total de la zona de la cocina ayer fue de 4.2 kWh.c. El hogar registró un uso energético de 3.6 kWh entre las 6 p.m. y las 10 p.m.
+
+Respuestas comparativas o analíticas: Estas salidas surgen de solicitudes orientadas a comparar consumos entre dispositivos o periodos. El sistema no solo muestra los valores individuales, sino que también explica las diferencias, porcentajes de variación y posibles causas de la disparidad observada. Además del texto, puede incluir visualizaciones comparativas (barras o diagramas circulares) que representen la magnitud de los consumos y las relaciones entre ellos.
+
+Durante la última semana, el aire acondicionado consumió 32% más energía que el ventilador, debido a un mayor tiempo de uso en las horas de la tarde.
+
+En abril el consumo total fue de 120 kWh, superando en 15 kWh al consumo registrado en marzo.
+
+Los electrodomésticos de la cocina representaron el 45% del consumo total semanal, mientras que los del cuarto de lavado aportaron el 25%.
+
+Respuestas diagnósticas o de detección de anomalías: En este escenario, el sistema identifica comportamientos irregulares o tendencias inusuales. La salida textual debe incluir una descripción clara del evento detectado, su posible causa y la magnitud de la desviación. Para favorecer la comprensión, pueden integrarse visualizaciones que resalten los puntos anómalos o las zonas de desviación sobre un gráfico temporal.
+
+Se detectó un pico inusual de consumo en la lavadora el martes a las 3:00 a.m., con un valor de 1.2 kWh, un 70% superior al promedio nocturno habitual.
+
+ La nevera presentó un incremento sostenido en su consumo diario durante los últimos cinco días, posiblemente asociado a un mal cierre de la puerta.
+
+El sistema identificó un consumo persistente en el horno eléctrico fuera del horario habitual de uso.
+
+Respuestas predictivas o de estimación: Estas salidas resultan de solicitudes que implican proyección de consumo o simulación de escenarios hipotéticos. El sistema presenta estimaciones basadas en el análisis de tendencias y patrones históricos, indicando posibles rangos de consumo o ahorro esperable. Además de la descripción en texto.
+
+Si se mantienen los hábitos actuales, el consumo estimado para el próximo mes será de 86.4 kWh. Reducir el uso del aire acondicionado dos horas diarias podría disminuirlo en un 12%. 
+
+ Al reemplazar las bombillas actuales por LED, el ahorro mensual estimado sería de 5.8 kWh, equivalente a una reducción del 8% en la factura.
+
+Se proyecta un consumo promedio de 2.8 kWh diarios durante el próximo trimestre, considerando la semana de vacaciones registrada en el calendario.
+
+Respuesta a entradas inadmisibles o no interpretables: Cuando la entrada del usuario no puede ser procesada o está fuera del contexto del sistema, la herramienta debe responder de forma informativa y orientadora. El texto debe indicar la imposibilidad de interpretar la solicitud y ofrecer ejemplos de cómo reformularla adecuadamente. a. Lo siento, no puedo responder a esa solicitud. Intenta con una pregunta relacionada con el consumo energético, por ejemplo: “¿Cuánto consumió la nevera esta semana?”.b. No entiendo tu consulta. Puedes preguntar cosas como “¿Qué dispositivo consumió más energía hoy?” o “¿Hubo picos de consumo durante la madrugada?”.c. La solicitud no pertenece al dominio del sistema. Reformúlala incluyendo un dispositivo, periodo o tipo de análisis energético.
+
+Adicionalmente a las salidas en formato textual mencionadas anteriormente, es posible utilizar el formato de imágenes y gráficos de proyección temporal o simulaciones para brindar un apoyo visual en la explicación al usuario.

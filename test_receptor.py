@@ -2,6 +2,7 @@ import dspy
 from MCP_cliente import system_summary
 from typing import List, Dict, Any, Optional
 
+
 ################################################################
 class Toolformer(dspy.Signature):
     pregunta: str = dspy.InputField(
@@ -99,7 +100,7 @@ resultado = Rag_llama31(
 )
 
 
-#inicializar la signature con LLAMA 3.1
+#inicializar la signature con deepseek
 dspy.configure(lm=deepseek)
 Rag_deepseek = dspy.Predict(Toolformer)
 
