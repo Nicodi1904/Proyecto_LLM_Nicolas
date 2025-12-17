@@ -152,3 +152,4 @@ if __name__ == "__main__":
     informe = asyncio.run(ejecutar_plan(SERVER_URL, ejemplo_plan_completo))
     import json
     print(json.dumps(informe, indent=2, default=str)) # default=str para serializar datetimes o numpy si los hubiera
+
