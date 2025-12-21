@@ -335,44 +335,6 @@ def analizar_tendencia(dispositivo: str, fecha_inicio: str, fecha_fin: str) -> d
         }
     }
 
-# =====================================================
-# ESCENARIO 5: ENTRADAS INADMISIBLES Y CONTROL
-# =====================================================
-
-@mcp.tool(
-    meta={
-        **meta_energy(
-            proposito="Informa al usuario que su solicitud no es realizable con las herramientas actuales explicando la razón técnica.",
-            usar_si=["No existe ninguna herramienta aplicable a la intención"]
-        ),
-        "input_schema": {
-            "type": "object",
-            "properties": {"razon": {"type": "string"}},
-            "required": ["razon"]
-        }
-    }
-)
-def plan_inviable(razon: str) -> str:
-    print(f"[TOOL_USE] Plan inviable: {razon}")
-    return f"Plan inviable: {razon}"
-
-
-@mcp.tool(
-    meta={
-        **meta_energy(
-            proposito="Detiene el flujo para solicitar al usuario parámetros obligatorios faltantes necesarios para ejecutar otra herramienta.",
-            usar_si=["Falta un parámetro necesario"]
-        ),
-        "input_schema": {
-            "type": "object",
-            "properties": {"datos_faltante": {"type": "string"}},
-            "required": ["datos_faltante"]
-        }
-    }
-)
-def falta_informacion(datos_faltante: str) -> str:
-    print(f"[TOOL_USE] Faltan datos: {datos_faltante}")
-    return f"Faltan datos: {datos_faltante}"
-
 if __name__ == "__main__":
-    mcp.run(transport="sse")
+    mcp.run(transport="sse") #Creo que por default se crea con los parámetros de red host='0.0.0.0', port=3000
+

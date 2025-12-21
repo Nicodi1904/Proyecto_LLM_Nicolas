@@ -42,6 +42,21 @@ openrouter_llama33_70b = dspy.LM(model="openrouter/meta-llama/llama-3.3-70b-inst
                             api_base="https://openrouter.ai/api/v1",
                             api_key=APIKEY_OPENROUTER)
 
+openrouter_mistral_devstral2_123b = dspy.LM(model="openrouter/mistralai/devstral-2512:free",
+                            api_base="https://openrouter.ai/api/v1",
+                            api_key=APIKEY_OPENROUTER)
+
+openrouter_Xiaomi_mimoV2_flash_15b_309b = dspy.LM(model="openrouter/xiaomi/mimo-v2-flash:free",
+                            api_base="https://openrouter.ai/api/v1",
+                            api_key=APIKEY_OPENROUTER)
+openrouter_qwen3_coder_35b_480b = dspy.LM(model="openrouter/qwen/qwen3-coder:free",
+                            api_base="https://openrouter.ai/api/v1",
+                            api_key=APIKEY_OPENROUTER)
+
+openrouter_deepseek_r1t2_chimera_671b = dspy.LM(model="openrouter/tngtech/deepseek-r1t2-chimera:free",
+                            api_base="https://openrouter.ai/api/v1",
+                            api_key=APIKEY_OPENROUTER)
+
 print("Sistema de pruebas 'Interpretador' inicializado")
 
 # -------------------------------------------------------------------------
@@ -61,7 +76,7 @@ class Interpretador(dspy.Signature):
         )
     )   
 
-    peticiones_categorizadas: dict = dspy.OutputField(
+    solicitudes_categorizadas: dict = dspy.OutputField(
     desc=(
         "Solicitudes segmentadas y categorizadas por el sistema. "
         "El resultado debe ser un único diccionario JSON, donde cada clave tiene el formato '@N'"
@@ -72,8 +87,17 @@ class Interpretador(dspy.Signature):
     )
 
     notas: str = dspy.OutputField(
-        desc="Notas e indicaciones adicionales identificadas en el prompt del usuario."
+    desc=(
+        "Contenido del prompt del usuario que no constituye una solicitud, "
+        "pero que aporta contexto narrativo, aclaraciones implícitas o "
+        "información irrelevante para la formulación de acciones. "
+        "Incluye comentarios personales, explicaciones circunstanciales, "
+        "justificaciones o menciones que no expresan una intención operativa "
+        "ni deben ser interpretadas como solicitudes ni clasificadas dentro "
+        "de los escenarios de entrada."
     )
+)
+
 
 # -------------------------------------------------------------------------
 # Datos de Prueba
@@ -82,16 +106,18 @@ class Interpretador(dspy.Signature):
 escenarios_entrada = {
     "consumo_basico": {
         "descripcion": (
-            "Solicitudes que piden valores cuantitativos de consumo energético "
-            "para uno o varios dispositivos, zonas del hogar o el hogar completo, "
-            "dentro de un periodo de tiempo claramente definido. "
-            "La intención es obtener información puntual o histórica "
-            "sin realizar comparaciones, análisis de patrones ni proyecciones."
+            "Solicitudes orientadas a consultar o recuperar valores cuantitativos "
+            "de consumo energético ya registrados para uno o varios dispositivos, "
+            "zonas del hogar o el hogar completo, dentro de un periodo de tiempo "
+            "explícitamente definido. "
+            "La intención es acceder a datos puntuales o históricos sin realizar "
+            "comparaciones, análisis de patrones, inferencias, proyecciones "
+            "ni definir formatos de visualización o presentación de resultados."
         ),
         "usar_si": [
-            "El usuario solicita consumo energético de uno o varios dispositivos",
-            "La consulta incluye un periodo de tiempo explícito",
-            "La respuesta esperada es un valor numérico o agregado simple"
+            "El usuario solicita valores de consumo energético existentes",
+            "La consulta incluye un periodo de tiempo explícito o claramente inferible",
+            "La respuesta esperada es un valor cuantitativo único o agregado simple"
         ]
     },
 
@@ -135,18 +161,39 @@ escenarios_entrada = {
         ]
     },
 
+    "presentacion_resultados": {
+        "descripcion": (
+            "Solicitudes cuya intención principal es la presentación o "
+            "representación visual de información energética previamente "
+            "obtenida o disponible, mediante gráficos, diagramas u otros "
+            "formatos ilustrativos. "
+            "Estas solicitudes no buscan calcular nuevos valores de consumo "
+            "ni realizar análisis comparativos o predictivos, sino definir "
+            "cómo se muestran o comunican los resultados al usuario."
+        ),
+        "usar_si": [
+            "El usuario solicita gráficas, visualizaciones o representaciones",
+            "La intención está centrada en la forma de mostrar los datos",
+            "Los datos requeridos ya existen o provienen de otras solicitudes"
+        ]
+    },
+
+
     "entrada_inadmisible": {
         "descripcion": (
-            "Solicitudes que no pueden ser procesadas por el sistema por estar "
-            "fuera del dominio energético, ser ambiguas o no contener "
-            "información suficiente para identificar una intención válida."
+            "Solicitudes que expresan una intención explícita pero que se encuentran "
+            "fuera del dominio del consumo energético del hogar, o que no corresponden "
+            "a ninguno de los escenarios de entrada admitidos por el sistema. "
+            "Estas solicitudes son identificables semánticamente, pero no representan "
+            "acciones que el sistema esté diseñado para interpretar o procesar."
         ),
         "usar_si": [
             "La consulta no está relacionada con consumo energético",
             "La consulta es ambigua o carece de contexto",
             "No se puede mapear la intención a los otros escenarios"
         ]
-    }
+}
+
 }
 
 prompt_usuario=("Necesito saber cuánto consumió mi nevera ayer por la noche, "
@@ -163,7 +210,6 @@ print("\n###############################################")
 # Ejecución de Modelos (Comentar/Descomentar según necesidad)
 # -------------------------------------------------------------------------
 
-"""
 # --- Llama 3.1 8b ---
 dspy.configure(lm=llama_31_8b)
 
@@ -174,13 +220,13 @@ resultado_llama31 = interpretador_llama31(
 )
 
 print("\\nInterpretador Llama 3.1 8b")
-print(resultado_llama31.peticiones_categorizadas)
+print(resultado_llama31.solicitudes_categorizadas)
 print("\\nNotas Llama 3.1 8b")
 print(resultado_llama31.notas)
 print("\\n###############################################")
-"""
 
-"""
+
+
 # --- DeepSeek R1 8b ---
 dspy.configure(lm=deepseek_r1_8b)
 
@@ -191,13 +237,13 @@ resultado_deepseek_r1_8b = interpretador_deepseek_r1_8b(
 )
 
 print("\\n###############################################\\nInterpretador DeepSeek R1 8b")
-print(resultado_deepseek_r1_8b.peticiones_categorizadas)
+print(resultado_deepseek_r1_8b.solicitudes_categorizadas)
 print("\\nNotas DeepSeek R1 8b")
 print(resultado_deepseek_r1_8b.notas) 
 print("\\n###############################################")
-"""
 
-"""
+
+
 # --- Gemma 7b ---
 dspy.configure(lm=gemma_7b)
 
@@ -208,13 +254,13 @@ resultado_gemma_7b = interpretador_gemma_7b(
 )
 
 print("\\nInterpretador Gemma 7b")
-print(resultado_gemma_7b.peticiones_categorizadas)
+print(resultado_gemma_7b.solicitudes_categorizadas)
 print("\\nNotas Gemma 7b")
 print(resultado_gemma_7b.notas)
 print("\\n###############################################")
-"""
 
-"""
+
+
 # --- Mistral 7b ---
 dspy.configure(lm=mistral_7b)
 
@@ -225,30 +271,14 @@ resultado_mistral_7b = interpretador_mistral_7b(
 )
 
 print("\\nInterpretador Mistral 7b")
-print(resultado_mistral_7b.peticiones_categorizadas)
+print(resultado_mistral_7b.solicitudes_categorizadas)
 print("\\nNotas Mistral 7b")
 print(resultado_mistral_7b.notas)
 print("\\n###############################################")
-"""
 
-"""
-# --- Qwen 3 4b ---
-dspy.configure(lm=qwen3_4b)
 
-interpretador_qwen3_4b = dspy.Predict(Interpretador)
-resultado_qwen3_4b = interpretador_qwen3_4b(
-    prompt_usuario = prompt_usuario,
-    escenarios_entrada=escenarios_entrada,
-)
 
-print("\\nInterpretador Qwen 3 4b")
-print(resultado_qwen3_4b.peticiones_categorizadas)
-print("\\nNotas Qwen 3 4b")
-print(resultado_qwen3_4b.notas)
-print("\\n###############################################")
-"""
-
-"""
+""" 
 # --- OpenRouter Llama 3.3 70b ---
 dspy.configure(lm=openrouter_llama33_70b)
 
@@ -259,13 +289,11 @@ resultado_openrouter = interpretador_openrouter(
 )
 
 print("\\nInterpretador Llama 3.3 70b")
-print(resultado_openrouter.peticiones_categorizadas)
+print(resultado_openrouter.solicitudes_categorizadas)
 print("\\nNotas Llama 3.3 70b")
 print(resultado_openrouter.notas) 
 print("\\n###############################################")
-"""
 
-"""
 # --- OpenRouter Gemini 2.0 Flash ---
 dspy.configure(lm=openrouter_gemini2flash)
 
@@ -276,8 +304,71 @@ resultado_gemini2flash = interpretador_gemini2flash(
 )
 
 print("\\nInterpretador Gemini 2.0 Flash")
-print(resultado_gemini2flash.peticiones_categorizadas)
+print(resultado_gemini2flash.solicitudes_categorizadas)
 print("\\nNotas Gemini 2.0 Flash")
 print(resultado_gemini2flash.notas)
 print("\\n###############################################")
-"""
+
+# --- OpenRouter Mistral Devstral 2.123b ---
+dspy.configure(lm=openrouter_mistral_devstral2_123b)
+
+interpretador_openrouter = dspy.Predict(Interpretador)
+resultado_openrouter = interpretador_openrouter(
+    prompt_usuario = prompt_usuario,
+    escenarios_entrada=escenarios_entrada,
+)
+
+print("\\nInterpretador Mistral Devstral2_123b")
+print(resultado_openrouter.solicitudes_categorizadas)
+print("\\nNotas Mistral Devstral2_123b")
+print(resultado_openrouter.notas) 
+print("\\n###############################################")
+
+
+# --- OpenRouter Xiaomi MimoV2 Flash 15b 309b ---
+dspy.configure(lm=openrouter_Xiaomi_mimoV2_flash_15b_309b)
+
+interpretador_openrouter = dspy.Predict(Interpretador)
+resultado_openrouter = interpretador_openrouter(
+    prompt_usuario = prompt_usuario,
+    escenarios_entrada=escenarios_entrada,
+)
+
+print("\\nInterpretador Xiaomi MimoV2 Flash 15b 309b")
+print(resultado_openrouter.solicitudes_categorizadas)
+print("\\nNotas Xiaomi MimoV2 Flash 15b 309b")
+print(resultado_openrouter.notas) 
+print("\\n###############################################") 
+
+
+# --- OpenRouter Qwen 3 Coder 35b 480b ---
+dspy.configure(lm=openrouter_qwen3_coder_35b_480b)
+
+interpretador_openrouter = dspy.Predict(Interpretador)
+resultado_openrouter = interpretador_openrouter(
+    prompt_usuario = prompt_usuario,
+    escenarios_entrada=escenarios_entrada,
+)
+
+print("\\nInterpretador Qwen 3 Coder 35b 480b")
+print(resultado_openrouter.solicitudes_categorizadas)
+print("\\nNotas Qwen 3 Coder 35b 480b")
+print(resultado_openrouter.notas) 
+print("\\n###############################################")
+
+# --- OpenRouter Deepseek R1 T2 Chimera 671b ---
+dspy.configure(lm=openrouter_deepseek_r1t2_chimera_671b)
+
+interpretador_openrouter = dspy.Predict(Interpretador)
+resultado_openrouter = interpretador_openrouter(
+    prompt_usuario = prompt_usuario,
+    escenarios_entrada=escenarios_entrada,
+)
+
+print("\\nInterpretador Deepseek R1 T2 Chimera 671b")
+print(resultado_openrouter.solicitudes_categorizadas)
+print("\\nNotas Deepseek R1 T2 Chimera 671b")
+print(resultado_openrouter.notas) 
+print("\\n###############################################")
+
+ """

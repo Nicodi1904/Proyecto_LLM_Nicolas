@@ -13,7 +13,6 @@ except ImportError:
     from MCP_C_obtener_summary import system_summary
 
 # Cargar API Keys
-# Cargar API Keys
 env_path = os.path.join(os.path.dirname(__file__), '.env')
 load_dotenv(env_path)
 
@@ -45,8 +44,19 @@ openrouter_llama33_70b = dspy.LM(model="openrouter/meta-llama/llama-3.3-70b-inst
                                                 
 #LLMs gratuitos de más parámetros con LiteLLM (https://www.litellm.ai)
 
+######################
+MODELOS = {
+    "llama3.1": llama_31_8b,
+    "deepseek_r1": deepseek_r1_8b,
+    "gemma": gemma_7b,
+    "mistral": mistral_7b,
+    "qwen": qwen3_4b,
+    "gemini_flash": openrouter_gemini2flash,
+    "llama3.3_70b": openrouter_llama33_70b
+}
 
 
+######################
 
 print("Sistema de entrada inicializado")
 
@@ -196,120 +206,72 @@ escenarios_entrada = {
     }
 }
 
-prompt_usuario=("Necesito saber cuánto consumió mi nevera ayer por la noche, "
+def ejecutar_prueba(prompt: str, nombre_modelo: str):
+    """
+    Ejecuta el flujo Interpretador -> Evaluador con el modelo especificado.
+    """
+    print(f"\n{'='*60}")
+    print(f"INICIANDO PRUEBA: {nombre_modelo}")
+    print(f"{'='*60}")
+
+    if nombre_modelo not in MODELOS:
+        print(f"ERROR: El modelo '{nombre_modelo}' no se encuentra definido.")
+        print(f"Modelos disponibles: {list(MODELOS.keys())}")
+        return
+
+    # Configurar el modelo seleccionado
+    lm_seleccionado = MODELOS[nombre_modelo]
+    dspy.configure(lm=lm_seleccionado)
+
+    # -----------------------------------------------------------
+    # 1. Ejecución del Interpretador
+    # -----------------------------------------------------------
+    print(f"\n---> [1] Ejecutando Interpretador...")
+    interpretador = dspy.Predict(Interpretador)
+    resultado_interpretador = interpretador(
+        prompt_usuario=prompt,
+        escenarios_entrada=escenarios_entrada
+    )
+    
+    print("\n>> Resultado Interpretador:")
+    print(resultado_interpretador.peticiones_categorizadas)
+    print(f">> Notas Adicionales: {resultado_interpretador.notas}")
+
+    # -----------------------------------------------------------
+    # 2. Ejecución del Evaluador
+    # -----------------------------------------------------------
+    print(f"\n---> [2] Ejecutando Evaluador...")
+    evaluador = dspy.Predict(Evaluador)
+    resultado_evaluador = evaluador(
+        peticiones_categorizadas=resultado_interpretador.peticiones_categorizadas,
+        system_summary=system_summary
+    )
+
+    print("\n>> Resultado Evaluador:")
+    print(f"Factibilidad: {resultado_evaluador.factibilidad}")
+    print(f"Evaluación Detallada: {resultado_evaluador.evaluacion_detallada}")
+    
+    print(f"\n{'-'*60}")
+    print("FIN DE LA PRUEBA")
+    print(f"{'-'*60}\n")
+
+
+if __name__ == "__main__":
+    # Prompt de prueba definido por el usuario
+    prompt_usuario = ("Necesito saber cuánto consumió mi nevera ayer por la noche, "
     "y también cuánto consumió mi lavadora el sábado pasado en la mañana. "
     "Además quiero que me digas si entre esos dos días cuál gastó más energía. "
     "Ah, y por cierto, mientras miraba esos consumos se me descargó el celular "
     "y me dio mucha pereza pararme a buscar el cargador, pero igual quiero la comparación."
     "Papá también pidió que le dijeras cuánto fue el consumo de todos los dispositivos en el año 2024, quiero ver gráficas de todo lo que se pueda")
-################################################################
-print("\n###############################################")
 
-""" 
-#Inicialización de predictores Locales 
-dspy.configure(lm=llama_31_8b)
-
-interpretador_llama31 = dspy.Predict(Interpretador)
-resultado_llama31 = interpretador_llama31(
-    prompt_usuario = prompt_usuario,
-    escenarios_entrada=escenarios_entrada,
-)
-
-print("\nInterpretador Llama 3.1 8b")
-print(resultado_llama31.peticiones_categorizadas)
-print("\nNotas Llama 3.1 8b")
-print(resultado_llama31.notas)
-################################################################
-print("\n###############################################")
-dspy.configure(lm=deepseek_r1_8b)
-
-interpretador_deepseek_r1_8b = dspy.Predict(Interpretador)
-resultado_deepseek_r1_8b = interpretador_deepseek_r1_8b(
-    prompt_usuario = prompt_usuario,
-    escenarios_entrada=escenarios_entrada,
-)
-
-print("\n###############################################\nInterpretador DeepSeek R1 8b")
-print(resultado_deepseek_r1_8b.peticiones_categorizadas)
-print("\nNotas DeepSeek R1 8b")
-print(resultado_deepseek_r1_8b.notas) 
-
-################################################################
-print("\n###############################################")
-dspy.configure(lm=gemma_7b)
-
-interpretador_gemma_7b = dspy.Predict(Interpretador)
-resultado_gemma_7b = interpretador_gemma_7b(
-    prompt_usuario = prompt_usuario,
-    escenarios_entrada=escenarios_entrada,
-)
-
-print("\nInterpretador Gemma 7b")
-print(resultado_gemma_7b.peticiones_categorizadas)
-print("\nNotas Gemma 7b")
-print(resultado_gemma_7b.notas)
-
-################################################################
-print("\n###############################################")
-dspy.configure(lm=mistral_7b)
-
-interpretador_mistral_7b = dspy.Predict(Interpretador)
-resultado_mistral_7b = interpretador_mistral_7b(
-    prompt_usuario = prompt_usuario,
-    escenarios_entrada=escenarios_entrada,
-)
-
-print("\nInterpretador Mistral 7b")
-print(resultado_mistral_7b.peticiones_categorizadas)
-print("\nNotas Mistral 7b")
-print(resultado_mistral_7b.notas)
-
-################################################################
-print("\n###############################################")
-dspy.configure(lm=qwen3_4b)
-
-interpretador_qwen3_4b = dspy.Predict(Interpretador)
-resultado_qwen3_4b = interpretador_qwen3_4b(
-    prompt_usuario = prompt_usuario,
-    escenarios_entrada=escenarios_entrada,
-)
-
-print("\nInterpretador Qwen 3 4b")
-print(resultado_qwen3_4b.peticiones_categorizadas)
-print("\nNotas Qwen 3 4b")
-print(resultado_qwen3_4b.notas)
-
-################################################################
-#Inicialización de predictores OpenRouter
-
-################################################################
-print("\n###############################################")
-dspy.configure(lm=openrouter_llama33_70b)
-
-interpretador_openrouter = dspy.Predict(Interpretador)
-resultado_openrouter = interpretador_openrouter(
-    prompt_usuario = prompt_usuario,
-    escenarios_entrada=escenarios_entrada,
-)
-
-print("\nInterpretador Llama 3.3 70b")
-print(resultado_openrouter.peticiones_categorizadas)
-print("\nNotas Llama 3.3 70b")
-print(resultado_openrouter.notas) 
-
-################################################################
-print("\n###############################################")
-dspy.configure(lm=openrouter_gemini2flash)
-
-interpretador_gemini2flash = dspy.Predict(Interpretador)
-resultado_gemini2flash = interpretador_gemini2flash(
-    prompt_usuario = prompt_usuario,
-    escenarios_entrada=escenarios_entrada,
-)
-
-print("\nInterpretador Gemini 2.0 Flash")
-print(resultado_gemini2flash.peticiones_categorizadas)
-print("\nNotas Gemini 2.0 Flash")
-print(resultado_gemini2flash.notas)
-"""
+    # -----------------------------------------------------------------
+    # SELECCIÓN DEL MODELO A PROBAR
+    # Opciones disponibles:
+    # "llama3.1", "deepseek_r1", "gemma", "mistral", "qwen", 
+    # "gemini_flash", "llama3.3_70b"
+    # -----------------------------------------------------------------
+    
+    # Cambia el segundo argumento para probar otro modelo
+    ejecutar_prueba(prompt_usuario, "llama3.3_70b")
 
