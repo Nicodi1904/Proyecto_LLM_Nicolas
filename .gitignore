@@ -1,3 +1,25 @@
+# =========================
+# Python virtual environments
+# =========================
+agentes-vs-llm/
+venv/
 .env
 **/.env
+
+# =========================
+# Python artifacts
+# =========================
 __pycache__/
+*.py[cod]
+
+# =========================
+# Jupyter / VS Code
+# =========================
+.ipynb_checkpoints/
+.vscode/
+
+# =========================
+# OS / misc
+# =========================
+.DS_Store
+Thumbs.db
