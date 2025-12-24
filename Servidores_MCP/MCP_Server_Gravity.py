@@ -22,49 +22,96 @@ DATASET = cargar_dataset_sinselejo(csv_path)
 # Asegurar que TimeStamp es datetime
 DATASET['TimeStamp'] = pd.to_datetime(DATASET['TimeStamp'])
 
-def meta_energy(proposito: str, usar_si: list):
-    """
-    Genera los metadatos estructurados para las herramientas.
-    """
-    return { 
-        "proposito": proposito,
-        "usar_si": usar_si
-    }
-
 # =====================================================
 # ESCENARIO 1: CONSULTAS DE CONSUMO ENERGÉTICO BÁSICO
 # =====================================================
 
 @mcp.tool(
-    meta={
-        **meta_energy(
-            proposito="Obtiene datos brutos o sumatorias de consumo energético filtrando por rango de fechas y dispositivo específico o general.",
-            usar_si=[
-                "Necesitas valores históricos",
-                "Consultas consumo total de la casa",
-                "Analizas un periodo de tiempo definido"
-            ]
-        ),
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "dispositivos": {
-                    "type": "array",
-                    "items": {"type": "string"},
-                    "description": "Lista de dispositivos a consultar. Usar 'Total_Casa' para el consumo global."
-                },
-                "fecha_inicio": {"type": "string", "description": "Fecha inicio ISO 8601 (YYYY-MM-DDTHH:MM)"},
-                "fecha_fin": {"type": "string", "description": "Fecha fin ISO 8601 (YYYY-MM-DDTHH:MM)"},
-                "granularidad": {
-                    "type": "string",
-                    "enum": ["hora", "dia", "mes", "total"],
-                    "default": "total",
-                    "description": "Cómo agrupar los datos temporalmente."
+    meta = {
+    "proposito": (
+        "Obtiene valores de consumo energético para uno o varios dispositivos dentro "
+        "de un rango temporal definido, permitiendo agregación por diferentes niveles temporales."
+    ),
+    "usar_si": [
+        "Se requiere conocer el consumo en un intervalo de tiempo específico",
+        "Se necesita el consumo total de uno o varios dispositivos",
+        "Se desea observar la evolución del consumo a lo largo del tiempo"
+    ],
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "dispositivos": {
+                "type": "array",
+                "items": {"type": "string"},
+                "description": (
+                    "Lista de dispositivos a consultar. "
+                    "Usar 'Total_Casa' para obtener el consumo agregado de todos los dispositivos."
+                )
+            },
+            "fecha_inicio": {
+                "type": "string",
+                "description": "Fecha y hora de inicio del intervalo en formato ISO 8601 (YYYY-MM-DDTHH:MM)."
+            },
+            "fecha_fin": {
+                "type": "string",
+                "description": "Fecha y hora de fin del intervalo en formato ISO 8601 (YYYY-MM-DDTHH:MM)."
+            },
+            "granularidad": {
+                "type": "string",
+                "enum": ["hora", "dia", "mes", "total"],
+                "default": "total",
+                "description": (
+                    "Nivel temporal de agregación de los resultados. "
+                    "Define la estructura del campo 'datos' en la salida."
+                )
+            }
+        },
+        "required": ["dispositivos", "fecha_inicio", "fecha_fin"]
+    },
+    "output_schema": {
+        "type": "object",
+        "properties": {
+            "status": {
+                "type": "string",
+                "enum": ["success", "no_data", "error"]
+            },
+            "periodo": {
+                "type": "object",
+                "properties": {
+                    "inicio": {"type": "string"},
+                    "fin": {"type": "string"}
                 }
             },
-            "required": ["dispositivos", "fecha_inicio", "fecha_fin"]
+            "granularidad": {
+                "type": "string",
+                "enum": ["hora", "dia", "mes", "total"]
+            },
+            "datos": {
+                "type": "object",
+                "description": (
+                    "Resultados del consumo. "
+                    "Si la granularidad es 'total', cada dispositivo devuelve un valor numérico. "
+                    "Si la granularidad es 'hora', 'dia' o 'mes', cada dispositivo devuelve "
+                    "un diccionario indexado por timestamps ISO 8601."
+                ),
+                "additionalProperties": {
+                    "oneOf": [
+                        {"type": "number"},
+                        {
+                            "type": "object",
+                            "additionalProperties": {"type": "number"}
+                        }
+                    ]
+                }
+            },
+            "mensaje": {
+                "type": "string"
+            }
         }
     }
+}
+
+
 )
 def obtener_consumo(dispositivos: list[str], fecha_inicio: str, fecha_fin: str, granularidad: str = "total") -> dict:
     try:
@@ -131,39 +178,65 @@ def obtener_consumo(dispositivos: list[str], fecha_inicio: str, fecha_fin: str, 
 # =====================================================
 
 @mcp.tool(
-    meta={
-        **meta_energy(
-            proposito="Calcula y contrasta la diferencia absoluta y porcentual entre dos conjuntos de datos de consumo definidos por periodo y dispositivo.",
-            usar_si=[
-                "El usuario pide comparar dos meses/días",
-                "Se requiere saber qué dispositivo consumió más"
-            ]
-        ),
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "objetivo_a": {
-                    "type": "object",
-                    "properties": {
-                        "dispositivo": {"type": "string"},
-                        "fecha_inicio": {"type": "string"},
-                        "fecha_fin": {"type": "string"}
-                    },
-                    "required": ["dispositivo", "fecha_inicio", "fecha_fin"]
+    meta = {
+    "proposito": (
+        "Compara el consumo energético entre dos objetivos definidos, "
+        "calculando diferencias absolutas y porcentuales."
+    ),
+    "usar_si": [
+        "Se desea comparar el consumo entre dos periodos distintos",
+        "Se desea comparar el consumo entre dos dispositivos",
+        "Se requiere identificar cuál de dos objetivos consumió más energía"
+    ],
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "objetivo_a": {
+                "type": "object",
+                "properties": {
+                    "dispositivo": {"type": "string"},
+                    "fecha_inicio": {"type": "string"},
+                    "fecha_fin": {"type": "string"}
                 },
-                "objetivo_b": {
-                    "type": "object",
-                    "properties": {
-                        "dispositivo": {"type": "string"},
-                        "fecha_inicio": {"type": "string"},
-                        "fecha_fin": {"type": "string"}
-                    },
-                    "required": ["dispositivo", "fecha_inicio", "fecha_fin"]
-                }
+                "required": ["dispositivo", "fecha_inicio", "fecha_fin"]
             },
-            "required": ["objetivo_a", "objetivo_b"]
+            "objetivo_b": {
+                "type": "object",
+                "properties": {
+                    "dispositivo": {"type": "string"},
+                    "fecha_inicio": {"type": "string"},
+                    "fecha_fin": {"type": "string"}
+                },
+                "required": ["dispositivo", "fecha_inicio", "fecha_fin"]
+            }
+        },
+        "required": ["objetivo_a", "objetivo_b"]
+    },
+    "output_schema": {
+        "type": "object",
+        "properties": {
+            "status": {
+                "type": "string",
+                "enum": ["success"]
+            },
+            "comparacion": {
+                "type": "object",
+                "properties": {
+                    "valor_a": {"type": "number"},
+                    "valor_b": {"type": "number"},
+                    "diferencia_absoluta": {"type": "number"},
+                    "diferencia_porcentual": {"type": "number"},
+                    "mayor_consumo": {
+                        "type": "string",
+                        "enum": ["A", "B", "Iguales"]
+                    }
+                }
+            }
         }
     }
+}
+
+
 )
 def analizar_comparacion(objetivo_a: dict, objetivo_b: dict) -> dict:
     
@@ -204,25 +277,58 @@ def analizar_comparacion(objetivo_a: dict, objetivo_b: dict) -> dict:
 # =====================================================
 
 @mcp.tool(
-    meta={
-        **meta_energy(
-            proposito="Evalúa estadísticamente un periodo de consumo usando Z-Score para identificar picos o comportamientos fuera del promedio estándar.",
-            usar_si=[
-                "Buscas outliers o eventos inusuales",
-                "El usuario pregunta por consumos extraños"
-            ]
-        ),
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "dispositivo": {"type": "string"},
-                "fecha_inicio": {"type": "string"},
-                "fecha_fin": {"type": "string"},
-                "sensibilidad": {"type": "number", "default": 3.0, "description": "Umbral Z-Score (defecto 3.0)"}
+    meta = {
+    "proposito": (
+        "Identifica eventos de consumo atípico dentro de un periodo temporal "
+        "mediante análisis estadístico basado en Z-Score."
+    ),
+    "usar_si": [
+        "Se buscan picos o comportamientos inusuales de consumo",
+        "Se desea identificar eventos fuera del patrón normal",
+        "El usuario pregunta por consumos anormales o inesperados"
+    ],
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "dispositivo": {"type": "string"},
+            "fecha_inicio": {"type": "string"},
+            "fecha_fin": {"type": "string"},
+            "sensibilidad": {"type": "number"}
+        },
+        "required": ["dispositivo", "fecha_inicio", "fecha_fin"]
+    },
+    "output_schema": {
+        "type": "object",
+        "properties": {
+            "status": {
+                "type": "string",
+                "enum": ["success", "no_data", "error"]
             },
-            "required": ["dispositivo", "fecha_inicio", "fecha_fin"]
+            "estadisticas": {
+                "type": "object",
+                "properties": {
+                    "media": {"type": "number"},
+                    "std": {"type": "number"}
+                }
+            },
+            "total_anomalias": {"type": "number"},
+            "eventos": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "fecha": {"type": "string"},
+                        "valor": {"type": "number"},
+                        "z_score": {"type": "number"}
+                    }
+                }
+            },
+            "mensaje": {"type": "string"}
         }
     }
+}
+
+
 )
 def detectar_anomalias(dispositivo: str, fecha_inicio: str, fecha_fin: str, sensibilidad: float = 3.0) -> dict:
     start = pd.to_datetime(fecha_inicio)
@@ -268,24 +374,53 @@ def detectar_anomalias(dispositivo: str, fecha_inicio: str, fecha_fin: str, sens
     }
 
 @mcp.tool(
-    meta={
-        **meta_energy(
-            proposito="Ajusta una regresión lineal sobre los datos de consumo temporal para determinar si la tendencia es creciente, decreciente o estable.",
-            usar_si=[
-                "Se necesita proyección o dirección del consumo",
-                "El usuario pregunta si está ahorrando o gastando más"
-            ]
-        ),
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "dispositivo": {"type": "string"},
-                "fecha_inicio": {"type": "string"},
-                "fecha_fin": {"type": "string"}
+    meta = {
+    "proposito": (
+        "Determina la tendencia general del consumo energético en un intervalo temporal "
+        "mediante un ajuste de regresión lineal."
+    ),
+    "usar_si": [
+        "Se desea conocer si el consumo aumenta, disminuye o se mantiene estable",
+        "El usuario pregunta por evolución o dirección del consumo",
+        "Se requiere un análisis global del comportamiento en el tiempo"
+    ],
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "dispositivo": {"type": "string"},
+            "fecha_inicio": {"type": "string"},
+            "fecha_fin": {"type": "string"}
+        },
+        "required": ["dispositivo", "fecha_inicio", "fecha_fin"]
+    },
+    "output_schema": {
+        "type": "object",
+        "properties": {
+            "status": {
+                "type": "string",
+                "enum": ["success", "no_data"]
             },
-            "required": ["dispositivo", "fecha_inicio", "fecha_fin"]
+            "tendencia": {
+                "type": "object",
+                "properties": {
+                    "direccion": {
+                        "type": "string",
+                        "enum": [
+                            "Creciente",
+                            "Decreciente",
+                            "Estable",
+                            "Sin tendencia clara (ruido)"
+                        ]
+                    },
+                    "pendiente": {"type": "number"},
+                    "r_cuadrado": {"type": "number"}
+                }
+            }
         }
     }
+}
+
+
 )
 def analizar_tendencia(dispositivo: str, fecha_inicio: str, fecha_fin: str) -> dict:
     start = pd.to_datetime(fecha_inicio)

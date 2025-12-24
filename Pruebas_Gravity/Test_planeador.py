@@ -109,10 +109,11 @@ class Planeador(dspy.Signature):
     desc=(
         "Contexto temporal del sistema, utilizado como referencia para interpretar "
         "expresiones temporales relativas presentes en las solicitudes del usuario. "
-        "Incluye una fecha y hora de referencia, la zona horaria y rangos horarios "
-        "predefinidos asociados a términos comunes."
+        "Los rangos son disjuntos, no se solapan y no deben combinarse ni extenderse "
+        "fuera de sus límites definidos."
+        )
     )
-)
+
 
 
     plan_acciones: list[dict] = dspy.OutputField(
@@ -131,19 +132,15 @@ class Planeador(dspy.Signature):
     )
 
     estado_solicitudes: dict[str, dict] = dspy.OutputField(
-        desc=(
-            "Estado final de cada solicitud procesada por el planeador. Cada clave '@N' corresponde "
-            "a una solicitud de entrada y su valor es un diccionario con:\n"
-            "- 'estado' (string): resultado de la planificación, con valores posibles:\n"
-            "  * 'resuelta': todas las acciones necesarias fueron planificadas exitosamente.\n"
-            "  * 'parcial': solo una parte funcional de la solicitud pudo ser planificada.\n"
-            "  * 'no_resuelta': no fue posible planificar ninguna acción viable.\n"
-            "- 'motivo_tipo' (string, opcional): categoría del problema detectado, con valores posibles "
-            "como 'herramienta_inexistente', 'parametros_insuficientes' o 'incompatibilidad_funcional'.\n"
-            "- 'motivo' (string, opcional): explicación breve y explícita de la causa del estado asignado. "
-            "En el caso de estados parciales, debe indicar qué aspecto de la solicitud no pudo resolverse."
-        )
+    desc=(
+        "Estado final de cada solicitud procesada por el planeador. Cada clave '@N' corresponde "
+        "a cada solicitud de entrada y su valor es un diccionario con:\n"
+        "- 'estado': resultado de la planificación ('resuelta', 'parcial' o 'no_resuelta').\n"
+        "- 'motivo' (opcional): explicación breve de la causa; en estados 'parcial' o 'no_resuelta', "
+        "debe indicar qué parte de la solicitud no pudo resolverse."
     )
+)
+
 
 # -------------------------------------------------------------------------
 # Datos de Prueba
@@ -185,9 +182,9 @@ try:
         temporal_context = temporal_context
     )
 
-    print("\nPlaneador Llama 3.1 8b")
-    print("Plan:", resultado_llama31.plan_acciones)
-    print("Estado Solicitudes:", resultado_llama31.estado_solicitudes)
+    print("\nPlaneador Llama 3.1 8b\n")
+    print("\nPlan:\n", resultado_llama31.plan_acciones)
+    print("\nEstado Solicitudes:\n", resultado_llama31.estado_solicitudes)
 except Exception as e:
     print(f"\nError en Planeador Llama 3.1 8b: {e}")
 print("\n###############################################")
@@ -204,9 +201,9 @@ try:
         temporal_context = temporal_context 
     )
 
-    print("\nPlaneador DeepSeek R1 8b")
-    print("Plan:", resultado_deepseek_r1_8b.plan_acciones)
-    print("Estado Solicitudes:", resultado_deepseek_r1_8b.estado_solicitudes)
+    print("\nPlaneador DeepSeek R1 8b\n")
+    print("\nPlan:\n", resultado_deepseek_r1_8b.plan_acciones)
+    print("\nEstado Solicitudes:\n", resultado_deepseek_r1_8b.estado_solicitudes)
 except Exception as e:
     print(f"\nError en Planeador DeepSeek R1 8b: {e}")
 print("\n###############################################")
@@ -223,9 +220,9 @@ try:
         temporal_context = temporal_context
     )
 
-    print("\nPlaneador Gemma 7b")
-    print("Plan:", resultado_gemma_7b.plan_acciones)
-    print("Estado Solicitudes:", resultado_gemma_7b.estado_solicitudes)
+    print("\nPlaneador Gemma 7b\n")
+    print("\nPlan:\n", resultado_gemma_7b.plan_acciones)
+    print("\nEstado Solicitudes:\n", resultado_gemma_7b.estado_solicitudes)
 except Exception as e:
     print(f"\nError en Planeador Gemma 7b: {e}")
 print("\n###############################################")
@@ -242,9 +239,9 @@ try:
         temporal_context = temporal_context
     )
 
-    print("\nPlaneador Mistral 7b")
-    print("Plan:", resultado_mistral_7b.plan_acciones)
-    print("Estado Solicitudes:", resultado_mistral_7b.estado_solicitudes)
+    print("\nPlaneador Mistral 7b\n")
+    print("\nPlan:\n", resultado_mistral_7b.plan_acciones)
+    print("\nEstado Solicitudes:\n", resultado_mistral_7b.estado_solicitudes)
 except Exception as e:
     print(f"\nError en Planeador Mistral 7b: {e}")
 print("\n###############################################")
@@ -261,9 +258,9 @@ try:
         temporal_context = temporal_context
     )
 
-    print("\nPlaneador Qwen 3 4b")
-    print("Plan:", resultado_qwen3_4b.plan_acciones)
-    print("Estado Solicitudes:", resultado_qwen3_4b.estado_solicitudes)
+    print("\nPlaneador Qwen 3 4b\n")
+    print("\nPlan:\n", resultado_qwen3_4b.plan_acciones)
+    print("\nEstado Solicitudes:\n", resultado_qwen3_4b.estado_solicitudes)
 except Exception as e:
     print(f"\nError en Planeador Qwen 3 4b: {e}")
 print("\n###############################################")
@@ -280,9 +277,9 @@ try:
         temporal_context = temporal_context
     )
 
-    print("\nPlaneador Llama 3.3 70b")
-    print("Plan:", resultado_openrouter.plan_acciones)
-    print("Estado Solicitudes:", resultado_openrouter.estado_solicitudes)
+    print("\nPlaneador Llama 3.3 70b\n")
+    print("\nPlan:\n", resultado_openrouter.plan_acciones)
+    print("\nEstado Solicitudes:\n", resultado_openrouter.estado_solicitudes)
 except Exception as e:
     print(f"\nError en Planeador Llama 3.3 70b: {e}")
 print("\n###############################################")
@@ -299,9 +296,9 @@ try:
         temporal_context = temporal_context
     )
 
-    print("\nPlaneador Gemini 2.0 Flash")
-    print("Plan:", resultado_gemini2flash.plan_acciones)
-    print("Estado Solicitudes:", resultado_gemini2flash.estado_solicitudes)
+    print("\nPlaneador Gemini 2.0 Flash\n")
+    print("\nPlan:\n", resultado_gemini2flash.plan_acciones)
+    print("\nEstado Solicitudes:\n", resultado_gemini2flash.estado_solicitudes)
 except Exception as e:
     print(f"\nError en Planeador Gemini 2.0 Flash: {e}")
 print("\n###############################################")
@@ -318,9 +315,9 @@ try:
         temporal_context = temporal_context
     )
 
-    print("\nPlaneador Mistral Devstral2_123b")
-    print("Plan:", resultado_openrouter.plan_acciones)
-    print("Estado Solicitudes:", resultado_openrouter.estado_solicitudes)
+    print("\nPlaneador Mistral Devstral2_123b\n")
+    print("\nPlan:\n", resultado_openrouter.plan_acciones)
+    print("\nEstado Solicitudes:\n", resultado_openrouter.estado_solicitudes)
 except Exception as e:
     print(f"\nError en Planeador Mistral Devstral2_123b: {e}")
 print("\n###############################################")
@@ -337,9 +334,9 @@ try:
         temporal_context = temporal_context
     )
 
-    print("\nPlaneador Xiaomi MimoV2 Flash 15b 309b")
-    print("Plan:", resultado_openrouter.plan_acciones)
-    print("Estado Solicitudes:", resultado_openrouter.estado_solicitudes)
+    print("\nPlaneador Xiaomi MimoV2 Flash 15b 309b\n")
+    print("\nPlan:\n", resultado_openrouter.plan_acciones)
+    print("\nEstado Solicitudes:\n", resultado_openrouter.estado_solicitudes)
 except Exception as e:
     print(f"\nError en Planeador Xiaomi MimoV2 Flash 15b 309b: {e}")
 print("\n###############################################")
@@ -356,9 +353,9 @@ try:
         temporal_context = temporal_context
     )
 
-    print("\nPlaneador Qwen 3 Coder 35b 480b")
-    print("Plan:", resultado_openrouter.plan_acciones)
-    print("Estado Solicitudes:", resultado_openrouter.estado_solicitudes)
+    print("\nPlaneador Qwen 3 Coder 35b 480b\n")
+    print("\nPlan:\n", resultado_openrouter.plan_acciones)
+    print("\nEstado Solicitudes:\n", resultado_openrouter.estado_solicitudes)
 except Exception as e:
     print(f"\nError en Planeador Qwen 3 Coder 35b 480b: {e}")
 print("\n###############################################")
@@ -375,9 +372,9 @@ try:
         temporal_context = temporal_context
     )
 
-    print("\nPlaneador Deepseek R1 T2 Chimera 671b")
-    print("Plan:", resultado_openrouter.plan_acciones)
-    print("Estado Solicitudes:", resultado_openrouter.estado_solicitudes)
+    print("\nPlaneador Deepseek R1 T2 Chimera 671b\n")
+    print("\nPlan:\n", resultado_openrouter.plan_acciones)
+    print("\nEstado Solicitudes:\n", resultado_openrouter.estado_solicitudes)
 except Exception as e:
     print(f"\nError en Planeador Deepseek R1 T2 Chimera 671b: {e}")
 print("\n###############################################")
