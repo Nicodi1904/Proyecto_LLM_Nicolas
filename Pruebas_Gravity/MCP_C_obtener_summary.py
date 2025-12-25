@@ -71,4 +71,4 @@ except RuntimeError:
 
 
 system_summary = crear_system_summary(tools)
-#print(system_summary)
+print(system_summary)
