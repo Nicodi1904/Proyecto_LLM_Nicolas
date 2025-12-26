@@ -2,7 +2,7 @@
 import os
 import sys
 import json
-from typing import List, Dict, Any, Union
+from typing import List, Dict, Any, Union, Optional
 from datetime import datetime
 
 # -------------------------------------------------------------------------
@@ -60,21 +60,22 @@ def _generar_mapa_herramientas(system_summary: Dict[str, Any]) -> Dict[str, Dict
 # 3. Función de Verificación Estructural
 # -------------------------------------------------------------------------
 
-def verificar_estructura(plan_acciones: List[Dict[str, Any]], system_summary: Dict[str, Any]) -> Dict[str, Any]:
+def verificar_estructura(plan_acciones: List[Dict[str, Any]], system_summary: Dict[str, Any]) -> List[Dict[str, Any]]:
     """
     Verifica:
     1. Existencia de servidor y herramienta.
     2. Inputs obligatorios presentes.
     3. Tipos de datos correctos (check de tipos).
-    """
-    reporte_general = {
-        "tipo_verificacion": "Estructural (Schema & Tipos)",
-        "total_acciones": len(plan_acciones),
-        "acciones_validas": 0,
-        "acciones_invalidas": 0,
-        "detalles": []
-    }
 
+    Returns:
+        Lista de diccionarios con formato:
+        {
+            'id': str,
+            'resultado': int (0=OK, 1=Error),
+            'error': str | None
+        }
+    """
+    reporte = []
     mapa_herramientas = _generar_mapa_herramientas(system_summary)
 
     for accion in plan_acciones:
@@ -83,20 +84,15 @@ def verificar_estructura(plan_acciones: List[Dict[str, Any]], system_summary: Di
         tool_name = accion.get("tool")
         inputs = accion.get("inputs", {})
         
-        estado_accion = {
-            "id": id_accion,
-            "tool": tool_name,
-            "valido": False,
-            "errores": []
-        }
+        errores = []
 
         # 1. Verificar existencia
         if not server_id or not tool_name:
-            estado_accion["errores"].append("Falta 'server_id' o 'tool'.")
+            errores.append("Falta 'server_id' o 'tool'.")
         elif server_id not in mapa_herramientas:
-            estado_accion["errores"].append(f"Servidor desconocido: '{server_id}'.")
+            errores.append(f"Servidor desconocido: '{server_id}'.")
         elif tool_name not in mapa_herramientas[server_id]:
-            estado_accion["errores"].append(f"Herramienta desconocida: '{tool_name}' en servidor '{server_id}'.")
+            errores.append(f"Herramienta desconocida: '{tool_name}' en servidor '{server_id}'.")
         else:
             # 2. Verificar Inputs contra Schema
             tool_def = mapa_herramientas[server_id][tool_name]
@@ -107,12 +103,12 @@ def verificar_estructura(plan_acciones: List[Dict[str, Any]], system_summary: Di
             # a) Campos obligatorios
             for field in required:
                 if field not in inputs:
-                    estado_accion["errores"].append(f"Falta parámetro obligatorio: '{field}'.")
+                    errores.append(f"Falta parámetro obligatorio: '{field}'.")
                 elif field in properties:
                     # b) Verificación de Tipos (solo si está presente)
                     expected_type = properties[field].get("type")
                     if expected_type and not _check_type(inputs[field], expected_type):
-                         estado_accion["errores"].append(
+                         errores.append(
                              f"Tipo incorrecto en '{field}': Se esperaba '{expected_type}', recibido '{type(inputs[field]).__name__}'."
                          )
 
@@ -125,22 +121,27 @@ def verificar_estructura(plan_acciones: List[Dict[str, Any]], system_summary: Di
                 if field in known_fields:
                      expected_type = properties[field].get("type")
                      if expected_type and not _check_type(inputs[field], expected_type):
-                         estado_accion["errores"].append(
+                         errores.append(
                              f"Tipo incorrecto en opcional '{field}': Se esperaba '{expected_type}', recibido '{type(inputs[field]).__name__}'."
                          )
                 else:
                     # Campo desconocido
-                    estado_accion["errores"].append(f"Parámetro desconocido: '{field}'")
+                    errores.append(f"Parámetro desconocido: '{field}'")
 
-        if not estado_accion["errores"]:
-            estado_accion["valido"] = True
-            reporte_general["acciones_validas"] += 1
+        if not errores:
+            reporte.append({
+                'id': id_accion,
+                'resultado': 0,
+                'error': None
+            })
         else:
-            reporte_general["acciones_invalidas"] += 1
-            
-        reporte_general["detalles"].append(estado_accion)
+            reporte.append({
+                'id': id_accion,
+                'resultado': 1,
+                'error': "; ".join(errores)
+            })
 
-    return reporte_general
+    return reporte
 
 # -------------------------------------------------------------------------
 # 4. Función de Verificación Lógica de Argumentos
@@ -151,21 +152,22 @@ def validar_argumentos(
     system_summary: Dict[str, Any],
     dispositivos_validos: List[str], 
     temporal_context: Dict[str, Any]
-) -> Dict[str, Any]:
+) -> List[Dict[str, Any]]:
     """
     Verifica la lógica de los argumentos:
     - Que los dispositivos existan en la lista válida.
     - Que las fechas sean coherentes.
     - Que los valores de Enum (e.g. granularidad) sean permitidos según el schema.
-    """
-    reporte = {
-        "tipo_verificacion": "Lógica de Argumentos (Enums, Fechas, Dispositivos)",
-        "total_acciones": len(plan_acciones),
-        "acciones_validas": 0,
-        "acciones_invalidas": 0,
-        "detalles": []
-    }
     
+    Returns:
+        Lista de diccionarios con formato:
+        {
+            'id': str,
+            'resultado': int (0=OK, 1=Error),
+            'error': str | None
+        }
+    """
+    reporte = []
     mapa_herramientas = _generar_mapa_herramientas(system_summary)
     
     referencia_str = temporal_context.get("referencia_actual")
@@ -180,12 +182,7 @@ def validar_argumentos(
         tool_name = accion.get("tool")
         inputs = accion.get("inputs", {})
         
-        estado = {
-            "id": id_accion,
-            "tool": tool_name,
-            "valido": True,
-            "errores": []
-        }
+        errores = []
         
         # --- 0. Validación de Enums (Valores Permitidos) ---
         if server_id and tool_name and server_id in mapa_herramientas and tool_name in mapa_herramientas[server_id]:
@@ -198,7 +195,7 @@ def validar_argumentos(
                      if "enum" in prop_def:
                          allowed_values = prop_def["enum"]
                          if value not in allowed_values:
-                             estado["errores"].append(f"Valor no permitido en '{field}': '{value}'. Permitidos: {allowed_values}")
+                             errores.append(f"Valor no permitido en '{field}': '{value}'. Permitidos: {allowed_values}")
 
         # --- 1. Validación de Dispositivos ---
         # Caso A: Lista directa 'dispositivos'
@@ -206,19 +203,19 @@ def validar_argumentos(
             if isinstance(inputs["dispositivos"], list):
                 for d in inputs["dispositivos"]:
                     if isinstance(d, str) and d not in dispositivos_validos:
-                        estado["errores"].append(f"Dispositivo desconocido: '{d}'")
+                        errores.append(f"Dispositivo desconocido: '{d}'")
         
         # Caso B: 'dispositivo' simple
         if "dispositivo" in inputs:
              if inputs["dispositivo"] not in dispositivos_validos:
-                 estado["errores"].append(f"Dispositivo desconocido: '{inputs['dispositivo']}'")
+                 errores.append(f"Dispositivo desconocido: '{inputs['dispositivo']}'")
                  
         # Caso C: Objetivos de comparación (objetivo_a/b -> dispositivo)
         for key in ["objetivo_a", "objetivo_b"]:
             if key in inputs and isinstance(inputs[key], dict):
                 disp = inputs[key].get("dispositivo")
                 if disp and disp not in dispositivos_validos:
-                    estado["errores"].append(f"Dispositivo desconocido en {key}: '{disp}'")
+                    errores.append(f"Dispositivo desconocido en {key}: '{disp}'")
 
         # --- 2. Validación de Fechas ---
         fechas_a_validar = []
@@ -241,21 +238,26 @@ def validar_argumentos(
                 dt_fin = datetime.fromisoformat(f_fin_str)
                 
                 if dt_ini > dt_fin:
-                    estado["errores"].append(f"Fechas incoherentes en {contexto}: inicio ({f_ini_str}) > fin ({f_fin_str})")
+                    errores.append(f"Fechas incoherentes en {contexto}: inicio ({f_ini_str}) > fin ({f_fin_str})")
                 
                 if dt_fin > dt_ref:
-                    estado["errores"].append(f"Fecha futura en {contexto}: fin ({f_fin_str}) > referencia actual ({referencia_str})")
+                    errores.append(f"Fecha futura en {contexto}: fin ({f_fin_str}) > referencia actual ({referencia_str})")
                     
             except ValueError:
-                estado["errores"].append(f"Formato de fecha inválido en {contexto}")
+                errores.append(f"Formato de fecha inválido en {contexto}")
 
-        if estado["errores"]:
-            estado["valido"] = False
-            reporte["acciones_invalidas"] += 1
+        if not errores:
+            reporte.append({
+                'id': id_accion,
+                'resultado': 0,
+                'error': None
+            })
         else:
-            reporte["acciones_validas"] += 1
-            
-        reporte["detalles"].append(estado)
+            reporte.append({
+                'id': id_accion,
+                'resultado': 1,
+                'error': "; ".join(errores)
+            })
         
     return reporte
 
@@ -276,30 +278,18 @@ if __name__ == "__main__":
     }
 
     # Ejemplo con un error de tipo (granularidad=123) y un error de enum (granularidad="semanal") para probar
-    plan_ejemplo = [{'id': '@1.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['nevera'], 'fecha_inicio': '2024-11-14T18:00', 'fecha_fin': '2024-11-14T23:59', 'granularidad': 'total'}, 'descripcion': 'Obtener consumo de la nevera durante la noche de ayer (2024-11-14)'}, {'id': '@2.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['lavadora'], 'fecha_inicio': '2024-11-09T06:00', 'fecha_fin': '2024-11-09T11:59', 'granularidad': 'total'}, 'descripcion': 'Obtener consumo de la lavadora durante la mañana del sábado pasado (2024-11-09)'}, {'id': '@3.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['nevera'], 'fecha_inicio': '2024-11-14T00:00', 'fecha_fin': '2024-11-14T23:59', 'granularidad': 'total'}, 'descripcion': 'Obtener consumo diario de la nevera para comparación (periodo supuesto 2024-11-14)'}, {'id': '@3.2', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['lavadora'], 'fecha_inicio': '2024-11-14T00:00', 'fecha_fin': '2024-11-14T23:59', 'granularidad': 'total'}, 'descripcion': 'Obtener consumo diario de la lavadora para comparación (periodo supuesto 2024-11-14)'}, {'id': '@3.3', 'server_id': 'mcp_server_gravity', 'tool': 'analizar_comparacion', 'inputs': {'objetivo_a': {'dispositivo': 'nevera', 'fecha_inicio': '2024-11-14T00:00', 'fecha_fin': '2024-11-14T23:59'}, 'objetivo_b': {'dispositivo': 'lavadora', 'fecha_inicio': '2024-11-14T00:00', 'fecha_fin': '2024-11-14T23:59'}}, 'descripcion': 'Comparar consumos entre nevera y lavadora en periodo común supuesto'}, {'id': '@4.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['Total_Casa'], 'fecha_inicio': '2024-01-01T00:00', 'fecha_fin': '2024-12-31T23:59', 'granularidad': 'mes'}, 'descripcion': 'Obtener consumo mensual agregado de todos los dispositivos para 2024'}]
+    plan_ejemplo = [{'id': '@1.1', 'server_id': 'mcp_server_gravity', 'tool': 'obteneer_consumo', 'inputs': {'dispositivos': ['nevera','lavadora'], 'fecha_inicio': '202411-14T18:00', 'fecha_fin': '2024-11-14T23:59', 'granularidad': 'total'}, 'descripcion': 'Obtener consumo de la nevera durante la noche de ayer (2024-11-14)'}, {'id': '@2.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['lavadora'], 'fecha_inicio': '2024-11-09T06:00', 'fecha_fin': '2024-11-09T11:59', 'granularidad': 'total'}, 'descripcion': 'Obtener consumo de la lavadora durante la mañana del sábado pasado (2024-11-09)'}, {'id': '@3.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['nevera'], 'fecha_inicio': '2024-11-14T00:00', 'fecha_fin': '2024-11-14T23:59', 'granularidad': 'total'}, 'descripcion': 'Obtener consumo diario de la nevera para comparación (periodo supuesto 2024-11-14)'}, {'id': '@3.2', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['lavadora'], 'fecha_inicio': '2024-11-14T00:00', 'fecha_fin': '2024-11-14T23:59', 'granularidad': 'total'}, 'descripcion': 'Obtener consumo diario de la lavadora para comparación (periodo supuesto 2024-11-14)'}, {'id': '@3.3', 'server_id': 'mcp_server_gravity', 'tool': 'analizar_comparacion', 'inputs': {'objetivo_a': {'dispositivo': 'nevera', 'fecha_inicio': '2024-11-14T00:00', 'fecha_fin': '2024-11-14T23:59'}, 'objetivo_b': {'dispositivo': 'lavadora', 'fecha_inicio': '2024-11-14T00:00', 'fecha_fin': '2024-11-14T23:59'}}, 'descripcion': 'Comparar consumos entre nevera y lavadora en periodo común supuesto'}, {'id': '@4.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['Total_Casa'], 'fecha_inicio': '2024-01-01T00:00', 'fecha_fin': '2024-12-31T23:59', 'granularidad': 'mes'}, 'descripcion': 'Obtener consumo mensual agregado de todos los dispositivos para 2024'}]
 
     if system_summary:
         print("System Summary cargado correctamente.\n")
         
         print("--- PASO 1: VERIFICACIÓN ESTRUCTURAL ---")
         resultado_est = verificar_estructura(plan_ejemplo, system_summary)
-        print(f"  Válidas:  {resultado_est['acciones_validas']} / {resultado_est['total_acciones']}")
-        
-        for det in resultado_est['detalles']:
-            if not det['valido']:
-                print(f"    [X] {det['id']}: {'; '.join(det['errores'])}")
-            else:
-                print(f"    [OK] {det['id']}")
+        print(json.dumps(resultado_est, indent=2, ensure_ascii=False))
             
         print("\n--- PASO 2: VERIFICACIÓN LÓGICA ---")
         resultado_log = validar_argumentos(plan_ejemplo, system_summary, dispositivos_conocidos, contexto_temporal)
-        print(f"  Válidas:  {resultado_log['acciones_validas']} / {resultado_log['total_acciones']}")
-        
-        for det in resultado_log['detalles']:
-            if not det['valido']:
-                print(f"    [X] {det['id']}: {'; '.join(det['errores'])}")
-            else:
-                print(f"    [OK] {det['id']}")
+        print(json.dumps(resultado_log, indent=2, ensure_ascii=False))
             
     else:
         print("Error crítico: system_summary está vacío o nulo.")
