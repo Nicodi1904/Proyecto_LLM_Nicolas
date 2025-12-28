@@ -21,6 +21,7 @@ load_dotenv(env_path)
 
 APIKEY_GOOGLE = os.getenv("apikey_google_ai_studio")
 APIKEY_OPENROUTER = os.getenv("apikey_openrouter")
+APIKEY_GEMINI_JUANC=os.getenv("apikey_gemini_juanC")
 print("Librerías y AppiKeys cargadas correctamente")
 # %%
 # -------------------------------------------------------------------------
@@ -58,6 +59,11 @@ openrouter_deepseek_r1t2_chimera_671b = dspy.LM(model="openrouter/tngtech/deepse
                             api_base="https://openrouter.ai/api/v1",
                             api_key=APIKEY_OPENROUTER)
 
+
+# Gemini 2.5 Flash (via Google OpenAI-compatible endpoint)
+gemini_25_flash = dspy.LM(model="openai/gemini-2.5-flash", 
+                            api_base="https://generativelanguage.googleapis.com/v1beta/openai/",
+                            api_key=APIKEY_GEMINI_JUANC)
 
 print("Modelos cargados correctamente")
 
@@ -408,3 +414,24 @@ except Exception as e:
     print(f"\nError en Interpretador Deepseek R1 T2 Chimera 671b: {e}")
 print("\n###############################################")
 
+"""
+# %%
+
+# --- Gemini 2.5 Flash ---
+dspy.configure(lm=gemini_25_flash)
+
+try:
+    interpretador_gemini = dspy.Predict(Interpretador)
+    resultado_gemini = interpretador_gemini(
+        prompt_usuario = prompt_usuario,
+        escenarios_entrada=escenarios_entrada,
+    )
+
+    print("\nInterpretador Gemini 2.5 Flash")
+    print(resultado_gemini.solicitudes_categorizadas)
+    print("\nNotas Gemini 2.5 Flash")
+    print(resultado_gemini.notas)
+except Exception as e:
+    print(f"\nError en Interpretador Gemini 2.5 Flash: {e}")
+print("\n###############################################")
+"""

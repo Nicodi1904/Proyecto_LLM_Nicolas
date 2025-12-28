@@ -1,0 +1,82 @@
+Resultados gemini 2.5 flash
+------------------------
+Para el prompt
+------------------------
+
+"Necesito saber cuánto consumió mi nevera ayer por la noche, y también cuánto consumió mi lavadora el sábado pasado en la mañana.
+Además quiero que me digas si entre esos dos días cuál gastó más energía.
+Ah, y por cierto, mientras miraba esos consumos se me descargó el celular y me dio mucha pereza pararme a buscar el cargador, pero igual quiero la comparación.
+Papá también pidió que le dijeras cuánto fue el consumo de todos los dispositivos en el año 2024, quiero ver gráficas de todo lo que se pueda"
+
+
+------------------------
+Resultados inferenciador
+------------------------
+Solicitudes categorizadas:
+
+{'@1': {'solicitud': 'Necesito saber cuánto consumió mi nevera ayer por la noche.', 'escenario': 'consumo_basico', 'formato': 'grafico'}, '@2': {'solicitud': 'Necesito saber cuánto consumió mi lavadora el sábado pasado en la mañana.', 'escenario': 'consumo_basico', 'formato': 'grafico'}, '@3': {'solicitud': 'Quiero que me digas si entre el consumo de mi nevera ayer por la noche y el consumo de mi lavadora el sábado pasado en la mañana, cuál gastó más energía.', 'escenario': 'comparacion_consumos', 'formato': 'grafico'}, '@4': {'solicitud': 'Quiero saber cuánto fue el consumo de todos los dispositivos en el año 2024.', 'escenario': 'consumo_basico', 'formato': 'grafico'}}
+
+notas:
+mientras miraba esos consumos se me descargó el celular y me dio mucha pereza pararme a buscar el cargador, pero igual quiero la comparación. Papá también pidió que le dijeras
+------------------------
+Resultados planeador
+------------------------
+Plan:
+ [{'id': '@1.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['nevera'], 'fecha_inicio': '2024-11-14T18:00', 'fecha_fin': '2024-11-14T23:59', 'granularidad': 'total'}, 'descripcion': 'Obtener el consumo de la nevera ayer por la noche.'}, {'id': '@2.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['lavadora'], 'fecha_inicio': '2024-11-09T06:00', 'fecha_fin': '2024-11-09T11:59', 'granularidad': 'total'}, 'descripcion': 'Obtener el consumo de la lavadora el sábado pasado en la mañana.'}, {'id': '@3.1', 'server_id': 'mcp_server_gravity', 'tool': 'analizar_comparacion', 'inputs': {'objetivo_a': {'dispositivo': 'nevera', 'fecha_inicio': '2024-11-14T18:00', 'fecha_fin': '2024-11-14T23:59'}, 'objetivo_b': {'dispositivo': 'lavadora', 'fecha_inicio': '2024-11-09T06:00', 'fecha_fin': '2024-11-09T11:59'}}, 'descripcion': 'Comparar el consumo de la nevera ayer por la noche con el de la lavadora el sábado pasado en la mañana.'}, {'id': '@4.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['Total_Casa'], 'fecha_inicio': '2024-01-01T00:00', 'fecha_fin': '2024-12-31T23:59', 'granularidad': 'total'}, 'descripcion': 'Obtener el consumo total de todos los dispositivos en el año 2024.'}]
+
+Estado de solicitudes:
+ {'@1': {'estado': 'resuelta'}, '@2': {'estado': 'resuelta'}, '@3': {'estado': 'resuelta'}, '@4': {'estado': 'resuelta'}}
+
+
+------------------------
+resultados worker_verificador
+------------------------
+
+--- PASO 1: VERIFICACIÓN ESTRUCTURAL ---
+[
+  {
+    "id": "@1.1",
+    "resultado": 0,
+    "error": null
+  },
+  {
+    "id": "@2.1",
+    "resultado": 0,
+    "error": null
+  },
+  {
+    "id": "@3.1",
+    "resultado": 0,
+    "error": null
+  },
+  {
+    "id": "@4.1",
+    "resultado": 0,
+    "error": null
+  }
+]
+
+--- PASO 2: VERIFICACIÓN LÓGICA ---
+[
+  {
+    "id": "@1.1",
+    "resultado": 0,
+    "error": null
+  },
+  {
+    "id": "@2.1",
+    "resultado": 0,
+    "error": null
+  },
+  {
+    "id": "@3.1",
+    "resultado": 0,
+    "error": null
+  },
+  {
+    "id": "@4.1",
+    "resultado": 1,
+    "error": "Fecha futura en General: fin (2024-12-31T23:59) > referencia actual (2024-12-25T18:00:00)"
+  }
+]
+

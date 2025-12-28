@@ -23,6 +23,7 @@ load_dotenv(env_path)
 
 APIKEY_GOOGLE = os.getenv("apikey_google_ai_studio")
 APIKEY_OPENROUTER = os.getenv("apikey_openrouter")
+#APIKEY_GEMINI_JUANC=os.getenv("apikey_gemini_juanC")
 print("Librerías y AppiKeys cargadas correctamente")
 
 # %%
@@ -62,7 +63,11 @@ openrouter_deepseek_r1t2_chimera_671b = dspy.LM(model="openrouter/tngtech/deepse
                             api_base="https://openrouter.ai/api/v1",
                             api_key=APIKEY_OPENROUTER)
 
-
+""" # Gemini 2.5 Flash (via Google OpenAI-compatible endpoint)
+gemini_25_flash = dspy.LM(model="openai/gemini-2.5-flash", 
+                            api_base="https://generativelanguage.googleapis.com/v1beta/openai/",
+                            api_key=APIKEY_GEMINI_JUANC)
+ """
 print("Modelos cargados correctamente")
 
 # %%
@@ -88,10 +93,8 @@ class Planeador(dspy.Signature):
             "- 'escenario' (string): clasificación funcional inferida (por ejemplo, consumo_basico, "
             "comparacion_consumos, deteccion_anomalias). Este campo sirve como guía semántica para "
             "priorizar y seleccionar herramientas.\n"
-            "- 'formato' (string): preferencia de presentación de la respuesta esperada por el usuario "
-            "('texto', 'grafico', 'mixto' o 'no_especificado'). Este campo se considera una sub-intención "
-            "opcional que puede ser satisfecha, degradada o ignorada según las capacidades funcionales "
-            "de las herramientas disponibles, sin invalidar la solicitud principal."
+            "- 'formato' (string): preferencia de presentación de la respuesta esperada por el usuario, "
+            "puede ser ('texto', 'grafico', 'mixto' o 'no_especificado') y debe ser considerada como parte de los requisitos de la solicitud."
         )
     )
 
@@ -133,11 +136,24 @@ class Planeador(dspy.Signature):
 
     estado_solicitudes: dict[str, dict] = dspy.OutputField(
     desc=(
-        "Estado final de cada solicitud procesada por el planeador. Cada clave '@N' corresponde "
-        "a cada solicitud de entrada y su valor es un diccionario con:\n"
-        "- 'estado': resultado de la planificación ('resuelta', 'parcial' o 'no_resuelta').\n"
-        "- 'motivo' (opcional): explicación breve de la causa; en estados 'parcial' o 'no_resuelta', "
-        "debe indicar qué parte de la solicitud no pudo resolverse."
+        "Estado final de cada solicitud procesada. Cada clave '@N' corresponde "
+        "a cada solicitud de entrada y su valor es un diccionario con las claves:\n"
+        "- 'estado':\n"
+        "* 'resuelta': cuando la solicitud, criterios y preferencias se pueden satisfacer completamente.\n"
+        "* 'parcial': cuando solo una parte de la solicitud puede resolverse, "
+        "o alguno de los requisitos o preferencias del usuario no pueden cumplirse.\n"
+        "* 'no_resuelta': cuando la solicitud no puede resolverse con las herramientas disponibles.\n"
+        "- 'motivo' (obligatorio si estado != 'resuelta'): diccionario con las claves:\n"
+        "- 'tipo': categoría del problema detectado. Valores permitidos:\n"
+        "* 'falta_informacion_usuario': la solicitud no contiene información suficiente "
+        "para construir un plan ejecutable completo, aun cuando el sistema tendría "
+        "capacidad para resolverla si dicha información estuviera disponible.\n"
+        "* 'parametros_incompatibles': la solicitud especifica parámetros que no pueden coexistir de forma válida " 
+        "según los esquemas y restricciones de las herramientas disponibles en el sistema.\n"
+        "* 'limitacion_sistema': la solicitud requiere una capacidad que el sistema no posee "
+        "según la definición actual de herramientas disponibles.\n"
+        "- 'detalle': descripción breve y concreta del problema, indicando qué parte "
+        "de la solicitud no pudo resolverse."
     )
 )
 
@@ -146,12 +162,7 @@ class Planeador(dspy.Signature):
 # Datos de Prueba
 # -------------------------------------------------------------------------
 # Simulación de salida del Interpretador (Usando ejemplo de Llama 3.3 70b)
-solicitudes_categorizadas = {
-    '@1': {'solicitud': 'Consumo de la nevera ayer por la noche', 'escenario': 'consumo_basico', 'formato': 'no_especificado'},
-    '@2': {'solicitud': 'Consumo de la lavadora el sábado pasado en la mañana', 'escenario': 'consumo_basico', 'formato': 'no_especificado'},
-    '@3': {'solicitud': 'Comparación de consumos entre la nevera y la lavadora', 'escenario': 'comparacion_consumos', 'formato': 'mixto'},
-    '@4': {'solicitud': 'Consumo total de todos los dispositivos en el año 2024', 'escenario': 'consumo_basico', 'formato': 'grafico'}
-}
+solicitudes_categorizadas = {'@1': {'solicitud': 'Necesito saber cuánto consumió mi nevera ayer por la noche.', 'escenario': 'consumo_basico', 'formato': 'texto'}, '@2': {'solicitud': 'Necesito saber cuánto consumió mi lavadora el sábado pasado en la mañana.', 'escenario': 'consumo_basico', 'formato': 'texto'}, '@3': {'solicitud': 'Quiero que me digas si entre el consumo de mi nevera ayer por la noche y el consumo de mi lavadora el sábado pasado en la mañana, cuál gastó más energía.', 'escenario': 'comparacion_consumos', 'formato': 'mixto'}, '@4': {'solicitud': 'Quiero saber cuánto fue el consumo de todos los dispositivos en el año 2024.', 'escenario': 'consumo_basico', 'formato': 'grafico'}}
 
 temporal_context = {
     "referencia_actual": "2024-11-15T10:30",
@@ -378,3 +389,23 @@ try:
 except Exception as e:
     print(f"\nError en Planeador Deepseek R1 T2 Chimera 671b: {e}")
 print("\n###############################################")
+
+
+""" # %%
+# --- Gemini 2.5 Flash ---
+dspy.configure(lm=gemini_25_flash)
+
+try:
+    planeador_gemini = dspy.Predict(Planeador)
+    resultado_gemini = planeador_gemini(
+        solicitudes_categorizadas = solicitudes_categorizadas,
+        system_summary = system_summary,
+        temporal_context = temporal_context
+    )
+
+    print("\nPlaneador Gemini 2.5 Flash\n")
+    print("\nPlan:\n", resultado_gemini.plan_acciones)
+    print("\nEstado Solicitudes:\n", resultado_gemini.estado_solicitudes)
+except Exception as e:
+    print(f"\nError en Planeador Gemini 2.5 Flash: {e}")
+print("\n###############################################") """

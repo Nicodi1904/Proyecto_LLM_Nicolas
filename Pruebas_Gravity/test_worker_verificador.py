@@ -261,9 +261,90 @@ def validar_argumentos(
         
     return reporte
 
+# -------------------------------------------------------------------------
+# 5. Funciones Unificadas
+# -------------------------------------------------------------------------
+
+def verificar_completo(
+    plan_acciones: List[Dict[str, Any]], 
+    system_summary: Dict[str, Any],
+    dispositivos_validos: List[str], 
+    temporal_context: Dict[str, Any]
+) -> List[Dict[str, Any]]:
+    """
+    Ejecuta ambas verificaciones (Estructural y Lógica) y combina los resultados.
+    
+    Returns:
+        Lista unificada de diccionarios con formato:
+        {
+            'id': str,
+            'resultado': int (0=OK, 1=Error),
+            'error': str | None (Errores concatenados si hay múltiples)
+        }
+    """
+    # 1. Ejecutar ambas verificaciones
+    rep_estructural = verificar_estructura(plan_acciones, system_summary)
+    rep_logico = validar_argumentos(plan_acciones, system_summary, dispositivos_validos, temporal_context)
+    
+    # 2. Indexar por ID para unificación rápida
+    map_est = {item['id']: item for item in rep_estructural}
+    map_log = {item['id']: item for item in rep_logico}
+    
+    reporte_unificado = []
+    
+    for accion in plan_acciones:
+        id_acc = accion.get("id", "N/A")
+        res_est = map_est.get(id_acc, {'resultado': 1, 'error': 'Error crítico al procesar ID'})
+        res_log = map_log.get(id_acc, {'resultado': 1, 'error': 'Error crítico al procesar ID'})
+        
+        errores_combinados = []
+        if res_est['error']:
+            errores_combinados.append(f"[Estructural] {res_est['error']}")
+        if res_log['error']:
+            errores_combinados.append(f"[Lógico] {res_log['error']}")
+            
+        estado_final = 0 if (res_est['resultado'] == 0 and res_log['resultado'] == 0) else 1
+        error_final = "; ".join(errores_combinados) if errores_combinados else None
+        
+        reporte_unificado.append({
+            'id': id_acc,
+            'resultado': estado_final,
+            'error': error_final
+        })
+        
+    return reporte_unificado
+
+def filtrar_acciones(reporte_unificado: List[Dict[str, Any]], plan_original: List[Dict[str, Any]]) -> tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+    """
+    Separa las acciones del plan original en válidas e inválidas basándose en el reporte unificado.
+    
+    Returns:
+        (acciones_validas, acciones_invalidas)
+    """
+    validas = []
+    invalidas = []
+    
+    # Mapa de estado por ID
+    mapa_estado = {item['id']: item for item in reporte_unificado}
+    
+    for accion in plan_original:
+        id_acc = accion.get('id')
+        estado = mapa_estado.get(id_acc)
+        
+        if estado and estado['resultado'] == 0:
+            validas.append(accion)
+        else:
+            # Adjuntamos el error a la acción para referencia (opcional, pero útil)
+            accion_con_error = accion.copy()
+            if estado:
+                accion_con_error['error_verificacion'] = estado['error']
+            invalidas.append(accion_con_error)
+            
+    return validas, invalidas
+
 
 # -------------------------------------------------------------------------
-# 5. Bloque Principal de Prueba
+# 6. Bloque Principal de Prueba
 # -------------------------------------------------------------------------
 
 if __name__ == "__main__":
@@ -278,18 +359,25 @@ if __name__ == "__main__":
     }
 
     # Ejemplo con un error de tipo (granularidad=123) y un error de enum (granularidad="semanal") para probar
-    plan_ejemplo = [{'id': '@1.1', 'server_id': 'mcp_server_gravity', 'tool': 'obteneer_consumo', 'inputs': {'dispositivos': ['nevera','lavadora'], 'fecha_inicio': '202411-14T18:00', 'fecha_fin': '2024-11-14T23:59', 'granularidad': 'total'}, 'descripcion': 'Obtener consumo de la nevera durante la noche de ayer (2024-11-14)'}, {'id': '@2.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['lavadora'], 'fecha_inicio': '2024-11-09T06:00', 'fecha_fin': '2024-11-09T11:59', 'granularidad': 'total'}, 'descripcion': 'Obtener consumo de la lavadora durante la mañana del sábado pasado (2024-11-09)'}, {'id': '@3.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['nevera'], 'fecha_inicio': '2024-11-14T00:00', 'fecha_fin': '2024-11-14T23:59', 'granularidad': 'total'}, 'descripcion': 'Obtener consumo diario de la nevera para comparación (periodo supuesto 2024-11-14)'}, {'id': '@3.2', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['lavadora'], 'fecha_inicio': '2024-11-14T00:00', 'fecha_fin': '2024-11-14T23:59', 'granularidad': 'total'}, 'descripcion': 'Obtener consumo diario de la lavadora para comparación (periodo supuesto 2024-11-14)'}, {'id': '@3.3', 'server_id': 'mcp_server_gravity', 'tool': 'analizar_comparacion', 'inputs': {'objetivo_a': {'dispositivo': 'nevera', 'fecha_inicio': '2024-11-14T00:00', 'fecha_fin': '2024-11-14T23:59'}, 'objetivo_b': {'dispositivo': 'lavadora', 'fecha_inicio': '2024-11-14T00:00', 'fecha_fin': '2024-11-14T23:59'}}, 'descripcion': 'Comparar consumos entre nevera y lavadora en periodo común supuesto'}, {'id': '@4.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['Total_Casa'], 'fecha_inicio': '2024-01-01T00:00', 'fecha_fin': '2024-12-31T23:59', 'granularidad': 'mes'}, 'descripcion': 'Obtener consumo mensual agregado de todos los dispositivos para 2024'}]
+    plan_ejemplo = [{'id': '@1.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['nevera'], 'fecha_inicio': '2024-11-14T18:00', 'fecha_fin': '2024-11-14T23:59', 'granularidad': 'hora'}, 'descripcion': 'Obtener consumo horario de la nevera durante la noche de ayer para visualización gráfica.'}, {'id': '@2.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['lavadora'], 'fecha_inicio': '2024-11-09T06:00', 'fecha_fin': '2024-11-09T11:59', 'granularidad': 'hora'}, 'descripcion': 'Obtener consumo horario de la lavadora durante la mañana del sábado pasado para visualización gráfica.'}, {'id': '@3.1', 'server_id': 'mcp_server_gravity', 'tool': 'analizar_comparacion', 'inputs': {'objetivo_a': {'dispositivo': 'nevera', 'fecha_inicio': '2024-11-14T18:00', 'fecha_fin': '2024-11-14T23:59'}, 'objetivo_b': {'dispositivo': 'lavadora', 'fecha_inicio': '2024-11-09T06:00', 'fecha_fin': '2024-11-09T11:59'}}, 'descripcion': 'Comparar consumo energético entre nevera (noche de ayer) y lavadora (mañana del sábado pasado).'}, {'id': '@4.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['Total_Casa'], 'fecha_inicio': '2024-01-01T00:00', 'fecha_fin': '2024-12-31T23:59', 'granularidad': 'mes'}, 'descripcion': 'Obtener consumo mensual agregado de todos los dispositivos durante el año 2024 para visualización gráfica.'}]
 
     if system_summary:
         print("System Summary cargado correctamente.\n")
         
-        print("--- PASO 1: VERIFICACIÓN ESTRUCTURAL ---")
-        resultado_est = verificar_estructura(plan_ejemplo, system_summary)
-        print(json.dumps(resultado_est, indent=2, ensure_ascii=False))
-            
-        print("\n--- PASO 2: VERIFICACIÓN LÓGICA ---")
-        resultado_log = validar_argumentos(plan_ejemplo, system_summary, dispositivos_conocidos, contexto_temporal)
-        print(json.dumps(resultado_log, indent=2, ensure_ascii=False))
+        # 3. Verificación Unificada
+        print("--- PASO 3: VERIFICACIÓN COMPLETA UNIFICADA ---")
+        resultado_unificado = verificar_completo(plan_ejemplo, system_summary, dispositivos_conocidos, contexto_temporal)
+        print(json.dumps(resultado_unificado, indent=2, ensure_ascii=False))
+        
+        # 4. Separación de acciones
+        print("\n--- PASO 4: SEPARACIÓN DE ACCIONES ---")
+        validas, invalidas = filtrar_acciones(resultado_unificado, plan_ejemplo)
+        
+        print("\nACCIONES VÁLIDAS:")
+        print(json.dumps(validas, indent=2, ensure_ascii=False))
+        
+        print("\nACCIONES INVÁLIDAS:")
+        print(json.dumps(invalidas, indent=2, ensure_ascii=False))
             
     else:
         print("Error crítico: system_summary está vacío o nulo.")

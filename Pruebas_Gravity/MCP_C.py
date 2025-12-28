@@ -5,147 +5,120 @@ import numpy as np
 # Dirección del servidor
 SERVER_URL = "http://127.0.0.1:8000/sse"
 
-# Variable con plan estructurado que llama a todas las funciones
-ejemplo_plan_completo = [
-    {
-        "id": 0, 
-        "funcion": "obtener_consumo", 
-        "desc": "Obtener consumo total de la casa en octubre 2024", 
-        "dependencias": {
-            "dispositivos": ["Total_Casa"], 
-            "fecha_inicio": "2024-10-01T00:00", 
-            "fecha_fin": "2024-10-31T23:59",
-            "granularidad": "total"
-        }
-    },
-    {
-        "id": 1, 
-        "funcion": "detectar_anomalias", 
-        "desc": "Detectar anomalías en el consumo de la casa en el mismo periodo", 
-        "dependencias": {
-            "dispositivo": "Total_Casa", 
-            "fecha_inicio": "2024-10-01T00:00", 
-            "fecha_fin": "2024-10-31T23:59",
-            "sensibilidad": 3.0
-        }
-    },
-    {
-        "id": 2, 
-        "funcion": "analizar_tendencia", 
-        "desc": "Analizar la tendencia de consumo en octubre", 
-        "dependencias": {
-            "dispositivo": "Total_Casa", 
-            "fecha_inicio": "2024-10-01T00:00", 
-            "fecha_fin": "2024-10-31T23:59"
-        }
-    },
-    {
-        "id": 3, 
-        "funcion": "obtener_consumo", 
-        "desc": "Obtener consumo de noviembre para comparación", 
-        "dependencias": {
-            "dispositivos": ["Total_Casa"], 
-            "fecha_inicio": "2024-11-01T00:00", 
-            "fecha_fin": "2024-11-30T23:59",
-            "granularidad": "total"
-        }
-    },
-    {
-        "id": 4, 
-        "funcion": "analizar_comparacion", 
-        "desc": "Comparar consumo de octubre vs noviembre", 
-        "dependencias": {
-            "objetivo_a": {
-                "dispositivo": "Total_Casa", "fecha_inicio": "2024-10-01T00:00", "fecha_fin": "2024-10-31T23:59"
-            },
-            "objetivo_b": {
-                "dispositivo": "Total_Casa", "fecha_inicio": "2024-11-01T00:00", "fecha_fin": "2024-11-30T23:59"
-            }
-        }
-    },
-    {
-        "id": 5,
-        "funcion": "falta_informacion",
-        "desc": "Simular caso de falta de información",
-        "dependencias": {
-            "datos_faltante": "ID del medidor para validación externa"
-        }
-    },
-    {
-        "id": 6,
-        "funcion": "plan_inviable",
-        "desc": "Simular caso de plan inviable",
-        "dependencias": {
-            "razon": "Solicitud de predicción climática futura no soportada"
-        }
-    }
-]
+# Variable con plan estructurado (Formato del Planeador)
+ejemplo_plan_completo = [{'id': '@1.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['TV'], 'fecha_inicio': '2024-11-14T18:00', 'fecha_fin': '2024-11-14T23:59', 'granularidad': 'hora'}, 'descripcion': 'Obtener consumo horario de la TV durante la noche de ayer para visualización gráfica.'}, {'id': '@2.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['Ventilador'], 'fecha_inicio': '2024-11-09T06:00', 'fecha_fin': '2024-11-09T11:59', 'granularidad': 'hora'}, 'descripcion': 'Obtener consumo horario de la Ventilador durante la mañana del sábado pasado para visualización gráfica.'}, {'id': '@3.1', 'server_id': 'mcp_server_gravity', 'tool': 'analizar_comparacion', 'inputs': {'objetivo_a': {'dispositivo': 'TV', 'fecha_inicio': '2024-11-14T18:00', 'fecha_fin': '2024-11-14T23:59'}, 'objetivo_b': {'dispositivo': 'Ventilador', 'fecha_inicio': '2024-11-09T06:00', 'fecha_fin': '2024-11-09T11:59'}}, 'descripcion': 'Comparar consumo energético entre TV (noche de ayer) y Ventilador (mañana del sábado pasado).'}, {'id': '@4.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['Total_Casa'], 'fecha_inicio': '2024-01-01T00:00', 'fecha_fin': '2024-12-31T23:59', 'granularidad': 'mes'}, 'descripcion': 'Obtener consumo mensual agregado de todos los dispositivos durante el año 2024 para visualización gráfica.'}]
 
-async def ejecutar_plan(server_url: str, plan: list) -> dict:
+async def ejecutar_plan(server_url: str, plan_filtrado: list) -> dict:
     """
-    Ejecuta un plan de tareas contra un servidor MCP, resolviendo dependencias.
+    Ejecuta un plan de acciones VALIDADO contra un servidor MCP.
+    Organiza el reporte final agrupado por ID de solicitud (ej: @1).
     """
     client = Client(server_url)
-    resultados = {}
+    resultados_raw = {} # Mapa ID Acción -> Resultado
+    reporte_final = {}  # Mapa ID Solicitud -> Lista de Resultados
     
-    print(f"Conectando a {server_url} para ejecutar plan...")
+    # Pre-inicializar grupos en reporte_final
+    for accion in plan_filtrado:
+        id_accion = accion.get("id", "")
+        # Extraer ID solicitud (todo antes del primer punto, ej @1.1 -> @1)
+        if "." in id_accion:
+            id_solicitud = id_accion.split(".")[0]
+        else:
+            id_solicitud = id_accion # Fallback si no hay punto
+            
+        if id_solicitud not in reporte_final:
+            reporte_final[id_solicitud] = []
+
+    print(f"Conectando a {server_url} para ejecutar plan validado...")
     
     try:
         async with client:
             await client.ping()
             
-            for paso in plan:
-                id_paso = paso["id"]
-                funcion_nombre = paso["funcion"]
-                desc = paso["desc"]
-                params_originales = paso["dependencias"]
+            for accion in plan_filtrado:
+                id_accion = accion.get("id")
+                tool_name = accion.get("tool")
+                descripcion = accion.get("descripcion", "")
+                inputs_originales = accion.get("inputs", {})
                 
-                print(f"Ejecutando paso {id_paso}: {funcion_nombre} - {desc}")
+                # Identificar Grupo
+                id_solicitud = id_accion.split(".")[0] if "." in id_accion else id_accion
                 
-                # Resolver dependencias (formato @ID)
-                params_finales = {}
-                for k, v in params_originales.items():
-                    if isinstance(v, str) and v.startswith("@"):
-                        try:
-                            ref_id = int(v[1:])
-                            if ref_id in resultados:
-                                # Asumimos que queremos el 'result' o el dato principal de la respuesta anterior
-                                # Ajustar según la estructura de respuesta de las tools
-                                prev_res = resultados[ref_id]["resultado"]
-                                # Si la tool anterior devolvió un dict complejo, aquí habría que ver qué campo pasar.
-                                # Por simplicidad del ejemplo asumimos paso directo si es compatible.
-                                params_finales[k] = prev_res
-                            else:
-                                params_finales[k] = v # No se encontró, se deja cual cual (posible error)
-                        except ValueError:
-                            params_finales[k] = v
+                print(f"Ejecutando {id_accion}: {tool_name}")
+                
+                # Resolver dependencias (referencias @N.M en inputs)
+                inputs_finales = {}
+                for k, v in inputs_originales.items():
+                    # Si es string y parece una referencia
+                    if isinstance(v, str) and v.startswith("@") and "." in v:
+                        # Buscar en resultados previos
+                        if v in resultados_raw:
+                            # Asumimos que pasamos el resultado completo o un campo específico. 
+                            # Por ahora, pasamos el resultado crudo anidado.
+                            inputs_finales[k] = resultados_raw[v].get("resultado")
+                        else:
+                            # Referencia no resuelta (quizás falló la acción previa o no existe)
+                            inputs_finales[k] = v 
+                    # Si es diccionario (caso anidado simple, e.g. objetivos comparacion)
+                    elif isinstance(v, dict):
+                         # Copia superficial para no modificar el original iterando
+                         inputs_finales[k] = v.copy()
+                         for sub_k, sub_v in v.items():
+                             if isinstance(sub_v, str) and sub_v.startswith("@") and "." in sub_v:
+                                 if sub_v in resultados_raw:
+                                     inputs_finales[k][sub_k] = resultados_raw[sub_v].get("resultado")
                     else:
-                        params_finales[k] = v
+                        inputs_finales[k] = v
                 
-                # Llamada a la herramienta
+                # Ejecución
+                resultado_item = {
+                    "accion_id": id_accion,
+                    "tool": tool_name,
+                    "descripcion": descripcion,
+                    "resultado": None,
+                    "error": None
+                }
+                
                 try:
-                    resultado_tool = await client.call_tool(funcion_nombre, params_finales)
+                    res_tool = await client.call_tool(tool_name, inputs_finales)
                     
-                    # Guardamos el resultado "crudo" o procesado según se requiera
-                    resultados[id_paso] = {
-                        "desc": desc,
-                        "funcion": funcion_nombre,
-                        "resultado": resultado_tool
-                    }
+                    # Extraer el contenido real del objeto CallToolResult
+                    # Estructura típica: CallToolResult(content=[TextContent(type='text', text='...')])
+                    dato_real = None
+                    if hasattr(res_tool, 'content') and res_tool.content:
+                        # Iteramos para encontrar contenido de texto
+                        for c in res_tool.content:
+                            if hasattr(c, 'type') and c.type == 'text' and hasattr(c, 'text'):
+                                try:
+                                    import json
+                                    dato_real = json.loads(c.text)
+                                except:
+                                    dato_real = c.text
+                                break
+                    
+                    if dato_real is None:
+                         # Fallback si no encontramos estructura estándar
+                         dato_real = str(res_tool)
+
+                    resultado_item["resultado"] = dato_real
                     print(f"  -> OK")
                 except Exception as e:
-                    print(f"  -> Error en herramienta: {e}")
-                    resultados[id_paso] = {
-                        "desc": desc,
-                        "funcion": funcion_nombre,
-                        "error": str(e),
-                        "resultado": None
-                    }
+                    msg_error = f"Error ejecución tool: {str(e)}"
+                    print(f"  -> {msg_error}")
+                    resultado_item["error"] = msg_error
+                
+                # Guardar para dependencias futuras
+                resultados_raw[id_accion] = resultado_item
+                
+                # Agregar al reporte agrupado
+                reporte_final[id_solicitud].append(resultado_item)
 
     except Exception as e:
-        print(f"Error general de conexión o ejecución: {e}")
+        print(f"Error general de conexión o ejecución MCP: {e}")
+        # Intentar reportar error general en todas las solicitudes pendientes?
+        # Por ahora solo retornamos lo que se haya logrado
         
-    return resultados
+    return reporte_final
 
 if __name__ == "__main__":
     # Prueba directa
