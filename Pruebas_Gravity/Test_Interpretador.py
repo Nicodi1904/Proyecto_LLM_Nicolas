@@ -195,243 +195,244 @@ prompt_usuario=("Necesito saber cuánto consumió mi nevera ayer por la noche, "
 print("Signature y Datos de prueba cargados correctamente")
 # %%
 
-# -------------------------------------------------------------------------
-# Ejecución de Modelos (Comentar/Descomentar según necesidad)
-# -------------------------------------------------------------------------
+if __name__ == "__main__":
+    # -------------------------------------------------------------------------
+    # Ejecución de Modelos (Comentar/Descomentar según necesidad)
+    # -------------------------------------------------------------------------
 
-# --- Llama 3.1 8b ---
-dspy.configure(lm=llama_31_8b)
+    # --- Llama 3.1 8b ---
+    dspy.configure(lm=llama_31_8b)
 
-try:
-    interpretador_llama31 = dspy.Predict(Interpretador)
-    resultado_llama31 = interpretador_llama31(
-        prompt_usuario = prompt_usuario,
-        escenarios_entrada=escenarios_entrada,
-    )
+    try:
+        interpretador_llama31 = dspy.Predict(Interpretador)
+        resultado_llama31 = interpretador_llama31(
+            prompt_usuario = prompt_usuario,
+            escenarios_entrada=escenarios_entrada,
+        )
 
-    print("\nInterpretador Llama 3.1 8b")
-    print(resultado_llama31.solicitudes_categorizadas)
-    print("\nNotas Llama 3.1 8b")
-    print(resultado_llama31.notas)
-except Exception as e:
-    print(f"\nError en Interpretador Llama 3.1 8b: {e}")
-print("\n###############################################")
+        print("\nInterpretador Llama 3.1 8b")
+        print(resultado_llama31.solicitudes_categorizadas)
+        print("\nNotas Llama 3.1 8b")
+        print(resultado_llama31.notas)
+    except Exception as e:
+        print(f"\nError en Interpretador Llama 3.1 8b: {e}")
+    print("\n###############################################")
 
 
-#%%
-# --- DeepSeek R1 8b ---
-dspy.configure(lm=deepseek_r1_8b)
+    #%%
+    # --- DeepSeek R1 8b ---
+    dspy.configure(lm=deepseek_r1_8b)
 
-try:
-    interpretador_deepseek_r1_8b = dspy.Predict(Interpretador)
-    resultado_deepseek_r1_8b = interpretador_deepseek_r1_8b(
-        prompt_usuario = prompt_usuario,
-        escenarios_entrada=escenarios_entrada,
-    )
+    try:
+        interpretador_deepseek_r1_8b = dspy.Predict(Interpretador)
+        resultado_deepseek_r1_8b = interpretador_deepseek_r1_8b(
+            prompt_usuario = prompt_usuario,
+            escenarios_entrada=escenarios_entrada,
+        )
 
-    print("\n###############################################\nInterpretador DeepSeek R1 8b")
-    print(resultado_deepseek_r1_8b.solicitudes_categorizadas)
-    print("\nNotas DeepSeek R1 8b")
-    print(resultado_deepseek_r1_8b.notas) 
-except Exception as e:
-    print(f"\nError en Interpretador DeepSeek R1 8b: {e}")
-print("\n###############################################")
+        print("\n###############################################\nInterpretador DeepSeek R1 8b")
+        print(resultado_deepseek_r1_8b.solicitudes_categorizadas)
+        print("\nNotas DeepSeek R1 8b")
+        print(resultado_deepseek_r1_8b.notas) 
+    except Exception as e:
+        print(f"\nError en Interpretador DeepSeek R1 8b: {e}")
+    print("\n###############################################")
 
-# %%
+    # %%
 
-# --- Gemma 7b ---
-dspy.configure(lm=gemma_7b)
+    # --- Gemma 7b ---
+    dspy.configure(lm=gemma_7b)
 
-try:
-    interpretador_gemma_7b = dspy.Predict(Interpretador)
-    resultado_gemma_7b = interpretador_gemma_7b(
-        prompt_usuario = prompt_usuario,
-        escenarios_entrada=escenarios_entrada,
-    )
+    try:
+        interpretador_gemma_7b = dspy.Predict(Interpretador)
+        resultado_gemma_7b = interpretador_gemma_7b(
+            prompt_usuario = prompt_usuario,
+            escenarios_entrada=escenarios_entrada,
+        )
 
-    print("\nInterpretador Gemma 7b")
-    print(resultado_gemma_7b.solicitudes_categorizadas)
-    print("\nNotas Gemma 7b")
-    print(resultado_gemma_7b.notas)
-except Exception as e:
-    print(f"\nError en Interpretador Gemma 7b: {e}")
-print("\n###############################################")
+        print("\nInterpretador Gemma 7b")
+        print(resultado_gemma_7b.solicitudes_categorizadas)
+        print("\nNotas Gemma 7b")
+        print(resultado_gemma_7b.notas)
+    except Exception as e:
+        print(f"\nError en Interpretador Gemma 7b: {e}")
+    print("\n###############################################")
 
-# %%
+    # %%
 
-# --- Mistral 7b ---
-dspy.configure(lm=mistral_7b)
+    # --- Mistral 7b ---
+    dspy.configure(lm=mistral_7b)
 
-try:
-    interpretador_mistral_7b = dspy.Predict(Interpretador)
-    resultado_mistral_7b = interpretador_mistral_7b(
-        prompt_usuario = prompt_usuario,
-        escenarios_entrada=escenarios_entrada,
-    )
+    try:
+        interpretador_mistral_7b = dspy.Predict(Interpretador)
+        resultado_mistral_7b = interpretador_mistral_7b(
+            prompt_usuario = prompt_usuario,
+            escenarios_entrada=escenarios_entrada,
+        )
 
-    print("\nInterpretador Mistral 7b")
-    print(resultado_mistral_7b.solicitudes_categorizadas)
-    print("\nNotas Mistral 7b")
-    print(resultado_mistral_7b.notas)
-except Exception as e:
-    print(f"\nError en Interpretador Mistral 7b: {e}")
-print("\n###############################################")
- 
-#%%
+        print("\nInterpretador Mistral 7b")
+        print(resultado_mistral_7b.solicitudes_categorizadas)
+        print("\nNotas Mistral 7b")
+        print(resultado_mistral_7b.notas)
+    except Exception as e:
+        print(f"\nError en Interpretador Mistral 7b: {e}")
+    print("\n###############################################")
+     
+    #%%
 
-# --- Qwen 3 4b ---
-dspy.configure(lm=qwen3_4b)
+    # --- Qwen 3 4b ---
+    dspy.configure(lm=qwen3_4b)
 
-try:
-    interpretador_qwen3_4b = dspy.Predict(Interpretador)
-    resultado_qwen3_4b = interpretador_qwen3_4b(
-        prompt_usuario = prompt_usuario,
-        escenarios_entrada=escenarios_entrada,
-    )
+    try:
+        interpretador_qwen3_4b = dspy.Predict(Interpretador)
+        resultado_qwen3_4b = interpretador_qwen3_4b(
+            prompt_usuario = prompt_usuario,
+            escenarios_entrada=escenarios_entrada,
+        )
 
-    print("\nInterpretador Qwen 3 4b")
-    print(resultado_qwen3_4b.solicitudes_categorizadas)
-    print("\nNotas Qwen 3 4b")
-    print(resultado_qwen3_4b.notas)
-except Exception as e:
-    print(f"\nError en Interpretador Qwen 3 4b: {e}")
-print("\n###############################################")
+        print("\nInterpretador Qwen 3 4b")
+        print(resultado_qwen3_4b.solicitudes_categorizadas)
+        print("\nNotas Qwen 3 4b")
+        print(resultado_qwen3_4b.notas)
+    except Exception as e:
+        print(f"\nError en Interpretador Qwen 3 4b: {e}")
+    print("\n###############################################")
 
-# %%
- 
-# --- OpenRouter Llama 3.3 70b ---
-dspy.configure(lm=openrouter_llama33_70b)
+    # %%
+     
+    # --- OpenRouter Llama 3.3 70b ---
+    dspy.configure(lm=openrouter_llama33_70b)
 
-try:
-    interpretador_openrouter = dspy.Predict(Interpretador)
-    resultado_openrouter = interpretador_openrouter(
-        prompt_usuario = prompt_usuario,
-        escenarios_entrada=escenarios_entrada,
-    )
+    try:
+        interpretador_openrouter = dspy.Predict(Interpretador)
+        resultado_openrouter = interpretador_openrouter(
+            prompt_usuario = prompt_usuario,
+            escenarios_entrada=escenarios_entrada,
+        )
 
-    print("\nInterpretador Llama 3.3 70b")
-    print(resultado_openrouter.solicitudes_categorizadas)
-    print("\nNotas Llama 3.3 70b")
-    print(resultado_openrouter.notas) 
-except Exception as e:
-    print(f"\nError en Interpretador Llama 3.3 70b: {e}")
-print("\n###############################################")
-# %%
+        print("\nInterpretador Llama 3.3 70b")
+        print(resultado_openrouter.solicitudes_categorizadas)
+        print("\nNotas Llama 3.3 70b")
+        print(resultado_openrouter.notas) 
+    except Exception as e:
+        print(f"\nError en Interpretador Llama 3.3 70b: {e}")
+    print("\n###############################################")
+    # %%
 
-# --- OpenRouter Gemini 2.0 Flash ---
-dspy.configure(lm=openrouter_gemini2flash)
+    # --- OpenRouter Gemini 2.0 Flash ---
+    dspy.configure(lm=openrouter_gemini2flash)
 
-try:
-    interpretador_gemini2flash = dspy.Predict(Interpretador)
-    resultado_gemini2flash = interpretador_gemini2flash(
-        prompt_usuario = prompt_usuario,
-        escenarios_entrada=escenarios_entrada,
-    )
+    try:
+        interpretador_gemini2flash = dspy.Predict(Interpretador)
+        resultado_gemini2flash = interpretador_gemini2flash(
+            prompt_usuario = prompt_usuario,
+            escenarios_entrada=escenarios_entrada,
+        )
 
-    print("\nInterpretador Gemini 2.0 Flash")
-    print(resultado_gemini2flash.solicitudes_categorizadas)
-    print("\nNotas Gemini 2.0 Flash")
-    print(resultado_gemini2flash.notas)
-except Exception as e:
-    print(f"\nError en Interpretador Gemini 2.0 Flash: {e}")
-print("\n###############################################")
-# %%
+        print("\nInterpretador Gemini 2.0 Flash")
+        print(resultado_gemini2flash.solicitudes_categorizadas)
+        print("\nNotas Gemini 2.0 Flash")
+        print(resultado_gemini2flash.notas)
+    except Exception as e:
+        print(f"\nError en Interpretador Gemini 2.0 Flash: {e}")
+    print("\n###############################################")
+    # %%
 
-# --- OpenRouter Mistral Devstral 2.123b ---
-dspy.configure(lm=openrouter_mistral_devstral2_123b)
+    # --- OpenRouter Mistral Devstral 2.123b ---
+    dspy.configure(lm=openrouter_mistral_devstral2_123b)
 
-try:
-    interpretador_openrouter = dspy.Predict(Interpretador)
-    resultado_openrouter = interpretador_openrouter(
-        prompt_usuario = prompt_usuario,
-        escenarios_entrada=escenarios_entrada,
-    )
+    try:
+        interpretador_openrouter = dspy.Predict(Interpretador)
+        resultado_openrouter = interpretador_openrouter(
+            prompt_usuario = prompt_usuario,
+            escenarios_entrada=escenarios_entrada,
+        )
 
-    print("\nInterpretador Mistral Devstral2_123b")
-    print(resultado_openrouter.solicitudes_categorizadas)
-    print("\nNotas Mistral Devstral2_123b")
-    print(resultado_openrouter.notas) 
-except Exception as e:
-    print(f"\nError en Interpretador Mistral Devstral2_123b: {e}")
-print("\n###############################################")
+        print("\nInterpretador Mistral Devstral2_123b")
+        print(resultado_openrouter.solicitudes_categorizadas)
+        print("\nNotas Mistral Devstral2_123b")
+        print(resultado_openrouter.notas) 
+    except Exception as e:
+        print(f"\nError en Interpretador Mistral Devstral2_123b: {e}")
+    print("\n###############################################")
 
-# %%
+    # %%
 
-# --- OpenRouter Xiaomi MimoV2 Flash 15b 309b ---
-dspy.configure(lm=openrouter_Xiaomi_mimoV2_flash_15b_309b)
+    # --- OpenRouter Xiaomi MimoV2 Flash 15b 309b ---
+    dspy.configure(lm=openrouter_Xiaomi_mimoV2_flash_15b_309b)
 
-try:
-    interpretador_openrouter = dspy.Predict(Interpretador)
-    resultado_openrouter = interpretador_openrouter(
-        prompt_usuario = prompt_usuario,
-        escenarios_entrada=escenarios_entrada,
-    )
+    try:
+        interpretador_openrouter = dspy.Predict(Interpretador)
+        resultado_openrouter = interpretador_openrouter(
+            prompt_usuario = prompt_usuario,
+            escenarios_entrada=escenarios_entrada,
+        )
 
-    print("\nInterpretador Xiaomi MimoV2 Flash 15b 309b")
-    print(resultado_openrouter.solicitudes_categorizadas)
-    print("\nNotas Xiaomi MimoV2 Flash 15b 309b")
-    print(resultado_openrouter.notas) 
-except Exception as e:
-    print(f"\nError en Interpretador Xiaomi MimoV2 Flash 15b 309b: {e}")
-print("\n###############################################") 
+        print("\nInterpretador Xiaomi MimoV2 Flash 15b 309b")
+        print(resultado_openrouter.solicitudes_categorizadas)
+        print("\nNotas Xiaomi MimoV2 Flash 15b 309b")
+        print(resultado_openrouter.notas) 
+    except Exception as e:
+        print(f"\nError en Interpretador Xiaomi MimoV2 Flash 15b 309b: {e}")
+    print("\n###############################################") 
+    
+    # %%
 
-# %%
+    # --- OpenRouter Qwen 3 Coder 35b 480b ---
+    dspy.configure(lm=openrouter_qwen3_coder_35b_480b)
 
-# --- OpenRouter Qwen 3 Coder 35b 480b ---
-dspy.configure(lm=openrouter_qwen3_coder_35b_480b)
+    try:
+        interpretador_openrouter = dspy.Predict(Interpretador)
+        resultado_openrouter = interpretador_openrouter(
+            prompt_usuario = prompt_usuario,
+            escenarios_entrada=escenarios_entrada,
+        )
 
-try:
-    interpretador_openrouter = dspy.Predict(Interpretador)
-    resultado_openrouter = interpretador_openrouter(
-        prompt_usuario = prompt_usuario,
-        escenarios_entrada=escenarios_entrada,
-    )
+        print("\nInterpretador Qwen 3 Coder 35b 480b")
+        print(resultado_openrouter.solicitudes_categorizadas)
+        print("\nNotas Qwen 3 Coder 35b 480b")
+        print(resultado_openrouter.notas) 
+    except Exception as e:
+        print(f"\nError en Interpretador Qwen 3 Coder 35b 480b: {e}")
+    print("\n###############################################")
+    # %%
 
-    print("\nInterpretador Qwen 3 Coder 35b 480b")
-    print(resultado_openrouter.solicitudes_categorizadas)
-    print("\nNotas Qwen 3 Coder 35b 480b")
-    print(resultado_openrouter.notas) 
-except Exception as e:
-    print(f"\nError en Interpretador Qwen 3 Coder 35b 480b: {e}")
-print("\n###############################################")
-# %%
+    # --- OpenRouter Deepseek R1 T2 Chimera 671b ---
+    dspy.configure(lm=openrouter_deepseek_r1t2_chimera_671b)
 
-# --- OpenRouter Deepseek R1 T2 Chimera 671b ---
-dspy.configure(lm=openrouter_deepseek_r1t2_chimera_671b)
+    try:
+        interpretador_openrouter = dspy.Predict(Interpretador)
+        resultado_openrouter = interpretador_openrouter(
+            prompt_usuario = prompt_usuario,
+            escenarios_entrada=escenarios_entrada,
+        )
 
-try:
-    interpretador_openrouter = dspy.Predict(Interpretador)
-    resultado_openrouter = interpretador_openrouter(
-        prompt_usuario = prompt_usuario,
-        escenarios_entrada=escenarios_entrada,
-    )
+        print("\nInterpretador Deepseek R1 T2 Chimera 671b")
+        print(resultado_openrouter.solicitudes_categorizadas)
+        print("\nNotas Deepseek R1 T2 Chimera 671b")
+        print(resultado_openrouter.notas) 
+    except Exception as e:
+        print(f"\nError en Interpretador Deepseek R1 T2 Chimera 671b: {e}")
+    print("\n###############################################")
 
-    print("\nInterpretador Deepseek R1 T2 Chimera 671b")
-    print(resultado_openrouter.solicitudes_categorizadas)
-    print("\nNotas Deepseek R1 T2 Chimera 671b")
-    print(resultado_openrouter.notas) 
-except Exception as e:
-    print(f"\nError en Interpretador Deepseek R1 T2 Chimera 671b: {e}")
-print("\n###############################################")
+    """
+    # %%
 
-"""
-# %%
+    # --- Gemini 2.5 Flash ---
+    dspy.configure(lm=gemini_25_flash)
 
-# --- Gemini 2.5 Flash ---
-dspy.configure(lm=gemini_25_flash)
+    try:
+        interpretador_gemini = dspy.Predict(Interpretador)
+        resultado_gemini = interpretador_gemini(
+            prompt_usuario = prompt_usuario,
+            escenarios_entrada=escenarios_entrada,
+        )
 
-try:
-    interpretador_gemini = dspy.Predict(Interpretador)
-    resultado_gemini = interpretador_gemini(
-        prompt_usuario = prompt_usuario,
-        escenarios_entrada=escenarios_entrada,
-    )
-
-    print("\nInterpretador Gemini 2.5 Flash")
-    print(resultado_gemini.solicitudes_categorizadas)
-    print("\nNotas Gemini 2.5 Flash")
-    print(resultado_gemini.notas)
-except Exception as e:
-    print(f"\nError en Interpretador Gemini 2.5 Flash: {e}")
-print("\n###############################################")
-"""
+        print("\nInterpretador Gemini 2.5 Flash")
+        print(resultado_gemini.solicitudes_categorizadas)
+        print("\nNotas Gemini 2.5 Flash")
+        print(resultado_gemini.notas)
+    except Exception as e:
+        print(f"\nError en Interpretador Gemini 2.5 Flash: {e}")
+    print("\n###############################################")
+    """

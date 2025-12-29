@@ -178,234 +178,235 @@ temporal_context = {
 print("Signature y Datos de prueba cargados correctamente")
 
 # %%
-# -------------------------------------------------------------------------
-# Ejecución de Modelos (Comentar/Descomentar según necesidad)
-# -------------------------------------------------------------------------
+if __name__ == "__main__":
+    # -------------------------------------------------------------------------
+    # Ejecución de Modelos (Comentar/Descomentar según necesidad)
+    # -------------------------------------------------------------------------
 
-# --- Llama 3.1 8b ---
-dspy.configure(lm=llama_31_8b)
+    # --- Llama 3.1 8b ---
+    dspy.configure(lm=llama_31_8b)
 
-try:
-    planeador_llama31 = dspy.Predict(Planeador)
-    resultado_llama31 = planeador_llama31(
-        solicitudes_categorizadas = solicitudes_categorizadas,
-        system_summary = system_summary,
-        temporal_context = temporal_context
-    )
+    try:
+        planeador_llama31 = dspy.Predict(Planeador)
+        resultado_llama31 = planeador_llama31(
+            solicitudes_categorizadas = solicitudes_categorizadas,
+            system_summary = system_summary,
+            temporal_context = temporal_context
+        )
 
-    print("\nPlaneador Llama 3.1 8b\n")
-    print("\nPlan:\n", resultado_llama31.plan_acciones)
-    print("\nEstado Solicitudes:\n", resultado_llama31.estado_solicitudes)
-except Exception as e:
-    print(f"\nError en Planeador Llama 3.1 8b: {e}")
-print("\n###############################################")
+        print("\nPlaneador Llama 3.1 8b\n")
+        print("\nPlan:\n", resultado_llama31.plan_acciones)
+        print("\nEstado Solicitudes:\n", resultado_llama31.estado_solicitudes)
+    except Exception as e:
+        print(f"\nError en Planeador Llama 3.1 8b: {e}")
+    print("\n###############################################")
 
-# %%
-# --- DeepSeek R1 8b ---
-dspy.configure(lm=deepseek_r1_8b)
+    # %%
+    # --- DeepSeek R1 8b ---
+    dspy.configure(lm=deepseek_r1_8b)
 
-try:
-    planeador_deepseek_r1_8b = dspy.Predict(Planeador)
-    resultado_deepseek_r1_8b = planeador_deepseek_r1_8b(
-        solicitudes_categorizadas = solicitudes_categorizadas,
-        system_summary = system_summary,
-        temporal_context = temporal_context 
-    )
+    try:
+        planeador_deepseek_r1_8b = dspy.Predict(Planeador)
+        resultado_deepseek_r1_8b = planeador_deepseek_r1_8b(
+            solicitudes_categorizadas = solicitudes_categorizadas,
+            system_summary = system_summary,
+            temporal_context = temporal_context 
+        )
 
-    print("\nPlaneador DeepSeek R1 8b\n")
-    print("\nPlan:\n", resultado_deepseek_r1_8b.plan_acciones)
-    print("\nEstado Solicitudes:\n", resultado_deepseek_r1_8b.estado_solicitudes)
-except Exception as e:
-    print(f"\nError en Planeador DeepSeek R1 8b: {e}")
-print("\n###############################################")
+        print("\nPlaneador DeepSeek R1 8b\n")
+        print("\nPlan:\n", resultado_deepseek_r1_8b.plan_acciones)
+        print("\nEstado Solicitudes:\n", resultado_deepseek_r1_8b.estado_solicitudes)
+    except Exception as e:
+        print(f"\nError en Planeador DeepSeek R1 8b: {e}")
+    print("\n###############################################")
 
-# %%
-# --- Gemma 7b ---
-dspy.configure(lm=gemma_7b)
+    # %%
+    # --- Gemma 7b ---
+    dspy.configure(lm=gemma_7b)
 
-try:
-    planeador_gemma_7b = dspy.Predict(Planeador)
-    resultado_gemma_7b = planeador_gemma_7b(
-        solicitudes_categorizadas = solicitudes_categorizadas,
-        system_summary = system_summary,
-        temporal_context = temporal_context
-    )
+    try:
+        planeador_gemma_7b = dspy.Predict(Planeador)
+        resultado_gemma_7b = planeador_gemma_7b(
+            solicitudes_categorizadas = solicitudes_categorizadas,
+            system_summary = system_summary,
+            temporal_context = temporal_context
+        )
 
-    print("\nPlaneador Gemma 7b\n")
-    print("\nPlan:\n", resultado_gemma_7b.plan_acciones)
-    print("\nEstado Solicitudes:\n", resultado_gemma_7b.estado_solicitudes)
-except Exception as e:
-    print(f"\nError en Planeador Gemma 7b: {e}")
-print("\n###############################################")
+        print("\nPlaneador Gemma 7b\n")
+        print("\nPlan:\n", resultado_gemma_7b.plan_acciones)
+        print("\nEstado Solicitudes:\n", resultado_gemma_7b.estado_solicitudes)
+    except Exception as e:
+        print(f"\nError en Planeador Gemma 7b: {e}")
+    print("\n###############################################")
 
-# %%
-# --- Mistral 7b ---
-dspy.configure(lm=mistral_7b)
+    # %%
+    # --- Mistral 7b ---
+    dspy.configure(lm=mistral_7b)
 
-try:
-    planeador_mistral_7b = dspy.Predict(Planeador)
-    resultado_mistral_7b = planeador_mistral_7b(
-        solicitudes_categorizadas = solicitudes_categorizadas,
-        system_summary = system_summary,
-        temporal_context = temporal_context
-    )
+    try:
+        planeador_mistral_7b = dspy.Predict(Planeador)
+        resultado_mistral_7b = planeador_mistral_7b(
+            solicitudes_categorizadas = solicitudes_categorizadas,
+            system_summary = system_summary,
+            temporal_context = temporal_context
+        )
 
-    print("\nPlaneador Mistral 7b\n")
-    print("\nPlan:\n", resultado_mistral_7b.plan_acciones)
-    print("\nEstado Solicitudes:\n", resultado_mistral_7b.estado_solicitudes)
-except Exception as e:
-    print(f"\nError en Planeador Mistral 7b: {e}")
-print("\n###############################################")
+        print("\nPlaneador Mistral 7b\n")
+        print("\nPlan:\n", resultado_mistral_7b.plan_acciones)
+        print("\nEstado Solicitudes:\n", resultado_mistral_7b.estado_solicitudes)
+    except Exception as e:
+        print(f"\nError en Planeador Mistral 7b: {e}")
+    print("\n###############################################")
 
-# %%
-# --- Qwen 3 4b ---
-dspy.configure(lm=qwen3_4b)
+    # %%
+    # --- Qwen 3 4b ---
+    dspy.configure(lm=qwen3_4b)
 
-try:
-    planeador_qwen3_4b = dspy.Predict(Planeador)
-    resultado_qwen3_4b = planeador_qwen3_4b(
-        solicitudes_categorizadas = solicitudes_categorizadas,
-        system_summary = system_summary,
-        temporal_context = temporal_context
-    )
+    try:
+        planeador_qwen3_4b = dspy.Predict(Planeador)
+        resultado_qwen3_4b = planeador_qwen3_4b(
+            solicitudes_categorizadas = solicitudes_categorizadas,
+            system_summary = system_summary,
+            temporal_context = temporal_context
+        )
 
-    print("\nPlaneador Qwen 3 4b\n")
-    print("\nPlan:\n", resultado_qwen3_4b.plan_acciones)
-    print("\nEstado Solicitudes:\n", resultado_qwen3_4b.estado_solicitudes)
-except Exception as e:
-    print(f"\nError en Planeador Qwen 3 4b: {e}")
-print("\n###############################################")
+        print("\nPlaneador Qwen 3 4b\n")
+        print("\nPlan:\n", resultado_qwen3_4b.plan_acciones)
+        print("\nEstado Solicitudes:\n", resultado_qwen3_4b.estado_solicitudes)
+    except Exception as e:
+        print(f"\nError en Planeador Qwen 3 4b: {e}")
+    print("\n###############################################")
 
-# %%
-# --- OpenRouter Llama 3.3 70b ---
-dspy.configure(lm=openrouter_llama33_70b)
+    # %%
+    # --- OpenRouter Llama 3.3 70b ---
+    dspy.configure(lm=openrouter_llama33_70b)
 
-try:
-    planeador_openrouter = dspy.Predict(Planeador)
-    resultado_openrouter = planeador_openrouter(
-        solicitudes_categorizadas = solicitudes_categorizadas,
-        system_summary = system_summary,
-        temporal_context = temporal_context
-    )
+    try:
+        planeador_openrouter = dspy.Predict(Planeador)
+        resultado_openrouter = planeador_openrouter(
+            solicitudes_categorizadas = solicitudes_categorizadas,
+            system_summary = system_summary,
+            temporal_context = temporal_context
+        )
 
-    print("\nPlaneador Llama 3.3 70b\n")
-    print("\nPlan:\n", resultado_openrouter.plan_acciones)
-    print("\nEstado Solicitudes:\n", resultado_openrouter.estado_solicitudes)
-except Exception as e:
-    print(f"\nError en Planeador Llama 3.3 70b: {e}")
-print("\n###############################################")
+        print("\nPlaneador Llama 3.3 70b\n")
+        print("\nPlan:\n", resultado_openrouter.plan_acciones)
+        print("\nEstado Solicitudes:\n", resultado_openrouter.estado_solicitudes)
+    except Exception as e:
+        print(f"\nError en Planeador Llama 3.3 70b: {e}")
+    print("\n###############################################")
 
-# %%
-# --- OpenRouter Gemini 2.0 Flash ---
-dspy.configure(lm=openrouter_gemini2flash)
+    # %%
+    # --- OpenRouter Gemini 2.0 Flash ---
+    dspy.configure(lm=openrouter_gemini2flash)
 
-try:
-    planeador_gemini2flash = dspy.Predict(Planeador)
-    resultado_gemini2flash = planeador_gemini2flash(
-        solicitudes_categorizadas = solicitudes_categorizadas,
-        system_summary = system_summary,
-        temporal_context = temporal_context
-    )
+    try:
+        planeador_gemini2flash = dspy.Predict(Planeador)
+        resultado_gemini2flash = planeador_gemini2flash(
+            solicitudes_categorizadas = solicitudes_categorizadas,
+            system_summary = system_summary,
+            temporal_context = temporal_context
+        )
 
-    print("\nPlaneador Gemini 2.0 Flash\n")
-    print("\nPlan:\n", resultado_gemini2flash.plan_acciones)
-    print("\nEstado Solicitudes:\n", resultado_gemini2flash.estado_solicitudes)
-except Exception as e:
-    print(f"\nError en Planeador Gemini 2.0 Flash: {e}")
-print("\n###############################################")
+        print("\nPlaneador Gemini 2.0 Flash\n")
+        print("\nPlan:\n", resultado_gemini2flash.plan_acciones)
+        print("\nEstado Solicitudes:\n", resultado_gemini2flash.estado_solicitudes)
+    except Exception as e:
+        print(f"\nError en Planeador Gemini 2.0 Flash: {e}")
+    print("\n###############################################")
 
-# %%
-# --- OpenRouter Mistral Devstral 2.123b ---
-dspy.configure(lm=openrouter_mistral_devstral2_123b)
+    # %%
+    # --- OpenRouter Mistral Devstral 2.123b ---
+    dspy.configure(lm=openrouter_mistral_devstral2_123b)
 
-try:
-    planeador_openrouter = dspy.Predict(Planeador)
-    resultado_openrouter = planeador_openrouter(
-        solicitudes_categorizadas = solicitudes_categorizadas,
-        system_summary = system_summary,
-        temporal_context = temporal_context
-    )
+    try:
+        planeador_openrouter = dspy.Predict(Planeador)
+        resultado_openrouter = planeador_openrouter(
+            solicitudes_categorizadas = solicitudes_categorizadas,
+            system_summary = system_summary,
+            temporal_context = temporal_context
+        )
 
-    print("\nPlaneador Mistral Devstral2_123b\n")
-    print("\nPlan:\n", resultado_openrouter.plan_acciones)
-    print("\nEstado Solicitudes:\n", resultado_openrouter.estado_solicitudes)
-except Exception as e:
-    print(f"\nError en Planeador Mistral Devstral2_123b: {e}")
-print("\n###############################################")
+        print("\nPlaneador Mistral Devstral2_123b\n")
+        print("\nPlan:\n", resultado_openrouter.plan_acciones)
+        print("\nEstado Solicitudes:\n", resultado_openrouter.estado_solicitudes)
+    except Exception as e:
+        print(f"\nError en Planeador Mistral Devstral2_123b: {e}")
+    print("\n###############################################")
 
-# %%
-# --- OpenRouter Xiaomi MimoV2 Flash 15b 309b ---
-dspy.configure(lm=openrouter_Xiaomi_mimoV2_flash_15b_309b)
+    # %%
+    # --- OpenRouter Xiaomi MimoV2 Flash 15b 309b ---
+    dspy.configure(lm=openrouter_Xiaomi_mimoV2_flash_15b_309b)
 
-try:
-    planeador_openrouter = dspy.Predict(Planeador)
-    resultado_openrouter = planeador_openrouter(
-        solicitudes_categorizadas = solicitudes_categorizadas,
-        system_summary = system_summary,
-        temporal_context = temporal_context
-    )
+    try:
+        planeador_openrouter = dspy.Predict(Planeador)
+        resultado_openrouter = planeador_openrouter(
+            solicitudes_categorizadas = solicitudes_categorizadas,
+            system_summary = system_summary,
+            temporal_context = temporal_context
+        )
 
-    print("\nPlaneador Xiaomi MimoV2 Flash 15b 309b\n")
-    print("\nPlan:\n", resultado_openrouter.plan_acciones)
-    print("\nEstado Solicitudes:\n", resultado_openrouter.estado_solicitudes)
-except Exception as e:
-    print(f"\nError en Planeador Xiaomi MimoV2 Flash 15b 309b: {e}")
-print("\n###############################################")
+        print("\nPlaneador Xiaomi MimoV2 Flash 15b 309b\n")
+        print("\nPlan:\n", resultado_openrouter.plan_acciones)
+        print("\nEstado Solicitudes:\n", resultado_openrouter.estado_solicitudes)
+    except Exception as e:
+        print(f"\nError en Planeador Xiaomi MimoV2 Flash 15b 309b: {e}")
+    print("\n###############################################")
 
-# %%
-# --- OpenRouter Qwen 3 Coder 35b 480b ---
-dspy.configure(lm=openrouter_qwen3_coder_35b_480b)
+    # %%
+    # --- OpenRouter Qwen 3 Coder 35b 480b ---
+    dspy.configure(lm=openrouter_qwen3_coder_35b_480b)
 
-try:
-    planeador_openrouter = dspy.Predict(Planeador)
-    resultado_openrouter = planeador_openrouter(
-        solicitudes_categorizadas = solicitudes_categorizadas,
-        system_summary = system_summary,
-        temporal_context = temporal_context
-    )
+    try:
+        planeador_openrouter = dspy.Predict(Planeador)
+        resultado_openrouter = planeador_openrouter(
+            solicitudes_categorizadas = solicitudes_categorizadas,
+            system_summary = system_summary,
+            temporal_context = temporal_context
+        )
 
-    print("\nPlaneador Qwen 3 Coder 35b 480b\n")
-    print("\nPlan:\n", resultado_openrouter.plan_acciones)
-    print("\nEstado Solicitudes:\n", resultado_openrouter.estado_solicitudes)
-except Exception as e:
-    print(f"\nError en Planeador Qwen 3 Coder 35b 480b: {e}")
-print("\n###############################################")
+        print("\nPlaneador Qwen 3 Coder 35b 480b\n")
+        print("\nPlan:\n", resultado_openrouter.plan_acciones)
+        print("\nEstado Solicitudes:\n", resultado_openrouter.estado_solicitudes)
+    except Exception as e:
+        print(f"\nError en Planeador Qwen 3 Coder 35b 480b: {e}")
+    print("\n###############################################")
 
-# %%
-# --- OpenRouter Deepseek R1 T2 Chimera 671b ---
-dspy.configure(lm=openrouter_deepseek_r1t2_chimera_671b)
+    # %%
+    # --- OpenRouter Deepseek R1 T2 Chimera 671b ---
+    dspy.configure(lm=openrouter_deepseek_r1t2_chimera_671b)
 
-try:
-    planeador_openrouter = dspy.Predict(Planeador)
-    resultado_openrouter = planeador_openrouter(
-        solicitudes_categorizadas = solicitudes_categorizadas,
-        system_summary = system_summary,
-        temporal_context = temporal_context
-    )
+    try:
+        planeador_openrouter = dspy.Predict(Planeador)
+        resultado_openrouter = planeador_openrouter(
+            solicitudes_categorizadas = solicitudes_categorizadas,
+            system_summary = system_summary,
+            temporal_context = temporal_context
+        )
 
-    print("\nPlaneador Deepseek R1 T2 Chimera 671b\n")
-    print("\nPlan:\n", resultado_openrouter.plan_acciones)
-    print("\nEstado Solicitudes:\n", resultado_openrouter.estado_solicitudes)
-except Exception as e:
-    print(f"\nError en Planeador Deepseek R1 T2 Chimera 671b: {e}")
-print("\n###############################################")
+        print("\nPlaneador Deepseek R1 T2 Chimera 671b\n")
+        print("\nPlan:\n", resultado_openrouter.plan_acciones)
+        print("\nEstado Solicitudes:\n", resultado_openrouter.estado_solicitudes)
+    except Exception as e:
+        print(f"\nError en Planeador Deepseek R1 T2 Chimera 671b: {e}")
+    print("\n###############################################")
 
 
-""" # %%
-# --- Gemini 2.5 Flash ---
-dspy.configure(lm=gemini_25_flash)
+    """ # %%
+    # --- Gemini 2.5 Flash ---
+    dspy.configure(lm=gemini_25_flash)
 
-try:
-    planeador_gemini = dspy.Predict(Planeador)
-    resultado_gemini = planeador_gemini(
-        solicitudes_categorizadas = solicitudes_categorizadas,
-        system_summary = system_summary,
-        temporal_context = temporal_context
-    )
+    try:
+        planeador_gemini = dspy.Predict(Planeador)
+        resultado_gemini = planeador_gemini(
+            solicitudes_categorizadas = solicitudes_categorizadas,
+            system_summary = system_summary,
+            temporal_context = temporal_context
+        )
 
-    print("\nPlaneador Gemini 2.5 Flash\n")
-    print("\nPlan:\n", resultado_gemini.plan_acciones)
-    print("\nEstado Solicitudes:\n", resultado_gemini.estado_solicitudes)
-except Exception as e:
-    print(f"\nError en Planeador Gemini 2.5 Flash: {e}")
-print("\n###############################################") """
+        print("\nPlaneador Gemini 2.5 Flash\n")
+        print("\nPlan:\n", resultado_gemini.plan_acciones)
+        print("\nEstado Solicitudes:\n", resultado_gemini.estado_solicitudes)
+    except Exception as e:
+        print(f"\nError en Planeador Gemini 2.5 Flash: {e}")
+    print("\n###############################################") """

@@ -353,7 +353,7 @@ if __name__ == "__main__":
     print(f"{'='*60}\n")
     
     # Contexto Simulado
-    dispositivos_conocidos = ["nevera", "lavadora", "Total_Casa", "aire_acondicionado", "luces"]
+    dispositivos_conocidos = ["Ventilador", "PC", "TV", "Total_Casa", "AC", "Lampara"]
     contexto_temporal = {
         "referencia_actual": "2024-12-25T18:00:00"
     }
