@@ -139,22 +139,30 @@ async def ejecutar_plan(server_url: str, plan_filtrado: list) -> dict:
                 for k, v in inputs_originales.items():
                     # Si es string y parece una referencia
                     if isinstance(v, str) and v.startswith("@") and "." in v:
-                        # Buscar en resultados previos
                         if v in resultados_raw:
-                            # Asumimos que pasamos el resultado completo o un campo específico. 
-                            # Por ahora, pasamos el resultado crudo anidado.
-                            inputs_finales[k] = resultados_raw[v].get("resultado")
+                            res_previo = resultados_raw[v].get("resultado")
+                            if res_previo:
+                                inputs_finales[k] = res_previo
+                                print(f"    -> Referencia {v} resuelta con éxito.")
+                            else:
+                                inputs_finales[k] = v
+                                print(f"    -> ADVERTENCIA: Referencia {v} encontrada pero sin resultado. Usando literal.")
                         else:
-                            # Referencia no resuelta (quizás falló la acción previa o no existe)
-                            inputs_finales[k] = v 
-                    # Si es diccionario (caso anidado simple, e.g. objetivos comparacion)
+                            inputs_finales[k] = v
+                            print(f"    -> ADVERTENCIA: Referencia {v} no encontrada en resultados previos. Usando literal.")
+                    
+                    # Si es diccionario (caso de objetivos de comparación)
                     elif isinstance(v, dict):
-                         # Copia superficial para no modificar el original iterando
-                         inputs_finales[k] = v.copy()
-                         for sub_k, sub_v in v.items():
-                             if isinstance(sub_v, str) and sub_v.startswith("@") and "." in sub_v:
-                                 if sub_v in resultados_raw:
-                                     inputs_finales[k][sub_k] = resultados_raw[sub_v].get("resultado")
+                        inputs_finales[k] = v.copy()
+                        for sub_k, sub_v in v.items():
+                            if isinstance(sub_v, str) and sub_v.startswith("@") and "." in sub_v:
+                                if sub_v in resultados_raw:
+                                    res_sub = resultados_raw[sub_v].get("resultado")
+                                    if res_sub:
+                                        inputs_finales[k][sub_k] = res_sub
+                                        print(f"    -> Referencia anidada {sub_v} en {k}.{sub_k} resuelta.")
+                                    else:
+                                        print(f"    -> ADVERTENCIA: Referencia anidada {sub_v} sin datos.")
                     else:
                         inputs_finales[k] = v
                 
@@ -168,13 +176,13 @@ async def ejecutar_plan(server_url: str, plan_filtrado: list) -> dict:
                 }
                 
                 try:
+                    # Log de inputs para depuración
+                    print(f"  -> Llamando a {tool_name} con inputs: {list(inputs_finales.keys())}")
                     res_tool = await client.call_tool(tool_name, inputs_finales)
                     
-                    # Extraer el contenido real del objeto CallToolResult
-                    # Estructura típica: CallToolResult(content=[TextContent(type='text', text='...')])
+                    # Extraer el contenido
                     dato_real = None
                     if hasattr(res_tool, 'content') and res_tool.content:
-                        # Iteramos para encontrar contenido de texto
                         for c in res_tool.content:
                             if hasattr(c, 'type') and c.type == 'text' and hasattr(c, 'text'):
                                 try:
@@ -185,26 +193,27 @@ async def ejecutar_plan(server_url: str, plan_filtrado: list) -> dict:
                                 break
                     
                     if dato_real is None:
-                         # Fallback si no encontramos estructura estándar
                          dato_real = str(res_tool)
 
                     resultado_item["resultado"] = dato_real
-                    print(f"  -> OK")
+                    print(f"  -> {id_accion} COMPLETADA")
                 except Exception as e:
-                    msg_error = f"Error ejecución tool: {str(e)}"
-                    print(f"  -> {msg_error}")
+                    msg_error = f"Error ejecución tool {id_accion}: {str(e)}"
+                    print(f"  -> !!! {msg_error}")
                     resultado_item["error"] = msg_error
                 
                 # Guardar para dependencias futuras
                 resultados_raw[id_accion] = resultado_item
                 
                 # Agregar al reporte agrupado
+                if id_solicitud not in reporte_final:
+                    reporte_final[id_solicitud] = []
                 reporte_final[id_solicitud].append(resultado_item)
 
     except Exception as e:
-        print(f"Error general de conexión o ejecución MCP: {e}")
-        # Intentar reportar error general en todas las solicitudes pendientes?
-        # Por ahora solo retornamos lo que se haya logrado
+        print(f"Error CRÍTICO en bucle de ejecución MCP: {e}")
+        import traceback
+        traceback.print_exc()
         
     return reporte_final
 
