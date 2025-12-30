@@ -190,6 +190,10 @@ def validar_argumentos(
              properties = tool_def.get("meta", {}).get("input_schema", {}).get("properties", {})
              
              for field, value in inputs.items():
+                 # Si es referencia, saltar validación de enum
+                 if isinstance(value, str) and value.startswith("@"):
+                     continue
+                     
                  if field in properties:
                      prop_def = properties[field]
                      if "enum" in prop_def:
@@ -202,18 +206,29 @@ def validar_argumentos(
         if "dispositivos" in inputs:
             if isinstance(inputs["dispositivos"], list):
                 for d in inputs["dispositivos"]:
+                    # Si es referencia, saltar validación
+                    if isinstance(d, str) and d.startswith("@"):
+                        continue
+                        
                     if isinstance(d, str) and d not in dispositivos_validos:
                         errores.append(f"Dispositivo desconocido: '{d}'")
         
         # Caso B: 'dispositivo' simple
         if "dispositivo" in inputs:
-             if inputs["dispositivo"] not in dispositivos_validos:
-                 errores.append(f"Dispositivo desconocido: '{inputs['dispositivo']}'")
+             val = inputs["dispositivo"]
+             # Si es referencia, saltar
+             if not (isinstance(val, str) and val.startswith("@")):
+                 if val not in dispositivos_validos:
+                     errores.append(f"Dispositivo desconocido: '{val}'")
                  
         # Caso C: Objetivos de comparación (objetivo_a/b -> dispositivo)
         for key in ["objetivo_a", "objetivo_b"]:
             if key in inputs and isinstance(inputs[key], dict):
                 disp = inputs[key].get("dispositivo")
+                # Si es referencia, saltar (aunque es raro referencia anidada al campo dispositivo, es posible)
+                if isinstance(disp, str) and disp.startswith("@"):
+                    continue
+                    
                 if disp and disp not in dispositivos_validos:
                     errores.append(f"Dispositivo desconocido en {key}: '{disp}'")
 
@@ -231,7 +246,11 @@ def validar_argumentos(
 
         for f_ini_str, f_fin_str, contexto in fechas_a_validar:
             if not isinstance(f_ini_str, str) or not isinstance(f_fin_str, str):
-                continue # Ya debería haber fallado en el chequeo de tipos
+                continue 
+
+            # SKIP si son referencias
+            if f_ini_str.startswith("@") or f_fin_str.startswith("@"):
+                continue
                 
             try:
                 dt_ini = datetime.fromisoformat(f_ini_str)
@@ -359,8 +378,8 @@ if __name__ == "__main__":
     }
 
     # Ejemplo con un error de tipo (granularidad=123) y un error de enum (granularidad="semanal") para probar
-    plan_ejemplo = [{'id': '@1.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['nevera'], 'fecha_inicio': '2024-11-14T18:00', 'fecha_fin': '2024-11-14T23:59', 'granularidad': 'hora'}, 'descripcion': 'Obtener consumo horario de la nevera durante la noche de ayer para visualización gráfica.'}, {'id': '@2.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['lavadora'], 'fecha_inicio': '2024-11-09T06:00', 'fecha_fin': '2024-11-09T11:59', 'granularidad': 'hora'}, 'descripcion': 'Obtener consumo horario de la lavadora durante la mañana del sábado pasado para visualización gráfica.'}, {'id': '@3.1', 'server_id': 'mcp_server_gravity', 'tool': 'analizar_comparacion', 'inputs': {'objetivo_a': {'dispositivo': 'nevera', 'fecha_inicio': '2024-11-14T18:00', 'fecha_fin': '2024-11-14T23:59'}, 'objetivo_b': {'dispositivo': 'lavadora', 'fecha_inicio': '2024-11-09T06:00', 'fecha_fin': '2024-11-09T11:59'}}, 'descripcion': 'Comparar consumo energético entre nevera (noche de ayer) y lavadora (mañana del sábado pasado).'}, {'id': '@4.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['Total_Casa'], 'fecha_inicio': '2024-01-01T00:00', 'fecha_fin': '2024-12-31T23:59', 'granularidad': 'mes'}, 'descripcion': 'Obtener consumo mensual agregado de todos los dispositivos durante el año 2024 para visualización gráfica.'}]
-
+    #plan_ejemplo = [{'id': '@1.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['nevera'], 'fecha_inicio': '2024-11-14T18:00', 'fecha_fin': '2024-11-14T23:59', 'granularidad': 'hora'}, 'descripcion': 'Obtener consumo horario de la nevera durante la noche de ayer para visualización gráfica.'}, {'id': '@2.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['lavadora'], 'fecha_inicio': '2024-11-09T06:00', 'fecha_fin': '2024-11-09T11:59', 'granularidad': 'hora'}, 'descripcion': 'Obtener consumo horario de la lavadora durante la mañana del sábado pasado para visualización gráfica.'}, {'id': '@3.1', 'server_id': 'mcp_server_gravity', 'tool': 'analizar_comparacion', 'inputs': {'objetivo_a': {'dispositivo': 'nevera', 'fecha_inicio': '2024-11-14T18:00', 'fecha_fin': '2024-11-14T23:59'}, 'objetivo_b': {'dispositivo': 'lavadora', 'fecha_inicio': '2024-11-09T06:00', 'fecha_fin': '2024-11-09T11:59'}}, 'descripcion': 'Comparar consumo energético entre nevera (noche de ayer) y lavadora (mañana del sábado pasado).'}, {'id': '@4.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['Total_Casa'], 'fecha_inicio': '2024-01-01T00:00', 'fecha_fin': '2024-12-31T23:59', 'granularidad': 'mes'}, 'descripcion': 'Obtener consumo mensual agregado de todos los dispositivos durante el año 2024 para visualización gráfica.'}]
+    plan_ejemplo = [{'id': '@1.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['Ventilador'], 'fecha_inicio': '2024-11-14T00:00', 'fecha_fin': '2024-11-14T23:59'}, 'descripcion': 'Obtención de consumo del Ventilador en la noche del 14 de noviembre'}, {'id': '@2.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['PC'], 'fecha_inicio': '2024-11-10T00:00', 'fecha_fin': '2024-11-10T23:59'}, 'descripcion': 'Obtención de consumo del PC en la mañana del 10 de noviembre'}, {'id': '@3.1', 'server_id': 'mcp_server_gravity', 'tool': 'analizar_comparacion', 'inputs': {'objetivo_a': {'dispositivo': 'Ventilador', 'fecha_inicio': '2024-11-14T00:00', 'fecha_fin': '2024-11-14T23:59'}, 'objetivo_b': {'dispositivo': 'PC', 'fecha_inicio': '2024-11-10T00:00', 'fecha_fin': '2024-11-10T23:59'}}, 'descripcion': 'Comparación del consumo entre el Ventilador y el PC en la noche del 14 de noviembre y la mañana del 10 de noviembre'}, {'id': '@4.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['Total_Casa'], 'fecha_inicio': '2024-01-01T00:00', 'fecha_fin': '2024-11-15T23:59'}, 'descripcion': 'Obtención del consumo total de la casa desde el 1 de enero hasta el 15 de noviembre'}]
     if system_summary:
         print("System Summary cargado correctamente.\n")
         

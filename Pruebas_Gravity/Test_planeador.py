@@ -77,7 +77,7 @@ print("Modelos cargados correctamente")
 
 class Planeador(dspy.Signature):
     """
-    El planeador se encarga de traducir las solicitudes categorizadas por el inferenciador
+    Traduce las solicitudes categorizadas por el inferenciador
     en un conjunto estructurado de acciones sobre las herramientas disponibles del sistema.
     Su función es decidir qué herramientas utilizar, en qué orden y con qué parámetros,
     evaluando la viabilidad funcional de cada solicitud.
@@ -162,8 +162,8 @@ class Planeador(dspy.Signature):
 # Datos de Prueba
 # -------------------------------------------------------------------------
 # Simulación de salida del Interpretador (Usando ejemplo de Llama 3.3 70b)
-solicitudes_categorizadas = {'@1': {'solicitud': 'Necesito saber cuánto consumió mi nevera ayer por la noche.', 'escenario': 'consumo_basico', 'formato': 'texto'}, '@2': {'solicitud': 'Necesito saber cuánto consumió mi lavadora el sábado pasado en la mañana.', 'escenario': 'consumo_basico', 'formato': 'texto'}, '@3': {'solicitud': 'Quiero que me digas si entre el consumo de mi nevera ayer por la noche y el consumo de mi lavadora el sábado pasado en la mañana, cuál gastó más energía.', 'escenario': 'comparacion_consumos', 'formato': 'mixto'}, '@4': {'solicitud': 'Quiero saber cuánto fue el consumo de todos los dispositivos en el año 2024.', 'escenario': 'consumo_basico', 'formato': 'grafico'}}
-
+#solicitudes_categorizadas = {'@1': {'solicitud': 'Necesito saber cuánto consumió mi nevera ayer por la noche.', 'escenario': 'consumo_basico', 'formato': 'texto'}, '@2': {'solicitud': 'Necesito saber cuánto consumió mi lavadora el sábado pasado en la mañana.', 'escenario': 'consumo_basico', 'formato': 'texto'}, '@3': {'solicitud': 'Quiero que me digas si entre el consumo de mi nevera ayer por la noche y el consumo de mi lavadora el sábado pasado en la mañana, cuál gastó más energía.', 'escenario': 'comparacion_consumos', 'formato': 'mixto'}, '@4': {'solicitud': 'Quiero saber cuánto fue el consumo de todos los dispositivos en el año 2024.', 'escenario': 'consumo_basico', 'formato': 'grafico'}}
+solicitudes_categorizadas = {'@1': {'solicitud': 'Consumo de mi Ventilador ayer por la noche', 'escenario': 'consumo_basico', 'formato': 'texto'}, '@2': {'solicitud': 'Consumo de mi PC el sábado pasado en la mañana', 'escenario': 'consumo_basico', 'formato': 'texto'}, '@3': {'solicitud': 'Comparación del consumo de mi Ventilador y mi PC entre ayer y el sábado pasado', 'escenario': 'comparacion_consumos', 'formato': 'mixto'}, '@4': {'solicitud': 'Consumo total de todos los dispositivos hasta noviembre del 2024', 'escenario': 'consumo_basico', 'formato': 'grafico'}}
 temporal_context = {
     "referencia_actual": "2024-11-15T10:30",
     "zona_horaria": "America/Bogota",

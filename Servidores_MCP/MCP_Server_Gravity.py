@@ -22,6 +22,151 @@ DATASET = cargar_dataset_sinselejo(csv_path)
 # Asegurar que TimeStamp es datetime
 DATASET['TimeStamp'] = pd.to_datetime(DATASET['TimeStamp'])
 
+""" 
+#-------------------------
+# Herramienta auxiliar
+#-------------------------
+
+@mcp.tool(
+    meta={
+        "proposito": (
+            "Calcula rangos de fechas precisos en formato ISO 8601 a partir de expresiones "
+            "temporales relativas y una fecha de referencia."
+        ),
+        "usar_si": [
+            "El usuario usa términos como 'ayer', 'hoy', 'semana pasada', 'mes pasado'",
+            "Se requiere convertir periodos como 'ayer por la noche' a timestamps exactos",
+            "El LLM necesita ayuda para determinar fechas de inicio y fin"
+        ],
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "expresion": {
+                    "type": "string",
+                    "description": "Expresión temporal relativa (ej: 'ayer noche', 'semana pasada')."
+                },
+                "fecha_referencia": {
+                    "type": "string",
+                    "description": "Fecha actual del sistema en formato ISO (ej: '2024-11-15T10:00')."
+                },
+                "rangos_horarios": {
+                    "type": "object",
+                    "description": "Definición opcional de horas para madrugada, mañana, tarde, noche.",
+                    "default": {
+                        "madrugada": {"inicio": "00:00", "fin": "05:59"},
+                        "mañana": {"inicio": "06:00", "fin": "11:59"},
+                        "tarde": {"inicio": "12:00", "fin": "17:59"},
+                        "noche": {"inicio": "18:00", "fin": "23:59"}
+                    }
+                }
+            },
+            "required": ["expresion", "fecha_referencia"]
+        },
+        "output_schema": {
+            "type": "object",
+            "properties": {
+                "status": {"type": "string"},
+                "fecha_inicio": {"type": "string"},
+                "fecha_fin": {"type": "string"},
+                "mensaje": {"type": "string"}
+            }
+        }
+    }
+)
+def determinar_rango_temporal(expresion: str, fecha_referencia: str, rangos_horarios: dict = None) -> dict:
+    from datetime import timedelta
+    import re
+    
+    if rangos_horarios is None:
+        rangos_horarios = {
+            "madrugada": {"inicio": "00:00", "fin": "05:59"},
+            "mañana": {"inicio": "06:00", "fin": "11:59"},
+            "tarde": {"inicio": "12:00", "fin": "17:59"},
+            "noche": {"inicio": "18:00", "fin": "23:59"}
+        }
+
+    try:
+        ref_dt = pd.to_datetime(fecha_referencia)
+        expresion = expresion.lower().strip()
+        
+        # 1. Determinar el DÍA base
+        target_date = ref_dt
+        days_offset = 0
+        is_week_or_month = False
+        start_dt = None
+        end_dt = None
+        
+        # Palabras clave para días
+        if "ayer" in expresion or "anoche" in expresion:
+            days_offset = -1
+        elif "antier" in expresion or "anteayer" in expresion:
+            days_offset = -2
+        elif "hoy" in expresion:
+            days_offset = 0
+            
+        # Detección de rangos más amplios
+        if "semana pasada" in expresion:
+            is_week_or_month = True
+            current_weekday = ref_dt.weekday() # 0=Lunes
+            this_monday = ref_dt - timedelta(days=current_weekday)
+            last_monday = this_monday - timedelta(days=7)
+            start_dt = last_monday.replace(hour=0, minute=0, second=0)
+            end_dt = last_monday + timedelta(days=6, hours=23, minutes=59, seconds=59)
+            
+        elif "mes pasado" in expresion:
+            is_week_or_month = True
+            first_this_month = ref_dt.replace(day=1)
+            last_prev_month = first_this_month - timedelta(days=1)
+            start_prev_month = last_prev_month.replace(day=1)
+            start_dt = start_prev_month.replace(hour=0, minute=0, second=0)
+            end_dt = last_prev_month.replace(hour=23, minute=59, second=59)
+
+        if not is_week_or_month:
+            # Es un día Específico (Hoy, Ayer, Antier, o fecha implícita)
+            # Nota: Si no encuentra keyword, asume '0' (hoy) o el contexto dado
+            target_date = ref_dt + timedelta(days=days_offset)
+            
+            # 2. Determinar la FRANJA HORARIA dentro de ese día
+            # Buscar coincidencia con claves de rangos_horarios (madrugada, mañana, tarde, noche)
+            franja_encontrada = None
+            
+            # Prioridad: buscar tokens completos para evitar "mañana" (futuro) vs "mañana" (hora)
+            # Solución simple: si dice "ayer por la mañana", el "ayer" ya definió el día -1.
+            
+            for key in rangos_horarios:
+                # Usar regex para buscar la palabra completa (ej: evitar que 'anochecer' active 'noche' erróneamente si fuera el caso, 
+                # o simplificar búsqueda)
+                if key in expresion:
+                    franja_encontrada = rangos_horarios[key]
+                    break
+            
+            # Caso especial: "Anoche" implica ayer + noche
+            if "anoche" in expresion:
+                franja_encontrada = rangos_horarios["noche"]
+                # Ya el offset se puso en -1 arriba
+
+            if franja_encontrada:
+                inicio_str = franja_encontrada["inicio"]
+                fin_str = franja_encontrada["fin"]
+                
+                start_dt = datetime.strptime(f"{target_date.date()} {inicio_str}", "%Y-%m-%d %H:%M")
+                end_dt = datetime.strptime(f"{target_date.date()} {fin_str}", "%Y-%m-%d %H:%M")
+            else:
+                # Todo el día (00:00 a 23:59)
+                start_dt = target_date.replace(hour=0, minute=0, second=0)
+                end_dt = target_date.replace(hour=23, minute=59, second=59)
+
+        return {
+            "status": "success",
+            "fecha_inicio": start_dt.isoformat(),
+            "fecha_fin": end_dt.isoformat(),
+            "mensaje": f"Rango calculado para '{expresion}'"
+        }
+
+    except Exception as e:
+        return {"status": "error", "mensaje": f"Error calculando fechas: {str(e)}"}
+
+ """
 # =====================================================
 # ESCENARIO 1: CONSULTAS DE CONSUMO ENERGÉTICO BÁSICO
 # =====================================================
@@ -470,6 +615,7 @@ def analizar_tendencia(dispositivo: str, fecha_inicio: str, fecha_fin: str) -> d
         }
     }
 
-if __name__ == "__main__":
-    mcp.run(transport="sse") #Creo que por default se crea con los parámetros de red host='0.0.0.0', port=3000
 
+
+if __name__ == "__main__":
+    mcp.run(transport="sse")

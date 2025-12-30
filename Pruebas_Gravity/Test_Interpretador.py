@@ -73,7 +73,7 @@ print("Modelos cargados correctamente")
 # -------------------------------------------------------------------------
 
 class Interpretador(dspy.Signature):
-    "El interpretador se encarga de identificar y categorizar las solicitudes e indicaciones adicionales realizadas por el usuario, para facilitar una posterior interpretacion."
+    "Identifica y categoriza las solicitudes e indicaciones adicionales realizadas por el usuario, para facilitar una posterior interpretacion."
 
     prompt_usuario: str = dspy.InputField(
         desc="prompt del usuario en lenguaje natural."
@@ -184,13 +184,19 @@ escenarios_entrada = {
     }
 
 }
-
+""" 
 prompt_usuario=("Necesito saber cuánto consumió mi nevera ayer por la noche, "
     "y también cuánto consumió mi lavadora el sábado pasado en la mañana. "
     "Además quiero que me digas si entre esos dos días cuál gastó más energía. "
     "Ah, y por cierto, mientras miraba esos consumos se me descargó el celular "
     "y me dio mucha pereza pararme a buscar el cargador, pero igual quiero la comparación."
     "Papá también pidió que le dijeras cuánto fue el consumo de todos los dispositivos en el año 2024, quiero ver gráficas de todo lo que se pueda")
+ """
+prompt_usuario =("Necesito saber cuánto consumió mi Ventilador ayer por la noche, " 
+                "y también cuánto consumió mi PC el sábado pasado en la mañana. "
+                "Además, quiero que me digas si entre esos dos días cuál gastó más energía. "
+                "Ah, y por cierto, mientras miraba esos consumos se me descargó el celular y me dio mucha pereza pararme a buscar el cargador, pero igual quiero la comparación. "
+                "Papá también pidió que le dijeras cuánto fue el consumo de todos los dispositivos hasta noviembre del 2024, quiero ver gráficas de todo lo que se pueda")
 
 print("Signature y Datos de prueba cargados correctamente")
 # %%

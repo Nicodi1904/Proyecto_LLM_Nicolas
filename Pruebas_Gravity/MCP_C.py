@@ -6,8 +6,96 @@ import numpy as np
 SERVER_URL = "http://127.0.0.1:8000/sse"
 
 # Variable con plan estructurado (Formato del Planeador)
-ejemplo_plan_completo = [{'id': '@1.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['TV'], 'fecha_inicio': '2024-11-14T18:00', 'fecha_fin': '2024-11-14T23:59', 'granularidad': 'hora'}, 'descripcion': 'Obtener consumo horario de la TV durante la noche de ayer para visualización gráfica.'}, {'id': '@2.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['Ventilador'], 'fecha_inicio': '2024-11-09T06:00', 'fecha_fin': '2024-11-09T11:59', 'granularidad': 'hora'}, 'descripcion': 'Obtener consumo horario de la Ventilador durante la mañana del sábado pasado para visualización gráfica.'}, {'id': '@3.1', 'server_id': 'mcp_server_gravity', 'tool': 'analizar_comparacion', 'inputs': {'objetivo_a': {'dispositivo': 'TV', 'fecha_inicio': '2024-11-14T18:00', 'fecha_fin': '2024-11-14T23:59'}, 'objetivo_b': {'dispositivo': 'Ventilador', 'fecha_inicio': '2024-11-09T06:00', 'fecha_fin': '2024-11-09T11:59'}}, 'descripcion': 'Comparar consumo energético entre TV (noche de ayer) y Ventilador (mañana del sábado pasado).'}, {'id': '@4.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['Total_Casa'], 'fecha_inicio': '2024-01-01T00:00', 'fecha_fin': '2024-12-31T23:59', 'granularidad': 'mes'}, 'descripcion': 'Obtener consumo mensual agregado de todos los dispositivos durante el año 2024 para visualización gráfica.'}]
+#ejemplo_plan_completo = [{'id': '@1.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['TV'], 'fecha_inicio': '2024-11-14T18:00', 'fecha_fin': '2024-11-14T23:59', 'granularidad': 'hora'}, 'descripcion': 'Obtener consumo horario de la TV durante la noche de ayer para visualización gráfica.'}, {'id': '@2.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['Ventilador'], 'fecha_inicio': '2024-11-09T06:00', 'fecha_fin': '2024-11-09T11:59', 'granularidad': 'hora'}, 'descripcion': 'Obtener consumo horario de la Ventilador durante la mañana del sábado pasado para visualización gráfica.'}, {'id': '@3.1', 'server_id': 'mcp_server_gravity', 'tool': 'analizar_comparacion', 'inputs': {'objetivo_a': {'dispositivo': 'TV', 'fecha_inicio': '2024-11-14T18:00', 'fecha_fin': '2024-11-14T23:59'}, 'objetivo_b': {'dispositivo': 'Ventilador', 'fecha_inicio': '2024-11-09T06:00', 'fecha_fin': '2024-11-09T11:59'}}, 'descripcion': 'Comparar consumo energético entre TV (noche de ayer) y Ventilador (mañana del sábado pasado).'}, {'id': '@4.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['Total_Casa'], 'fecha_inicio': '2024-01-01T00:00', 'fecha_fin': '2024-12-31T23:59', 'granularidad': 'mes'}, 'descripcion': 'Obtener consumo mensual agregado de todos los dispositivos durante el año 2024 para visualización gráfica.'}]
+""" 
+ejemplo_plan_completo = [
+  {
+    "id": "@1.1",
+    "server_id": "mcp_server_gravity",
+    "tool": "obtener_consumo",
+    "inputs": {
+      "dispositivos": [
+        "Total_Casa"
+      ],
+      "fecha_inicio": "2024-01-01T00:00:00",
+      "fecha_fin": "2024-12-28T23:59:59",
+      "granularidad": "mes"
+    },
+    "descripcion": "Obtener consumo mensual de todos los dispositivos en el año 2024."
+  },
+  {
+    "id": "@1.2",
+    "server_id": "mcp_server_gravity",
+    "tool": "analizar_tendencia",
+    "inputs": {
+      "dispositivo": "Total_Casa",
+      "fecha_inicio": "2024-01-01T00:00:00",
+      "fecha_fin": "2024-12-28T23:59:59"
+    },
+    "descripcion": "Determinar la tendencia general del consumo energético de todos los dispositivos en el año 2024."
+  }
+]
+ """
 
+ejemplo_plan_completo=[
+  {
+    "id": "@1.1",
+    "server_id": "mcp_server_gravity",
+    "tool": "obtener_consumo",
+    "inputs": {
+      "dispositivos": [
+        "Ventilador"
+      ],
+      "fecha_inicio": "2024-11-14T00:00",
+      "fecha_fin": "2024-11-14T23:59"
+    },
+    "descripcion": "Obtención de consumo del Ventilador en la noche del 14 de noviembre"
+  },
+  {
+    "id": "@2.1",
+    "server_id": "mcp_server_gravity",
+    "tool": "obtener_consumo",
+    "inputs": {
+      "dispositivos": [
+        "PC"
+      ],
+      "fecha_inicio": "2024-11-10T00:00",
+      "fecha_fin": "2024-11-10T23:59"
+    },
+    "descripcion": "Obtención de consumo del PC en la mañana del 10 de noviembre"
+  },
+  {
+    "id": "@3.1",
+    "server_id": "mcp_server_gravity",
+    "tool": "analizar_comparacion",
+    "inputs": {
+      "objetivo_a": {
+        "dispositivo": "Ventilador",
+        "fecha_inicio": "2024-11-14T00:00",
+        "fecha_fin": "2024-11-14T23:59"
+      },
+      "objetivo_b": {
+        "dispositivo": "PC",
+        "fecha_inicio": "2024-11-10T00:00",
+        "fecha_fin": "2024-11-10T23:59"
+      }
+    },
+    "descripcion": "Comparación del consumo entre el Ventilador y el PC en la noche del 14 de noviembre y la mañana del 10 de noviembre"
+  },
+  {
+    "id": "@4.1",
+    "server_id": "mcp_server_gravity",
+    "tool": "obtener_consumo",
+    "inputs": {
+      "dispositivos": [
+        "Total_Casa"
+      ],
+      "fecha_inicio": "2024-01-01T00:00",
+      "fecha_fin": "2024-12-31T23:59"
+    },
+    "descripcion": "Obtención del consumo total de la casa desde el 1 de enero hasta el 31 de diciembre"
+  }
+]
 async def ejecutar_plan(server_url: str, plan_filtrado: list) -> dict:
     """
     Ejecuta un plan de acciones VALIDADO contra un servidor MCP.
@@ -119,6 +207,51 @@ async def ejecutar_plan(server_url: str, plan_filtrado: list) -> dict:
         # Por ahora solo retornamos lo que se haya logrado
         
     return reporte_final
+
+def consolidar_reportes(reporte_ejecucion: dict, acciones_invalidas: list) -> dict:
+    """
+    Consolida el reporte de ejecución del MCP con las acciones inválidas del verificador
+    en un único reporte unificado para el Gerente.
+    
+    Args:
+        reporte_ejecucion: Diccionario con resultados de acciones ejecutadas (salida de ejecutar_plan)
+                          Formato: {'@1': [accion_dict], '@2': [accion_dict], ...}
+        acciones_invalidas: Lista de acciones rechazadas por el verificador
+                           Cada acción tiene: id, server_id, tool, inputs, descripcion, error_verificacion
+    
+    Returns:
+        Diccionario consolidado con todas las acciones (ejecutadas e inválidas)
+        Formato: {'@1': [accion_dict], '@2': [accion_dict], ...}
+    """
+    reporte_consolidado = reporte_ejecucion.copy()
+    
+    # Agregar acciones inválidas al reporte
+    for accion_invalida in acciones_invalidas:
+        id_accion = accion_invalida.get("id", "")
+        
+        # Extraer ID de solicitud (@1.1 -> @1)
+        if "." in id_accion:
+            id_solicitud = id_accion.split(".")[0]
+        else:
+            id_solicitud = id_accion
+        
+        # Crear entrada de acción inválida con formato similar al de ejecución
+        entrada_invalida = {
+            "accion_id": id_accion,
+            "tool": accion_invalida.get("tool"),
+            "descripcion": accion_invalida.get("descripcion", ""),
+            "resultado": None,
+            "error": "Acción rechazada en validación",
+            "error_verificacion": accion_invalida.get("error_verificacion", "Error desconocido")
+        }
+        
+        # Agregar al reporte consolidado
+        if id_solicitud not in reporte_consolidado:
+            reporte_consolidado[id_solicitud] = []
+        
+        reporte_consolidado[id_solicitud].append(entrada_invalida)
+    
+    return reporte_consolidado
 
 if __name__ == "__main__":
     # Prueba directa
