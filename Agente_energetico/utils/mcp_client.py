@@ -1,101 +1,7 @@
 import asyncio
 from fastmcp import Client
-import numpy as np
+import json
 
-# Dirección del servidor
-SERVER_URL = "http://127.0.0.1:8000/sse"
-
-# Variable con plan estructurado (Formato del Planeador)
-#ejemplo_plan_completo = [{'id': '@1.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['TV'], 'fecha_inicio': '2024-11-14T18:00', 'fecha_fin': '2024-11-14T23:59', 'granularidad': 'hora'}, 'descripcion': 'Obtener consumo horario de la TV durante la noche de ayer para visualización gráfica.'}, {'id': '@2.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['Ventilador'], 'fecha_inicio': '2024-11-09T06:00', 'fecha_fin': '2024-11-09T11:59', 'granularidad': 'hora'}, 'descripcion': 'Obtener consumo horario de la Ventilador durante la mañana del sábado pasado para visualización gráfica.'}, {'id': '@3.1', 'server_id': 'mcp_server_gravity', 'tool': 'analizar_comparacion', 'inputs': {'objetivo_a': {'dispositivo': 'TV', 'fecha_inicio': '2024-11-14T18:00', 'fecha_fin': '2024-11-14T23:59'}, 'objetivo_b': {'dispositivo': 'Ventilador', 'fecha_inicio': '2024-11-09T06:00', 'fecha_fin': '2024-11-09T11:59'}}, 'descripcion': 'Comparar consumo energético entre TV (noche de ayer) y Ventilador (mañana del sábado pasado).'}, {'id': '@4.1', 'server_id': 'mcp_server_gravity', 'tool': 'obtener_consumo', 'inputs': {'dispositivos': ['Total_Casa'], 'fecha_inicio': '2024-01-01T00:00', 'fecha_fin': '2024-12-31T23:59', 'granularidad': 'mes'}, 'descripcion': 'Obtener consumo mensual agregado de todos los dispositivos durante el año 2024 para visualización gráfica.'}]
-""" 
-ejemplo_plan_completo = [
-  {
-    "id": "@1.1",
-    "server_id": "mcp_server_gravity",
-    "tool": "obtener_consumo",
-    "inputs": {
-      "dispositivos": [
-        "Total_Casa"
-      ],
-      "fecha_inicio": "2024-01-01T00:00:00",
-      "fecha_fin": "2024-12-28T23:59:59",
-      "granularidad": "mes"
-    },
-    "descripcion": "Obtener consumo mensual de todos los dispositivos en el año 2024."
-  },
-  {
-    "id": "@1.2",
-    "server_id": "mcp_server_gravity",
-    "tool": "analizar_tendencia",
-    "inputs": {
-      "dispositivo": "Total_Casa",
-      "fecha_inicio": "2024-01-01T00:00:00",
-      "fecha_fin": "2024-12-28T23:59:59"
-    },
-    "descripcion": "Determinar la tendencia general del consumo energético de todos los dispositivos en el año 2024."
-  }
-]
- """
-
-ejemplo_plan_completo=[
-  {
-    "id": "@1.1",
-    "server_id": "mcp_server_gravity",
-    "tool": "obtener_consumo",
-    "inputs": {
-      "dispositivos": [
-        "Ventilador"
-      ],
-      "fecha_inicio": "2024-11-14T00:00",
-      "fecha_fin": "2024-11-14T23:59"
-    },
-    "descripcion": "Obtención de consumo del Ventilador en la noche del 14 de noviembre"
-  },
-  {
-    "id": "@2.1",
-    "server_id": "mcp_server_gravity",
-    "tool": "obtener_consumo",
-    "inputs": {
-      "dispositivos": [
-        "PC"
-      ],
-      "fecha_inicio": "2024-11-10T00:00",
-      "fecha_fin": "2024-11-10T23:59"
-    },
-    "descripcion": "Obtención de consumo del PC en la mañana del 10 de noviembre"
-  },
-  {
-    "id": "@3.1",
-    "server_id": "mcp_server_gravity",
-    "tool": "analizar_comparacion",
-    "inputs": {
-      "objetivo_a": {
-        "dispositivo": "Ventilador",
-        "fecha_inicio": "2024-11-14T00:00",
-        "fecha_fin": "2024-11-14T23:59"
-      },
-      "objetivo_b": {
-        "dispositivo": "PC",
-        "fecha_inicio": "2024-11-10T00:00",
-        "fecha_fin": "2024-11-10T23:59"
-      }
-    },
-    "descripcion": "Comparación del consumo entre el Ventilador y el PC en la noche del 14 de noviembre y la mañana del 10 de noviembre"
-  },
-  {
-    "id": "@4.1",
-    "server_id": "mcp_server_gravity",
-    "tool": "obtener_consumo",
-    "inputs": {
-      "dispositivos": [
-        "Total_Casa"
-      ],
-      "fecha_inicio": "2024-01-01T00:00",
-      "fecha_fin": "2024-12-31T23:59"
-    },
-    "descripcion": "Obtención del consumo total de la casa desde el 1 de enero hasta el 31 de diciembre"
-  }
-]
 async def ejecutar_plan(server_url: str, plan_filtrado: list) -> dict:
     """
     Ejecuta un plan de acciones VALIDADO contra un servidor MCP.
@@ -252,10 +158,3 @@ def consolidar_reportes(reporte_ejecucion: dict, acciones_invalidas: list) -> di
         reporte_consolidado[id_solicitud].append(entrada_invalida)
     
     return reporte_consolidado
-
-if __name__ == "__main__":
-    # Prueba directa
-    informe = asyncio.run(ejecutar_plan(SERVER_URL, ejemplo_plan_completo))
-    import json
-    print(json.dumps(informe, indent=2, default=str)) # default=str para serializar datetimes o numpy si los hubiera
-

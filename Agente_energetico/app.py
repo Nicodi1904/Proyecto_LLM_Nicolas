@@ -11,27 +11,29 @@ from dotenv import load_dotenv
 
 # Importar agentes y verificadores
 try:
-    from Test_Interpretador import Interpretador, escenarios_entrada
-    from Test_planeador import Planeador
-    from test_worker_verificador import verificar_completo, filtrar_acciones
-    from MCP_C import ejecutar_plan, consolidar_reportes
-    from Test_gerente import Gerente
-    from MCP_C_obtener_summary import system_summary
+    from agents.interpretador import Interpretador, escenarios_entrada
+    from agents.planeador import Planeador
+    from agents.verificador import verificar_completo, filtrar_acciones
+    from utils.mcp_client import ejecutar_plan, consolidar_reportes
+    from agents.gerente import Gerente
+    from utils.mcp_summary import system_summary
 except ImportError:
+    # Intento fallback si se ejecuta desde nivel superior o diferente env
     import sys
     sys.path.append(os.path.dirname(__file__))
-    from Test_Interpretador import Interpretador, escenarios_entrada
-    from Test_planeador import Planeador
-    from test_worker_verificador import verificar_completo, filtrar_acciones
-    from MCP_C import ejecutar_plan, consolidar_reportes
-    from Test_gerente import Gerente
-    from MCP_C_obtener_summary import system_summary
+    from agents.interpretador import Interpretador, escenarios_entrada
+    from agents.planeador import Planeador
+    from agents.verificador import verificar_completo, filtrar_acciones
+    from utils.mcp_client import ejecutar_plan, consolidar_reportes
+    from agents.gerente import Gerente
+    from utils.mcp_summary import system_summary
 
 # Cargar API Keys
 env_path = os.path.join(os.path.dirname(__file__), '.env')
 load_dotenv(env_path)
 
 # Configuración de LLM (Default: Llama 3.1)
+# Puedes cambiar esto según tus preferencias o usar variables de entorno
 llama31 = dspy.LM('ollama_chat/llama3.1:latest', api_base='http://localhost:11434', api_key='')
 dspy.configure(lm=llama31)
 
@@ -107,7 +109,7 @@ app.layout = dbc.Container([
                         dbc.Card([
                             dbc.CardBody([
                                 html.P("Resultados numéricos y gráficos del consumo.", className="text-muted"),
-                                dcc.Graph(id='consumption-chart'),
+                                html.Div(id='charts-container'),
                                 html.Div(id='execution-raw-output')
                             ])
                         ], className="mt-3")
@@ -141,7 +143,7 @@ app.layout = dbc.Container([
     [Output('interpretador-output', 'children'),
      Output('plan-output', 'children'),
      Output('gerente-output', 'children'),
-     Output('consumption-chart', 'figure'),
+     Output('charts-container', 'children'),
      Output('execution-raw-output', 'children')],
     [Input('run-button', 'n_clicks')],
     [State('input-prompt', 'value')],
@@ -152,6 +154,7 @@ def run_full_pipeline(n_clicks, prompt):
         return dash.no_update
 
     # Contexto Temporal Simulado (Igual que en Sistema_LLM_entrada)
+    # TODO: En producción, esto debería generarse dinámicamente con datetime.now()
     temporal_context = {
         "referencia_actual": "2024-12-30T13:00:00",
         "zona_horaria": "America/Bogota",
@@ -192,15 +195,15 @@ def run_full_pipeline(n_clicks, prompt):
 
         plan_rows = []
         for accion in plan_acciones:
-            id_acc = accion['id']
+            id_acc = accion.get('id', 'N/A')
             # Buscar error si existe
-            err = next((inv['error_verificacion'] for inv in invalidas if inv['id'] == id_acc), None)
+            err = next((inv.get('error_verificacion') for inv in invalidas if inv.get('id') == id_acc), None)
             style = {'backgroundColor': COLORS['invalid']} if err else {'backgroundColor': COLORS['valid']}
             plan_rows.append(html.Tr([
                 html.Td(id_acc),
-                html.Td(accion['tool']),
-                html.Td(accion['descripcion']),
-                html.Td("RECHAZADA: " + err if err else "VALIDADA", 
+                html.Td(accion.get('tool', 'Unknown')),
+                html.Td(accion.get('descripcion', '')),
+                html.Td("RECHAZADA: " + str(err) if err else "VALIDADA", 
                         style={'color': 'red' if err else 'green', 'fontWeight': 'bold'})
             ], style=style))
 
@@ -224,21 +227,52 @@ def run_full_pipeline(n_clicks, prompt):
         print(f"DEBUG - Reporte Consolidado: {json.dumps(reporte_consolidado, indent=2)}")
 
         # 5. Visualización (Plotly)
-        # Extraer datos para gráfico si los hay (solo de obtener_consumo exitosos)
-        plot_data = []
+        charts = []
         for sol_id, acciones_res in reporte_ejecucion.items():
             for res in acciones_res:
-                if res['tool'] == 'obtener_consumo' and res['resultado'] and res['resultado']['status'] == 'success':
-                    datos = res['resultado']['datos']
-                    for disp, valor in datos.items():
-                        plot_data.append({'Solicitud': sol_id, 'Dispositivo': disp, 'Consumo': valor})
+                if res.get('tool') == 'obtener_consumo' and res.get('resultado') and res['resultado'].get('status') == 'success':
+                    datos = res['resultado'].get('datos', {})
+                    granularidad = res['resultado'].get('granularidad', 'total')
+                    descripcion = res.get('descripcion', 'Sin descripción')
+                    accion_id = res.get('accion_id', 'N/A')
+                    
+                    if not datos:
+                        continue
+                        
+                    if granularidad == 'total':
+                        # Datos: {"Ventilador": 10.5, "PC": 5.2}
+                        df_plot = pd.DataFrame([{'Dispositivo': d, 'Consumo': v} for d, v in datos.items()])
+                        fig = px.bar(df_plot, x='Dispositivo', y='Consumo', color='Dispositivo',
+                                    title=f"[{accion_id}] {descripcion}", 
+                                    template="plotly_white")
+                    else:
+                        # Datos: {"Device1": {"2024-11-14T18:00": 0.5, ...}}
+                        rows = []
+                        for disp, series in datos.items():
+                            if isinstance(series, dict):
+                                for ts, val in series.items():
+                                    rows.append({'Timestamp': ts, 'Consumo': val, 'Dispositivo': disp})
+                            else:
+                                rows.append({'Timestamp': 'Total', 'Consumo': series, 'Dispositivo': disp})
+                        
+                        df_plot = pd.DataFrame(rows)
+                        if not df_plot.empty:
+                            fig = px.line(df_plot, x='Timestamp', y='Consumo', color='Dispositivo', markers=True,
+                                         title=f"[{accion_id}] {descripcion}",
+                                         template="plotly_white")
+                        else:
+                            continue
+                            
+                    charts.append(dbc.Card([
+                        dbc.CardBody([
+                            dcc.Graph(figure=fig)
+                        ])
+                    ], className="mb-3"))
         
-        if plot_data:
-            df = pd.DataFrame(plot_data)
-            fig = px.bar(df, x='Dispositivo', y='Consumo', color='Solicitud', barmode='group',
-                        title="Consumo por Dispositivo / Solicitud", template="plotly_white")
+        if not charts:
+            charts_display = html.Div("Sin datos de consumo para graficar", className="text-muted text-center p-4")
         else:
-            fig = px.scatter(title="Sin datos de consumo para graficar", template="plotly_white")
+            charts_display = html.Div(charts)
 
         exec_raw = html.Pre(json.dumps(reporte_consolidado, indent=2, ensure_ascii=False), 
                             style={'fontSize': '0.8rem', 'maxHeight': '300px', 'overflowY': 'auto'})
@@ -250,11 +284,14 @@ def run_full_pipeline(n_clicks, prompt):
         )
         gerente_display = res_gerente.respuesta_usuario
 
-        return interp_display, plan_display, gerente_display, fig, exec_raw
+        return interp_display, plan_display, gerente_display, charts_display, exec_raw
 
     except Exception as e:
         error_msg = html.Div(f"Ocurrió un error en el pipeline: {str(e)}", className="text-danger")
+        import traceback
+        traceback.print_exc()
         return error_msg, error_msg, f"Error: {str(e)}", px.scatter(), html.Div()
 
 if __name__ == '__main__':
+    # Debug mode is vital for development
     app.run(debug=True, port=8050)
