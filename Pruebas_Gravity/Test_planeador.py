@@ -21,9 +21,9 @@ except ImportError:
 env_path = os.path.join(os.path.dirname(__file__), '.env')
 load_dotenv(env_path)
 
-APIKEY_GOOGLE = os.getenv("apikey_google_ai_studio")
-APIKEY_OPENROUTER = os.getenv("apikey_openrouter")
-#APIKEY_GEMINI_JUANC=os.getenv("apikey_gemini_juanC")
+APIKEY_GOOGLE = os.getenv("APIKEY_GOOGLE")
+APIKEY_OPENROUTER = os.getenv("APIKEY_OPENROUTER")
+#APIKEY_GEMINI_JUANC = os.getenv("APIKEY_GEMINI_JUANC")
 print("Librerías y AppiKeys cargadas correctamente")
 
 # %%

@@ -175,12 +175,14 @@ def determinar_rango_temporal(expresion: str, fecha_referencia: str, rangos_hora
     meta = {
     "proposito": (
         "Obtiene valores de consumo energético para uno o varios dispositivos dentro "
-        "de un rango temporal definido, permitiendo agregación por diferentes niveles temporales."
+        "de un rango temporal definido. "
+        "La forma del resultado depende explícitamente del nivel de granularidad solicitado, "
+        "lo que permite comparar consumos agregados o analizar su evolución temporal."
     ),
     "usar_si": [
-        "Se requiere conocer el consumo en un intervalo de tiempo específico",
-        "Se necesita el consumo total de uno o varios dispositivos",
-        "Se desea observar la evolución del consumo a lo largo del tiempo"
+        "Se necesita comparar el consumo total entre uno o varios dispositivos en un periodo definido (usar granularidad 'total')",
+        "Se desea analizar cómo varía el consumo de uno o varios dispositivos a lo largo del tiempo (usar granularidad 'hora', 'dia' o 'mes')",
+        "La solicitud del usuario implica una visualización comparativa entre dispositivos o una visualización temporal del consumo"
     ],
     "input_schema": {
         "type": "object",
@@ -190,16 +192,24 @@ def determinar_rango_temporal(expresion: str, fecha_referencia: str, rangos_hora
                 "items": {"type": "string"},
                 "description": (
                     "Lista de dispositivos a consultar. "
+                    "Cada dispositivo se devuelve como una serie independiente o como un valor agregado, "
+                    "dependiendo de la granularidad. "
                     "Usar 'Total_Casa' para obtener el consumo agregado de todos los dispositivos."
                 )
             },
             "fecha_inicio": {
                 "type": "string",
-                "description": "Fecha y hora de inicio del intervalo en formato ISO 8601 (YYYY-MM-DDTHH:MM)."
+                "description": (
+                    "Fecha y hora de inicio del intervalo en formato ISO 8601 (YYYY-MM-DDTHH:MM). "
+                    "Debe seleccionarse de forma coherente con la granularidad solicitada."
+                )
             },
             "fecha_fin": {
                 "type": "string",
-                "description": "Fecha y hora de fin del intervalo en formato ISO 8601 (YYYY-MM-DDTHH:MM)."
+                "description": (
+                    "Fecha y hora de fin del intervalo en formato ISO 8601 (YYYY-MM-DDTHH:MM). "
+                    "Define el límite superior del análisis temporal."
+                )
             },
             "granularidad": {
                 "type": "string",
@@ -207,7 +217,10 @@ def determinar_rango_temporal(expresion: str, fecha_referencia: str, rangos_hora
                 "default": "total",
                 "description": (
                     "Nivel temporal de agregación de los resultados. "
-                    "Define la estructura del campo 'datos' en la salida."
+                    "Usar 'total' cuando se requiera un único valor acumulado por dispositivo "
+                    "para facilitar comparaciones directas. "
+                    "Usar 'hora', 'dia' o 'mes' cuando se requiera una serie temporal "
+                    "que represente la evolución del consumo en el tiempo."
                 )
             }
         },
@@ -234,10 +247,11 @@ def determinar_rango_temporal(expresion: str, fecha_referencia: str, rangos_hora
             "datos": {
                 "type": "object",
                 "description": (
-                    "Resultados del consumo. "
-                    "Si la granularidad es 'total', cada dispositivo devuelve un valor numérico. "
-                    "Si la granularidad es 'hora', 'dia' o 'mes', cada dispositivo devuelve "
-                    "un diccionario indexado por timestamps ISO 8601."
+                    "Resultados del consumo por dispositivo. "
+                    "Con granularidad 'total', cada dispositivo devuelve un único valor numérico "
+                    "representando el consumo acumulado en todo el periodo. "
+                    "Con granularidad 'hora', 'dia' o 'mes', cada dispositivo devuelve una serie temporal "
+                    "indexada por timestamps ISO 8601, adecuada para representar evolución en el tiempo."
                 ),
                 "additionalProperties": {
                     "oneOf": [
@@ -255,9 +269,8 @@ def determinar_rango_temporal(expresion: str, fecha_referencia: str, rangos_hora
         }
     }
 }
-
-
 )
+
 def obtener_consumo(dispositivos: list[str], fecha_inicio: str, fecha_fin: str, granularidad: str = "total") -> dict:
     try:
         # Filtrado temporal
@@ -325,13 +338,15 @@ def obtener_consumo(dispositivos: list[str], fecha_inicio: str, fecha_fin: str, 
 @mcp.tool(
     meta = {
     "proposito": (
-        "Compara el consumo energético entre dos objetivos definidos, "
-        "calculando diferencias absolutas y porcentuales."
+        "Realiza un análisis comparativo entre dos objetivos de consumo energético, "
+        "calculando diferencias absolutas y porcentuales a partir de valores acumulados. "
+        "Esta función aporta interpretación analítica sobre consumos ya definidos, "
+        "complementando la obtención directa de datos de consumo."
     ),
     "usar_si": [
-        "Se desea comparar el consumo entre dos periodos distintos",
-        "Se desea comparar el consumo entre dos dispositivos",
-        "Se requiere identificar cuál de dos objetivos consumió más energía"
+        "Se requiere un análisis explícito de diferencias entre dos consumos acumulados",
+        "El usuario solicita identificar cuál de dos objetivos consumió más energía y por cuánto",
+        "Se desea complementar valores de consumo con un resumen comparativo e interpretativo"
     ],
     "input_schema": {
         "type": "object",
@@ -343,7 +358,11 @@ def obtener_consumo(dispositivos: list[str], fecha_inicio: str, fecha_fin: str, 
                     "fecha_inicio": {"type": "string"},
                     "fecha_fin": {"type": "string"}
                 },
-                "required": ["dispositivo", "fecha_inicio", "fecha_fin"]
+                "required": ["dispositivo", "fecha_inicio", "fecha_fin"],
+                "description": (
+                    "Primer objetivo de comparación. "
+                    "Representa el consumo total de un dispositivo dentro de un intervalo temporal definido."
+                )
             },
             "objetivo_b": {
                 "type": "object",
@@ -352,7 +371,11 @@ def obtener_consumo(dispositivos: list[str], fecha_inicio: str, fecha_fin: str, 
                     "fecha_inicio": {"type": "string"},
                     "fecha_fin": {"type": "string"}
                 },
-                "required": ["dispositivo", "fecha_inicio", "fecha_fin"]
+                "required": ["dispositivo", "fecha_inicio", "fecha_fin"],
+                "description": (
+                    "Segundo objetivo de comparación. "
+                    "Se interpreta de la misma forma que el objetivo A, permitiendo contrastar consumos acumulados."
+                )
             }
         },
         "required": ["objetivo_a", "objetivo_b"]
@@ -375,14 +398,18 @@ def obtener_consumo(dispositivos: list[str], fecha_inicio: str, fecha_fin: str, 
                         "type": "string",
                         "enum": ["A", "B", "Iguales"]
                     }
-                }
+                },
+                "description": (
+                    "Resultado del análisis comparativo entre ambos objetivos. "
+                    "Los valores corresponden a consumos totales del periodo y las diferencias "
+                    "constituyen un resumen analítico, no una serie temporal ni datos de visualización directa."
+                )
             }
         }
     }
 }
-
-
 )
+
 def analizar_comparacion(objetivo_a: dict, objetivo_b: dict) -> dict:
     
     def get_val(obj):
@@ -425,20 +452,39 @@ def analizar_comparacion(objetivo_a: dict, objetivo_b: dict) -> dict:
     meta = {
     "proposito": (
         "Identifica eventos de consumo atípico dentro de un periodo temporal "
-        "mediante análisis estadístico basado en Z-Score."
+        "mediante análisis estadístico basado en Z-Score. "
+        "Esta función permite detectar picos o valores inusuales respecto al patrón general del consumo."
     ),
     "usar_si": [
-        "Se buscan picos o comportamientos inusuales de consumo",
-        "Se desea identificar eventos fuera del patrón normal",
-        "El usuario pregunta por consumos anormales o inesperados"
+        "Se desea identificar picos, caídas o eventos puntuales fuera del comportamiento normal",
+        "El usuario pregunta por consumos anormales, inesperados o atípicos",
+        "Se requiere complementar el análisis del consumo con detección de eventos excepcionales"
     ],
     "input_schema": {
         "type": "object",
         "properties": {
-            "dispositivo": {"type": "string"},
-            "fecha_inicio": {"type": "string"},
-            "fecha_fin": {"type": "string"},
-            "sensibilidad": {"type": "number"}
+            "dispositivo": {
+                "type": "string",
+                "description": (
+                    "Dispositivo sobre el cual se analizan anomalías. "
+                    "El análisis se realiza sobre la serie de consumo implícita en el intervalo definido."
+                )
+            },
+            "fecha_inicio": {
+                "type": "string",
+                "description": "Inicio del periodo de análisis temporal."
+            },
+            "fecha_fin": {
+                "type": "string",
+                "description": "Fin del periodo de análisis temporal."
+            },
+            "sensibilidad": {
+                "type": "number",
+                "description": (
+                    "Umbral del Z-Score utilizado para definir qué se considera una anomalía. "
+                    "Valores menores implican mayor sensibilidad y detección de más eventos."
+                )
+            }
         },
         "required": ["dispositivo", "fecha_inicio", "fecha_fin"]
     },
@@ -454,7 +500,11 @@ def analizar_comparacion(objetivo_a: dict, objetivo_b: dict) -> dict:
                 "properties": {
                     "media": {"type": "number"},
                     "std": {"type": "number"}
-                }
+                },
+                "description": (
+                    "Estadísticas descriptivas de la serie de consumo utilizadas como referencia "
+                    "para la detección de anomalías."
+                )
             },
             "total_anomalias": {"type": "number"},
             "eventos": {
@@ -466,15 +516,19 @@ def analizar_comparacion(objetivo_a: dict, objetivo_b: dict) -> dict:
                         "valor": {"type": "number"},
                         "z_score": {"type": "number"}
                     }
-                }
+                },
+                "description": (
+                    "Lista de eventos detectados como atípicos. "
+                    "Cada evento representa un punto puntual fuera del patrón normal, "
+                    "no una tendencia ni una serie temporal completa."
+                )
             },
             "mensaje": {"type": "string"}
         }
     }
 }
-
-
 )
+
 def detectar_anomalias(dispositivo: str, fecha_inicio: str, fecha_fin: str, sensibilidad: float = 3.0) -> dict:
     start = pd.to_datetime(fecha_inicio)
     end = pd.to_datetime(fecha_fin)
@@ -522,19 +576,32 @@ def detectar_anomalias(dispositivo: str, fecha_inicio: str, fecha_fin: str, sens
     meta = {
     "proposito": (
         "Determina la tendencia general del consumo energético en un intervalo temporal "
-        "mediante un ajuste de regresión lineal."
+        "mediante un ajuste de regresión lineal. "
+        "Esta función resume la dirección y estabilidad del consumo a lo largo del tiempo."
     ),
     "usar_si": [
-        "Se desea conocer si el consumo aumenta, disminuye o se mantiene estable",
-        "El usuario pregunta por evolución o dirección del consumo",
-        "Se requiere un análisis global del comportamiento en el tiempo"
+        "Se desea conocer si el consumo presenta una tendencia creciente, decreciente o estable",
+        "El usuario pregunta por la dirección general o comportamiento global del consumo",
+        "Se requiere un análisis sintético de la evolución del consumo en el periodo"
     ],
     "input_schema": {
         "type": "object",
         "properties": {
-            "dispositivo": {"type": "string"},
-            "fecha_inicio": {"type": "string"},
-            "fecha_fin": {"type": "string"}
+            "dispositivo": {
+                "type": "string",
+                "description": (
+                    "Dispositivo cuyo consumo se analiza. "
+                    "El cálculo se basa en la serie temporal implícita del intervalo seleccionado."
+                )
+            },
+            "fecha_inicio": {
+                "type": "string",
+                "description": "Inicio del periodo usado para estimar la tendencia."
+            },
+            "fecha_fin": {
+                "type": "string",
+                "description": "Fin del periodo usado para estimar la tendencia."
+            }
         },
         "required": ["dispositivo", "fecha_inicio", "fecha_fin"]
     },
@@ -559,14 +626,18 @@ def detectar_anomalias(dispositivo: str, fecha_inicio: str, fecha_fin: str, sens
                     },
                     "pendiente": {"type": "number"},
                     "r_cuadrado": {"type": "number"}
-                }
+                },
+                "description": (
+                    "Resumen analítico de la tendencia del consumo. "
+                    "Describe la dirección general y la calidad del ajuste, "
+                    "no eventos puntuales ni valores individuales."
+                )
             }
         }
     }
 }
-
-
 )
+
 def analizar_tendencia(dispositivo: str, fecha_inicio: str, fecha_fin: str) -> dict:
     start = pd.to_datetime(fecha_inicio)
     end = pd.to_datetime(fecha_fin)

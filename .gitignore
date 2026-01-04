@@ -2,6 +2,7 @@
 # Python virtual environments
 # =========================
 agentes-vs-llm/
+llm_tesis/
 venv/
 .env
 **/.env
