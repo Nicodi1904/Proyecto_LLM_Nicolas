@@ -1,9 +1,0 @@
-Fig 1: Arquitectura del sistema propuesto
-
-Para la creación del sistema de software de la herramienta se propuso el sistema de la Fig 1, nótese de sus 3 bloques principales “Sistema LLM entrada”, “MCP client” y “Sistema LLM salida”, estos bloques fueron pensados para agregar secuencialidad y modularidad a las etapas y funciones del sistema. La explicación de cada uno de estos bloques se encuentra a continuación. 
-
-El sistema LLM de entrada tiene el propósito de interactuar con el mensaje de entrada del usuario, procesarlo y mandar de forma correcta (en lo posible) el llamado a herramientas para ser procesado por el MCP client. Tiene la responsabilidad de hacer un correcto llamado a las herramientas proporcionadas por los servidores MCP tal que la solicitud del usuario cuente con todos los datos necesarios para ser respondida satisfactoriamente.
-
-El MCP client es el módulo lógico operativo que hace el correcto empalme entre los MCP servers y los sistemas LLM. A su vez, los MCP servers son los que brindan las funciones propias de la herramienta energética, contienen los metadatos contextuales para su correcto uso por parte de los LLMs, así como los datos representativos del hogar.
-
-Por último, el Sistema LLM de salida recibe la cadena de información desde el mensaje del usuario hasta los resultados de las llamadas a funciones proporcionados por el cliente MCP. Con esta información, el sistema ha de proporcionar resultados técnicamente coherentes y satisfactorios al mensaje del usuario, así como recomendaciones de mejoría (si aplica) referentes a la gestión energética. 

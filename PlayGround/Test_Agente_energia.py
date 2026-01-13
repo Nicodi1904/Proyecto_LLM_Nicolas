@@ -1,7 +1,7 @@
-from Tools import sumar,restar,consumo_rango_horas,consumo_rango_dias,consumo_rango_meses,calcular_min,calcular_max,calcular_promedio
-from Tools import tools_catalogo
+from PlayGround.Tools import sumar,restar,consumo_rango_horas,consumo_rango_dias,consumo_rango_meses,calcular_min,calcular_max,calcular_promedio
+from PlayGround.Tools import tools_catalogo
 from Wrapped_Tools import fewshot_ejemplos
-from cargar_CSV import cargar_dataset_sinselejo
+from PlayGround.cargar_CSV import cargar_dataset_sinselejo
 import dspy
 import pandas as pd
 
@@ -179,7 +179,9 @@ class Agente(dspy.Module):
 
 ##############################################################################################################################
 
-df=cargar_dataset_sinselejo("Energy Consumption in KWh of a Typical House Sincelejo Colombia.csv")
+import os
+csv_path = os.path.join(os.path.dirname(__file__), "..", "Servidores_MCP", "Energy Consumption in KWh of a Typical House Sincelejo Colombia.csv")
+df=cargar_dataset_sinselejo(csv_path)
 
 # ---------------------- PRUEBA CON LLAMA3.1 ----------------------
 print("\n========== Prueba con Llama3.1 ==========")

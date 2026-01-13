@@ -4,7 +4,9 @@ from cargar_CSV import cargar_dataset_sinselejo
 from Tools import consumo_rango_horas,consumo_rango_dias,consumo_rango_meses
 
 
-data:pd.DataFrame=cargar_dataset_sinselejo("Energy Consumption in KWh of a Typical House Sincelejo Colombia.csv") 
+import os
+csv_path = os.path.join(os.path.dirname(__file__), "..", "Servidores_MCP", "Energy Consumption in KWh of a Typical House Sincelejo Colombia.csv")
+data:pd.DataFrame=cargar_dataset_sinselejo(csv_path)
 
 
 def grafica_consumo_mes(df: pd.DataFrame, dispositivo: str, mes: int, año: int):

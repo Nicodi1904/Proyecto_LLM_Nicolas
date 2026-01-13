@@ -8,7 +8,7 @@ import os
 # Agregar directorio padre al path para importar módulos compartidos
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from cargar_CSV import cargar_dataset_sinselejo
+from PlayGround.cargar_CSV import cargar_dataset_sinselejo
 
 # Initialize FastMCP server
 mcp = FastMCP("MCP_Server_Gravity")
@@ -16,8 +16,8 @@ mcp = FastMCP("MCP_Server_Gravity")
 # -------------------------
 # Cargar dataset global
 # -------------------------
-# Construir ruta absoluta al CSV (asumiendo que está en el directorio padre)
-csv_path = os.path.join(os.path.dirname(__file__), '..', "Energy Consumption in KWh of a Typical House Sincelejo Colombia.csv")
+# Construir ruta absoluta al CSV
+csv_path = os.path.join(os.path.dirname(__file__), "Energy Consumption in KWh of a Typical House Sincelejo Colombia.csv")
 DATASET = cargar_dataset_sinselejo(csv_path)
 # Asegurar que TimeStamp es datetime
 DATASET['TimeStamp'] = pd.to_datetime(DATASET['TimeStamp'])

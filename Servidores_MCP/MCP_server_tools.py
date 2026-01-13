@@ -1,6 +1,6 @@
 from fastmcp import FastMCP
 import pandas as pd
-from cargar_CSV import cargar_dataset_sinselejo
+from PlayGround.cargar_CSV import cargar_dataset_sinselejo
 import sys
 import os
 
@@ -13,7 +13,7 @@ mcp = FastMCP("MCP_server_tools")
 # -------------------------
 # Cargar dataset global
 # -------------------------
-csv_path = os.path.join(os.path.dirname(__file__), '..', "Energy Consumption in KWh of a Typical House Sincelejo Colombia.csv")
+csv_path = os.path.join(os.path.dirname(__file__), "Energy Consumption in KWh of a Typical House Sincelejo Colombia.csv")
 DATASET = cargar_dataset_sinselejo(csv_path)
 
 

@@ -1,13 +1,19 @@
+import sys
+import os
+
+# Agregar directorio padre al path para importar módulos compartidos
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from fastmcp import FastMCP
 import pandas as pd
-from cargar_CSV import cargar_dataset_sinselejo
+from PlayGround.cargar_CSV import cargar_dataset_sinselejo
 # Initialize FastMCP server
 mcp = FastMCP("MCP_server_tools")
 
 # -------------------------
 # Cargar dataset global
-# -------------------------
-DATASET=cargar_dataset_sinselejo("Energy Consumption in KWh of a Typical House Sincelejo Colombia.csv") 
+csv_path = os.path.join(os.path.dirname(__file__), "Energy Consumption in KWh of a Typical House Sincelejo Colombia.csv")
+DATASET = cargar_dataset_sinselejo(csv_path)
 
 
 

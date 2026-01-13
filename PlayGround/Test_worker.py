@@ -1,6 +1,6 @@
-from Tools import consumo_rango_dias,consumo_rango_horas,sumar
-from Tools import tools_catalogo
-from cargar_CSV import cargar_dataset_sinselejo
+from PlayGround.Tools import consumo_rango_dias,consumo_rango_horas,sumar
+from PlayGround.Tools import tools_catalogo
+from PlayGround.cargar_CSV import cargar_dataset_sinselejo
 #El gerente se ha de encargar de dar la lista  de tools a ser procesadas, pero eso ya hace el planeador entonces por que es necesario?
 #El planeador ya se encarga de hacer una lista de los procesos a seguir y asignar las variables a las tools, sin embargo tenemos el problema de las tareas con dependencias
 #Pienso que luego de salir del planeador, hay que pasar por código de python que realice las tareas sin dependencias, a esas tareas podrá acceder el gerente y así dar una nueva lista con las nuevas tareas a realizar
