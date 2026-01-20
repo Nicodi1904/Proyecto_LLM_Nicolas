@@ -1,0 +1,88 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Modelo de entradas y salidas de la herramienta propuesta">
+    <mxGraphModel dx="1200" dy="600" grid="1" gridSize="10">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- Contenedor principal -->
+        <mxCell id="2" value="Herramienta propuesta"
+          style="swimlane;rounded=1;fillColor=#f7f7f7;strokeColor=#4d4d4d;fontStyle=1;"
+          vertex="1" parent="1">
+          <mxGeometry x="40" y="80" width="1100" height="380" as="geometry"/>
+        </mxCell>
+
+        <!-- Usuario -->
+        <mxCell id="3" value="Usuario"
+          style="shape=umlActor;strokeColor=#4d4d4d;"
+          vertex="1" parent="2">
+          <mxGeometry x="40" y="200" width="50" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- Interfaz -->
+        <mxCell id="4" value="Interfaz"
+          style="rounded=1;fillColor=#dae8fc;strokeColor=#6c8ebf;"
+          vertex="1" parent="2">
+          <mxGeometry x="140" y="200" width="160" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- Entrada -->
+        <mxCell id="5" value="Entrada en lenguaje natural"
+          style="rounded=1;fillColor=#ffffff;strokeColor=#6c8ebf;"
+          vertex="1" parent="2">
+          <mxGeometry x="340" y="200" width="220" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- Procesamiento -->
+        <mxCell id="6" value="Procesamiento del sistema"
+          style="rounded=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;"
+          vertex="1" parent="2">
+          <mxGeometry x="600" y="190" width="220" height="90" as="geometry"/>
+        </mxCell>
+
+        <!-- Salida -->
+        <mxCell id="7" value="Salida del sistema"
+          style="rounded=1;fillColor=#ffffff;strokeColor=#82b366;"
+          vertex="1" parent="2">
+          <mxGeometry x="860" y="200" width="200" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- Anotación escenarios -->
+        <mxCell id="8" value="La entrada y la salida&#xa;se interpretan según&#xa;escenarios definidos&#xa;por el sistema"
+          style="rounded=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=left;"
+          vertex="1" parent="2">
+          <mxGeometry x="600" y="300" width="300" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- Flujos -->
+        <mxCell id="10" edge="1" parent="2" source="3" target="4"
+          style="endArrow=block;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="11" edge="1" parent="2" source="4" target="5"
+          style="endArrow=block;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="12" edge="1" parent="2" source="5" target="6"
+          style="endArrow=block;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="13" edge="1" parent="2" source="6" target="7"
+          style="endArrow=block;strokeWidth=2;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="14" edge="1" parent="2" source="7" target="4"
+          style="endArrow=block;strokeWidth=2;dashed=1;">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
+
+
