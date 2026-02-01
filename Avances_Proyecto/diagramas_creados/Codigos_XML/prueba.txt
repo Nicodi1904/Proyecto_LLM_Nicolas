@@ -1,88 +1,216 @@
-<mxfile host="app.diagrams.net">
-  <diagram name="Modelo de entradas y salidas de la herramienta propuesta">
-    <mxGraphModel dx="1200" dy="600" grid="1" gridSize="10">
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2024-01-22T00:00:00.000Z" agent="Agent" version="21.0.0" type="device">
+  <diagram name="Secuencia_Gravity_Aligned" id="id_diagram_gravity_aligned">
+    <mxGraphModel dx="1600" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1600" math="0" shadow="0">
       <root>
-        <mxCell id="0"/>
-        <mxCell id="1" parent="0"/>
-
-        <!-- Contenedor principal -->
-        <mxCell id="2" value="Herramienta propuesta"
-          style="swimlane;rounded=1;fillColor=#f7f7f7;strokeColor=#4d4d4d;fontStyle=1;"
-          vertex="1" parent="1">
-          <mxGeometry x="40" y="80" width="1100" height="380" as="geometry"/>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- ================= LIFELINES ================= -->
+        <!-- X Grid: User=50, Int=250, Plan=450, Ver=650, Client=850, Server=1050, DB=1250, Mgr=1450 -->
+        
+        <mxCell id="L_User" value="Usuario" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;participant=umlActor;size=50;" vertex="1" parent="1">
+          <mxGeometry x="50" y="80" width="60" height="1200" as="geometry" />
         </mxCell>
-
-        <!-- Usuario -->
-        <mxCell id="3" value="Usuario"
-          style="shape=umlActor;strokeColor=#4d4d4d;"
-          vertex="1" parent="2">
-          <mxGeometry x="40" y="200" width="50" height="80" as="geometry"/>
+        <mxCell id="L_Int" value=":Agente_Interpretador" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;size=50;" vertex="1" parent="1">
+          <mxGeometry x="250" y="80" width="140" height="1200" as="geometry" />
         </mxCell>
-
-        <!-- Interfaz -->
-        <mxCell id="4" value="Interfaz"
-          style="rounded=1;fillColor=#dae8fc;strokeColor=#6c8ebf;"
-          vertex="1" parent="2">
-          <mxGeometry x="140" y="200" width="160" height="70" as="geometry"/>
+        <mxCell id="L_Plan" value=":Agente_Planeador" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;size=50;" vertex="1" parent="1">
+          <mxGeometry x="450" y="80" width="140" height="1200" as="geometry" />
         </mxCell>
-
-        <!-- Entrada -->
-        <mxCell id="5" value="Entrada en lenguaje natural"
-          style="rounded=1;fillColor=#ffffff;strokeColor=#6c8ebf;"
-          vertex="1" parent="2">
-          <mxGeometry x="340" y="200" width="220" height="70" as="geometry"/>
+        <mxCell id="L_Ver" value=":Worker_Verificador" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;size=50;" vertex="1" parent="1">
+          <mxGeometry x="650" y="80" width="140" height="1200" as="geometry" />
         </mxCell>
-
-        <!-- Procesamiento -->
-        <mxCell id="6" value="Procesamiento del sistema"
-          style="rounded=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;"
-          vertex="1" parent="2">
-          <mxGeometry x="600" y="190" width="220" height="90" as="geometry"/>
+        <mxCell id="L_Client" value=":Cliente_MCP" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;fillColor=#d5e8d4;strokeColor=#82b366;size=50;" vertex="1" parent="1">
+          <mxGeometry x="850" y="80" width="120" height="1200" as="geometry" />
         </mxCell>
-
-        <!-- Salida -->
-        <mxCell id="7" value="Salida del sistema"
-          style="rounded=1;fillColor=#ffffff;strokeColor=#82b366;"
-          vertex="1" parent="2">
-          <mxGeometry x="860" y="200" width="200" height="70" as="geometry"/>
+        <mxCell id="L_Server" value=":Servidor_MCP" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;size=50;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="80" width="120" height="1200" as="geometry" />
         </mxCell>
-
-        <!-- Anotación escenarios -->
-        <mxCell id="8" value="La entrada y la salida&#xa;se interpretan según&#xa;escenarios definidos&#xa;por el sistema"
-          style="rounded=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=left;"
-          vertex="1" parent="2">
-          <mxGeometry x="600" y="300" width="300" height="80" as="geometry"/>
+         <mxCell id="L_DB" value=":Base_Datos&#xa;(SQLite)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;size=50;" vertex="1" parent="1">
+          <mxGeometry x="1250" y="80" width="120" height="1200" as="geometry" />
         </mxCell>
-
-        <!-- Flujos -->
-        <mxCell id="10" edge="1" parent="2" source="3" target="4"
-          style="endArrow=block;strokeWidth=2;">
-          <mxGeometry relative="1" as="geometry"/>
+        
+        <mxCell id="L_Mgr" value=":Agente_Gerente" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;size=50;" vertex="1" parent="1">
+          <mxGeometry x="1450" y="80" width="140" height="1200" as="geometry" />
         </mxCell>
-
-        <mxCell id="11" edge="1" parent="2" source="4" target="5"
-          style="endArrow=block;strokeWidth=2;">
-          <mxGeometry relative="1" as="geometry"/>
+         <!-- ================= INIT PHASE (Y=160 to 300) ================= -->
+        <mxCell id="Frame_Init" value="Fase Inicialización" style="shape=umlFrame;whiteSpace=wrap;html=1;width=120;height=30;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="800" y="160" width="320" height="140" as="geometry" />
         </mxCell>
-
-        <mxCell id="12" edge="1" parent="2" source="5" target="6"
-          style="endArrow=block;strokeWidth=2;">
-          <mxGeometry relative="1" as="geometry"/>
+        <!-- 1. Trigger -> Client [Y=190] -->
+        <mxCell id="Msg_Init" value="[Start]" style="html=1;verticalAlign=bottom;endArrow=block;" edge="1" parent="1" target="L_Client">
+           <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="820" y="190" as="sourcePoint" />
+            <mxPoint x="910" y="190" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
-
-        <mxCell id="13" edge="1" parent="2" source="6" target="7"
-          style="endArrow=block;strokeWidth=2;">
-          <mxGeometry relative="1" as="geometry"/>
+        
+        <!-- Client Activation (Init) [Y=190 to 270] -->
+        <mxCell id="Act_Client_Init" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="L_Client">
+           <mxGeometry x="55" y="190" width="10" height="80" as="geometry" />
         </mxCell>
-
-        <mxCell id="14" edge="1" parent="2" source="7" target="4"
-          style="endArrow=block;strokeWidth=2;dashed=1;">
-          <mxGeometry relative="1" as="geometry"/>
+        <!-- 2. Client -> Server [Y=210] -->
+        <mxCell id="Msg_Tools_Req" value="list_tools()" style="html=1;verticalAlign=bottom;endArrow=block;" edge="1" parent="1" source="L_Client" target="L_Server">
+           <mxGeometry relative="1" as="geometry">
+            <mxPoint x="910" y="210" as="sourcePoint" />
+            <mxPoint x="1110" y="210" as="targetPoint" />
+             <Array as="points">
+              <mxPoint x="1000" y="210" />
+            </Array>
+          </mxGeometry>
         </mxCell>
-
+        <!-- Server Activation [Y=210 to 250] -->
+        <mxCell id="Act_Server_Init" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;" vertex="1" parent="L_Server">
+           <mxGeometry x="55" y="210" width="10" height="40" as="geometry" />
+        </mxCell>
+        <!-- 3. Server -> Client [Y=250] -->
+        <mxCell id="Msg_Tools_Res" value="System Summary" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;" edge="1" parent="1" source="L_Server" target="L_Client">
+           <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1110" y="250" as="sourcePoint" />
+            <mxPoint x="910" y="250" as="targetPoint" />
+             <Array as="points">
+              <mxPoint x="1000" y="250" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <!-- ================= MAIN FLOW (Y=350+) ================= -->
+        
+        <!-- 4. User -> Int [Y=350] -->
+        <mxCell id="Msg_Prompt" value="Prompt Usuario" style="html=1;verticalAlign=bottom;endArrow=block;" edge="1" parent="1" source="L_User" target="L_Int">
+           <mxGeometry relative="1" as="geometry">
+            <mxPoint x="80" y="350" as="sourcePoint" />
+            <mxPoint x="320" y="350" as="targetPoint" />
+             <Array as="points">
+              <mxPoint x="190" y="350" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <!-- Int Activation [Y=350 to 410] -->
+        <mxCell id="Act_Int" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;" vertex="1" parent="L_Int">
+           <mxGeometry x="65" y="350" width="10" height="60" as="geometry" />
+        </mxCell>
+        <!-- 5. Int -> Plan [Y=410] -->
+        <mxCell id="Msg_Solic" value="Solicitudes Categorizadas" style="html=1;verticalAlign=bottom;endArrow=block;" edge="1" parent="1" source="L_Int" target="L_Plan">
+           <mxGeometry relative="1" as="geometry">
+            <mxPoint x="320" y="410" as="sourcePoint" />
+            <mxPoint x="520" y="410" as="targetPoint" />
+             <Array as="points">
+              <mxPoint x="400" y="410" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <!-- Plan Activation [Y=410 to 470] -->
+        <mxCell id="Act_Plan" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;" vertex="1" parent="L_Plan">
+           <mxGeometry x="65" y="410" width="10" height="60" as="geometry" />
+        </mxCell>
+        <!-- 6. Plan -> Ver [Y=470] -->
+        <mxCell id="Msg_PlanProp" value="Plan de Acciones" style="html=1;verticalAlign=bottom;endArrow=block;" edge="1" parent="1" source="L_Plan" target="L_Ver">
+           <mxGeometry relative="1" as="geometry">
+            <mxPoint x="520" y="470" as="sourcePoint" />
+            <mxPoint x="720" y="470" as="targetPoint" />
+             <Array as="points">
+              <mxPoint x="600" y="470" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <!-- Ver Activation [Y=470 to 530] -->
+        <mxCell id="Act_Ver" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;" vertex="1" parent="L_Ver">
+           <mxGeometry x="65" y="470" width="10" height="60" as="geometry" />
+        </mxCell>
+        <!-- 7. Ver -> Client [Y=530] -->
+        <mxCell id="Msg_PlanVal" value="Plan Validado" style="html=1;verticalAlign=bottom;endArrow=block;" edge="1" parent="1" source="L_Ver" target="L_Client">
+           <mxGeometry relative="1" as="geometry">
+            <mxPoint x="720" y="530" as="sourcePoint" />
+            <mxPoint x="910" y="530" as="targetPoint" />
+             <Array as="points">
+              <mxPoint x="800" y="530" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <!-- ================= LOOP FRAME (Y=580 to 820) ================= -->
+        <mxCell id="Frame_Loop" value="Loop: Ejecución de Herramientas" style="shape=umlFrame;whiteSpace=wrap;html=1;width=180;height=30;" vertex="1" parent="1">
+          <mxGeometry x="810" y="580" width="500" height="240" as="geometry" />
+        </mxCell>
+        <!-- Client Activation (Run) [Y=580 to Ends at 850] -->
+        <!-- Note: Client technically stays active or reactivates. Let's make it distinct for loop -->
+        <mxCell id="Act_Client_Run" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="L_Client">
+           <mxGeometry x="55" y="600" width="10" height="180" as="geometry" />
+        </mxCell>
+        <!-- 8. Client -> Server [Y=620] -->
+        <mxCell id="Msg_Call" value="Call MCP Tool" style="html=1;verticalAlign=bottom;endArrow=block;" edge="1" parent="1" source="L_Client" target="L_Server">
+           <mxGeometry relative="1" as="geometry">
+            <mxPoint x="910" y="620" as="sourcePoint" />
+            <mxPoint x="1110" y="620" as="targetPoint" />
+             <Array as="points">
+              <mxPoint x="1000" y="620" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <!-- Server Activation (Tool) [Y=620 to 760] -->
+        <mxCell id="Act_Server_Tool" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;" vertex="1" parent="L_Server">
+           <mxGeometry x="55" y="620" width="10" height="140" as="geometry" />
+        </mxCell>
+        <!-- 9. Server -> DB [Y=660] -->
+        <mxCell id="Msg_DB_Q" value="SQL Query" style="html=1;verticalAlign=bottom;endArrow=block;" edge="1" parent="1" source="L_Server" target="L_DB">
+           <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1110" y="660" as="sourcePoint" />
+            <mxPoint x="1310" y="660" as="targetPoint" />
+             <Array as="points">
+              <mxPoint x="1200" y="660" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <!-- DB Activation [Y=660 to 700] -->
+        <mxCell id="Act_DB" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;" vertex="1" parent="L_DB">
+           <mxGeometry x="55" y="660" width="10" height="40" as="geometry" />
+        </mxCell>
+        <!-- 10. DB -> Server [Y=700] -->
+        <mxCell id="Msg_DB_R" value="Result Data" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;" edge="1" parent="1" source="L_DB" target="L_Server">
+           <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1310" y="700" as="sourcePoint" />
+            <mxPoint x="1110" y="700" as="targetPoint" />
+             <Array as="points">
+              <mxPoint x="1200" y="700" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <!-- 11. Server -> Client [Y=760] -->
+        <mxCell id="Msg_Tool_Res" value="Resultado JSON" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;" edge="1" parent="1" source="L_Server" target="L_Client">
+           <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1110" y="760" as="sourcePoint" />
+            <mxPoint x="910" y="760" as="targetPoint" />
+             <Array as="points">
+              <mxPoint x="1000" y="760" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <!-- ================= ENDING (Y=880+) ================= -->
+        <!-- 12. Client -> Mgr [Y=880] -->
+        <mxCell id="Msg_Report" value="Reporte Final" style="html=1;verticalAlign=bottom;endArrow=block;" edge="1" parent="1" source="L_Client" target="L_Mgr">
+           <mxGeometry relative="1" as="geometry">
+            <mxPoint x="910" y="880" as="sourcePoint" />
+            <mxPoint x="1510" y="880" as="targetPoint" />
+             <Array as="points">
+              <mxPoint x="1200" y="880" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <!-- Mgr Activation [Y=880 to 940] -->
+        <mxCell id="Act_Mgr" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;" vertex="1" parent="L_Mgr">
+           <mxGeometry x="65" y="880" width="10" height="60" as="geometry" />
+        </mxCell>
+        <!-- 13. Mgr -> User [Y=940] -->
+        <mxCell id="Msg_Final" value="Respuesta Final" style="html=1;verticalAlign=bottom;endArrow=block;" edge="1" parent="1" source="L_Mgr" target="L_User">
+           <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1510" y="940" as="sourcePoint" />
+            <mxPoint x="80" y="940" as="targetPoint" />
+             <Array as="points">
+              <mxPoint x="800" y="940" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
 </mxfile>
-
-
