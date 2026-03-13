@@ -1,0 +1,42 @@
+{
+    "consumo_basico": {
+        "descripcion": "Solicitudes orientadas a consultar o recuperar valores cuantitativos de consumo energético ya registrados para uno o varios dispositivos, zonas del hogar o el hogar completo, dentro de un periodo de tiempo explícitamente definido. La intención es acceder a datos puntuales o históricos sin realizar comparaciones, análisis de patrones, inferencias, proyecciones ni definir formatos de visualización o presentación de resultados.",
+        "usar_si": [
+            "El usuario solicita valores de consumo energético existentes",
+            "La consulta incluye un periodo de tiempo explícito o claramente inferible",
+            "La respuesta esperada es un valor cuantitativo único o agregado simple"
+        ]
+    },
+    "comparacion_consumos": {
+        "descripcion": "Solicitudes cuya intención principal es comparar consumos energéticos entre dispositivos, zonas del hogar o periodos de tiempo distintos, con el fin de identificar diferencias relativas o determinar cuál consume más o menos energía.",
+        "usar_si": [
+            "El usuario pide comparar dos o más consumos",
+            "La consulta utiliza términos comparativos explícitos",
+            "Se requiere analizar diferencias absolutas o relativas"
+        ]
+    },
+    "deteccion_anomalias_tendencias": {
+        "descripcion": "Solicitudes orientadas a identificar comportamientos anómalos, picos de consumo o tendencias sostenidas en el consumo energético, a partir del análisis de datos históricos y patrones temporales.",
+        "usar_si": [
+            "El usuario menciona picos, anomalías o consumos irregulares",
+            "La consulta sugiere aumentos o disminuciones sostenidas",
+            "Se busca detectar fallos o hábitos de uso ineficientes"
+        ]
+    },
+    "prediccion_estimacion": {
+        "descripcion": "Solicitudes que buscan estimar o predecir el consumo energético futuro o evaluar escenarios hipotéticos basados en cambios de hábitos, dispositivos o condiciones especiales.",
+        "usar_si": [
+            "El usuario solicita estimaciones futuras",
+            "La consulta plantea escenarios hipotéticos",
+            "La respuesta requiere inferencia o proyección"
+        ]
+    },
+    "entrada_inadmisible": {
+        "descripcion": "Solicitudes que expresan una intención explícita pero que se encuentran fuera del dominio del consumo energético del hogar, o que no corresponden a ninguno de los escenarios de entrada admitidos por el sistema. Estas solicitudes son identificables semánticamente, pero no representan acciones que el sistema esté diseñado para interpretar o procesar.",
+        "usar_si": [
+            "La consulta no está relacionada con consumo energético",
+            "La consulta es ambigua o carece de contexto",
+            "No se puede mapear la intención a los otros escenarios"
+        ]
+    }
+}

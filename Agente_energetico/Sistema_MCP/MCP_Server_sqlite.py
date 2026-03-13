@@ -1,3 +1,7 @@
+#---------------
+#SERVIDOR MCP CARGADO
+#---------------
+
 from fastmcp import FastMCP
 import pandas as pd
 import numpy as np

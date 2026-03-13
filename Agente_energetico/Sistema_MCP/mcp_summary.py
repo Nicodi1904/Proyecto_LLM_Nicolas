@@ -1,3 +1,6 @@
+#---------------------
+#Este es un script auxiliar para extraer los metadatos para poder hacer sl system summary apartir de un servidor MCP, no hace parte del flujo de datos del sistema.
+#---------------------
 
 import asyncio
 from fastmcp import Client
