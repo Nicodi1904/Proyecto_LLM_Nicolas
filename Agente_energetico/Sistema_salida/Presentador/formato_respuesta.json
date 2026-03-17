@@ -1,0 +1,9 @@
+{
+  "instrucciones_generales": "Responde de forma clara, directa y concisa. Evita saludos largos o texto de relleno. Usa un tono amable, profesional y fácil de entender para un usuario residencial que no es experto en energía.",
+  "formato_salidas": {
+    "Resumen_op": "Proporciona un resumen de máximo 2 oraciones indicando qué tareas se realizaron para consultar la información solicitada.",
+    "Resultados_op": "Muestra los datos clave de forma cruda, usando viñetas o listas simples. Evita párrafos largos. Solo incluye los valores relevantes extraídos del informe.",
+    "analisis": "Interpreta brevemente qué significan esos resultados, explicando si es normal, alto o bajo en 1 o 2 oraciones.",
+    "sugerencia": "Da 1 recomendación práctica y directa para ahorrar energía o mejorar el uso del dispositivo basada en los resultados obtenidos si es posible."
+  }
+}

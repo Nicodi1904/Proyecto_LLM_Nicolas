@@ -48,7 +48,7 @@
                 "fecha_fin"
               ]
             },
-            "output_schema": "Diccionario con las claves: ['status', 'periodo', 'granularidad', 'datos', 'mensaje']"
+            "output_keys": "Diccionario con las claves: ['status', 'periodo', 'granularidad', 'datos', 'mensaje']"
           }
         },
         {
@@ -109,7 +109,7 @@
                 "objetivo_b"
               ]
             },
-            "output_schema": "Diccionario con las claves: ['status', 'comparacion']"
+            "output_keys": "Diccionario con las claves: ['status', 'comparacion']"
           }
         },
         {
@@ -147,7 +147,7 @@
                 "fecha_fin"
               ]
             },
-            "output_schema": "Diccionario con las claves: ['status', 'estadisticas', 'total_anomalias', 'eventos', 'mensaje']"
+            "output_keys": "Diccionario con las claves: ['status', 'estadisticas', 'total_anomalias', 'eventos', 'mensaje']"
           }
         },
         {
@@ -181,7 +181,7 @@
                 "fecha_fin"
               ]
             },
-            "output_schema": "Diccionario con las claves: ['status', 'tendencia']"
+            "output_keys": "Diccionario con las claves: ['status', 'tendencia']"
           }
         }
       ]

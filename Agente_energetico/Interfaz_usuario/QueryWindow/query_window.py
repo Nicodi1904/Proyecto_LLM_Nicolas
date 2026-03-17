@@ -87,8 +87,16 @@ class Query_Window(QWidget):
 
     def _al_hacer_click_consultar(self):
         texto = self.input_bar.text().strip()
+        modelo = self.status_info.get_selected_model()
+        
+        # VALIDACIÓN: Si no hay un modelo válido seleccionado, advertir y abortar
+        if not modelo or modelo == "Sin modelos":
+            self.lbl_estado.setText("Por favor, agrega o selecciona un modelo válido antes de consultar.")
+            return
+
         if texto:
             self.lbl_estado.setText(f"Enviando consulta...")
+            self.input_bar.titulo.setText("Procesando datos de consulta, dame un momento...")
             self.consulta_disparada.emit(texto)
         else:
             self.lbl_estado.setText("Por favor, escribe algo.")
@@ -113,6 +121,7 @@ class Query_Window(QWidget):
     def limpiar_interfaz(self):
         self.input_bar.limpiar()
         self.lbl_estado.setText("")
+        self.input_bar.titulo.setText("¿En qué puedo ayudarte?")
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

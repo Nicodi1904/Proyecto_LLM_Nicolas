@@ -60,18 +60,70 @@ class Result_Window(QWidget):
         self.resources_panel = ResourcesPanel()
 
         layout_cuerpo.addWidget(self.left_menu)
-        layout_cuerpo.addWidget(self.response_panel, 3)
-        layout_cuerpo.addWidget(self.resources_panel, 3)
+        layout_cuerpo.addWidget(self.response_panel, 2)
+        layout_cuerpo.addWidget(self.resources_panel, 4)
 
         layout_maestro.addLayout(layout_cuerpo)
 
     def mostrar_datos(self, consulta, respuesta):
         self.top_banner.set_query_text(consulta)
         self.response_panel.set_response_text(respuesta)
+        # Limpiar gráficas previas inmediatamente al cambiar de vista o estado
+        self.resources_panel.display_graphs({})
 
 if __name__ == "__main__":
+    # Import Worker3 for dummy data
+    sys.path.append(os.path.dirname(parent_dir))
+    from Sistema_salida.Worker3.worker3 import Worker3
+
     app = QApplication(sys.argv)
     window = Result_Window()
-    window.mostrar_datos("¿Estado de la red?", "Operación normal.")
+    
+    # Dummy del Presentador
+    respuesta_presentador = {
+        "Resumen_op": "Se evaluó el consumo histórico del sistema.",
+        "Resultados_op": "La Nevera consumió un 35% más que el PC durante la noche.",
+        "analisis": "El pico de la Nevera a las 03:00 am se debió al ciclo del compresor en modo deshielo.",
+        "sugerencia": "Revisar la configuración de temperatura del refrigerador para ver si se puede optimizar el ciclo nocturno."
+    }
+    
+    window.mostrar_datos("¿Estado de la red?", respuesta_presentador)
+
+    # Generar gráficos dummy
+    reporte_ejemplo = {
+      "@1": [
+        {
+          "accion_id": "@1.1",
+          "tool": "obtener_consumo",
+          "descripcion": "Consumo de ayer Nevera vs PC",
+          "resultado": {
+            "status": "success",
+            "granularidad": "hora",
+            "datos": {
+              "nevera": {"2024-10-23 00:00:00": 0.1, "2024-10-23 01:00:00": 0.12},
+              "PC": {"2024-10-23 00:00:00": 0.0, "2024-10-23 01:00:00": 0.0}
+            }
+          }
+        }
+      ],
+      "@2": [
+        {
+          "accion_id": "@2.1",
+          "tool": "obtener_consumo",
+          "descripcion": "Consumo Total Acumulado",
+          "resultado": {
+            "status": "success",
+            "granularidad": "total",
+            "datos": {"nevera": 15.4, "PC": 8.2, "TV": 3.1}
+          }
+        }
+      ]
+    }
+    worker = Worker3()
+    reporte_grafico = worker.generar_graficas(reporte_ejemplo)
+    
+    # Inyectar gráficos en la interfaz
+    window.resources_panel.display_graphs(reporte_grafico)
+
     window.show()
     sys.exit(app.exec())

@@ -142,12 +142,12 @@ class RightBar(QFrame):
     def _set_up_filas_horarias(self):
         """Crea las filas de configuración de tiempo detalladas por el usuario."""
         referencias = [
-            ("madrugada", "#A0C4FF"),  # Azul suave
-            ("mañana", "#FFD6A5"),     # Naranja suave
-            ("tarde", "#FDFFB6"),      # Amarillo suave
-            ("media tarde", "#CAFFBF"),# Verde suave
-            ("noche", "#9BF6FF"),      # Cyan suave
-            ("media noche", "#BDB2FF") # Violeta suave
+            ("madrugada", "#A0C4FF", "12", "00", "AM", "05", "59", "AM"),
+            ("mañana", "#FFD6A5", "06", "00", "AM", "11", "59", "AM"),
+            ("tarde", "#FDFFB6", "12", "00", "PM", "03", "59", "PM"),
+            ("media tarde", "#CAFFBF", "04", "00", "PM", "06", "59", "PM"),
+            ("noche", "#9BF6FF", "07", "00", "PM", "09", "59", "PM"),
+            ("media noche", "#BDB2FF", "10", "00", "PM", "11", "59", "PM")
         ]
 
         # Estilo para los inputs de tiempo
@@ -177,60 +177,118 @@ class RightBar(QFrame):
             }
             QComboBox::drop-down { border: none; }
         """
-        
-        # Estilo para eliminar recuadros en etiquetas y separador
         estilo_label_limpio = "background: transparent; border: none; color: #BBBBBB;"
 
         # Diccionario para guardar referencias a los widgets de entrada
         self.inputs_horarios = {}
 
-        for i, (nombre, color) in enumerate(referencias):
+        for i, (nombre, color, h_i, m_i, ampm_i, h_f, m_f, ampm_f) in enumerate(referencias):
             # Etiqueta de la referencia
             lbl = QLabel(nombre)
             lbl.setStyleSheet(f"color: {color}; font-size: 17px; font-weight: demi-bold; background: transparent; border: none;")
             
-            # Input Hora
-            edit_h = QLineEdit("00")
-            edit_h.setFixedWidth(30) 
-            edit_h.setAlignment(Qt.AlignCenter)
-            edit_h.setStyleSheet(estilo_input)
-            edit_h.setMaxLength(2)
-            edit_h.setValidator(QIntValidator(1, 12))
+            # ── 1. INICIO (Desde) ──
+            edit_h_i = QLineEdit(h_i)
+            edit_h_i.setFixedWidth(30) 
+            edit_h_i.setAlignment(Qt.AlignCenter)
+            edit_h_i.setStyleSheet(estilo_input)
+            edit_h_i.setMaxLength(2)
+            edit_h_i.setValidator(QIntValidator(1, 12))
             
-            # Separador decorativo
-            lbl_sep = QLabel(":")
-            lbl_sep.setStyleSheet(f"font-weight: bold; font-size: 17px; {estilo_label_limpio}")
-            lbl_sep.setFixedWidth(8)
+            lbl_sep_i = QLabel(":")
+            lbl_sep_i.setStyleSheet(f"font-weight: bold; font-size: 17px; {estilo_label_limpio}")
+            lbl_sep_i.setFixedWidth(8)
             
-            # Input Minutos
-            edit_m = QLineEdit("00")
-            edit_m.setFixedWidth(30) 
-            edit_m.setAlignment(Qt.AlignCenter)
-            edit_m.setStyleSheet(estilo_input)
-            edit_m.setMaxLength(2)
-            edit_m.setValidator(QIntValidator(0, 59))
+            edit_m_i = QLineEdit(m_i)
+            edit_m_i.setFixedWidth(30) 
+            edit_m_i.setAlignment(Qt.AlignCenter)
+            edit_m_i.setStyleSheet(estilo_input)
+            edit_m_i.setMaxLength(2)
+            edit_m_i.setValidator(QIntValidator(0, 59))
             
-            # Selector AM/PM
-            combo = QComboBox()
-            combo.addItems(["AM", "PM"])
-            combo.setFixedWidth(50)
-            combo.setStyleSheet(estilo_combo)
+            combo_i = QComboBox()
+            combo_i.addItems(["AM", "PM"])
+            combo_i.setCurrentText(ampm_i)
+            combo_i.setFixedWidth(47) # Ajustado para que no se corte el texto
+            combo_i.setStyleSheet(estilo_combo)
 
-            # Guardar referencias
-            self.inputs_horarios[nombre] = (edit_h, edit_m, combo)
+            # ── Separador Rango ──
+            lbl_rango = QLabel("-")
+            lbl_rango.setStyleSheet(f"font-weight: bold; font-size: 17px; {estilo_label_limpio}")
+            lbl_rango.setFixedWidth(12)
 
-            # Agregar al grid: Fila, Columna
+            # ── 2. FIN (Hasta) ──
+            edit_h_f = QLineEdit(h_f)
+            edit_h_f.setFixedWidth(30) 
+            edit_h_f.setAlignment(Qt.AlignCenter)
+            edit_h_f.setStyleSheet(estilo_input)
+            edit_h_f.setMaxLength(2)
+            edit_h_f.setValidator(QIntValidator(1, 12))
+            
+            lbl_sep_f = QLabel(":")
+            lbl_sep_f.setStyleSheet(f"font-weight: bold; font-size: 17px; {estilo_label_limpio}")
+            lbl_sep_f.setFixedWidth(8)
+            
+            edit_m_f = QLineEdit(m_f)
+            edit_m_f.setFixedWidth(30) 
+            edit_m_f.setAlignment(Qt.AlignCenter)
+            edit_m_f.setStyleSheet(estilo_input)
+            edit_m_f.setMaxLength(2)
+            edit_m_f.setValidator(QIntValidator(0, 59))
+            
+            combo_f = QComboBox()
+            combo_f.addItems(["AM", "PM"])
+            combo_f.setCurrentText(ampm_f)
+            combo_f.setFixedWidth(47) # Ajustado
+            combo_f.setStyleSheet(estilo_combo)
+
+            # Guardar referencias en tupla ampliada (6 elementos)
+            self.inputs_horarios[nombre] = (edit_h_i, edit_m_i, combo_i, edit_h_f, edit_m_f, combo_f)
+
+            # --- CORRECCIÓN DE TAMAÑOS PARA AJUSTAR AL ESPACIO ---
+            lbl.setFixedWidth(105) 
+            lbl.setStyleSheet(f"color: {color}; font-size: 16px; font-weight: demi-bold; background: transparent;")
+            
+            from PySide6.QtWidgets import QHBoxLayout, QWidget
+            
+            l_ini = QHBoxLayout()
+            l_ini.setContentsMargins(0, 0, 0, 0)
+            l_ini.setSpacing(2)
+            l_ini.addWidget(edit_h_i)
+            l_ini.addWidget(lbl_sep_i)
+            l_ini.addWidget(edit_m_i)
+            l_ini.addWidget(combo_i)
+            
+            w_ini = QWidget()
+            w_ini.setLayout(l_ini)
+            w_ini.setFixedWidth(125) # Devuelto a 125 para alojar combobox más ancho
+
+            l_fin = QHBoxLayout()
+            l_fin.setContentsMargins(0, 0, 0, 0)
+            l_fin.setSpacing(2)
+            l_fin.addWidget(edit_h_f)
+            l_fin.addWidget(lbl_sep_f)
+            l_fin.addWidget(edit_m_f)
+            l_fin.addWidget(combo_f)
+            
+            w_fin = QWidget()
+            w_fin.setLayout(l_fin)
+            w_fin.setFixedWidth(125) # Devuelto a 125
+
+            lbl_rango.setAlignment(Qt.AlignCenter)
+            lbl_rango.setFixedWidth(15)
+
+            # Agregar al grid
             self.grid_horarios.addWidget(lbl, i, 0)
-            self.grid_horarios.addWidget(edit_h, i, 1)
-            self.grid_horarios.addWidget(lbl_sep, i, 2)
-            self.grid_horarios.addWidget(edit_m, i, 3)
-            self.grid_horarios.addWidget(combo, i, 4)
+            self.grid_horarios.addWidget(w_ini, i, 1)
+            self.grid_horarios.addWidget(lbl_rango, i, 2)
+            self.grid_horarios.addWidget(w_fin, i, 3)
 
     def get_config_data(self):
-        """Retorna un diccionario con todas las configuraciones actuales de la barra lateral."""
+        """Retorna un diccionario con todas las configuraciones creadas en formato rango."""
         horarios = {}
-        for nombre, (h, m, ampm) in self.inputs_horarios.items():
-            horarios[nombre] = f"{h.text()}:{m.text()} {ampm.currentText()}"
+        for nombre, (h_i, m_i, ampm_i, h_f, m_f, ampm_f) in self.inputs_horarios.items():
+            horarios[nombre] = f"{h_i.text()}:{m_i.text()} {ampm_i.currentText()} - {h_f.text()}:{m_f.text()} {ampm_f.currentText()}"
         
         return {
             "referencias": horarios,
@@ -243,7 +301,7 @@ class RightBar(QFrame):
         self.expandida = not self.expandida
         
         if self.expandida:
-            self.setFixedWidth(380) # Reajustado para escala 150%
+            self.setFixedWidth(460) # Aumentado de 380 a 460 para evitar solapamientos
             self.btn_toggle.setText("▶")
             self.area_menu.setVisible(True)
         else:

@@ -1,11 +1,14 @@
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QComboBox, QPushButton
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 
 class StatusInfo(QWidget):
     """
     Componente que muestra información del modelo y servidores conectados.
     Ubicación sugerida: Debajo de la input_text_bar.
     """
+    editar_modelo_solicitado = Signal()
+    eliminar_modelo_solicitado = Signal()
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self._setup_ui()
@@ -65,8 +68,24 @@ class StatusInfo(QWidget):
             }
         """)
         
+        self.btn_editar = QPushButton("✏️")
+        self.btn_editar.setFixedSize(32, 32)
+        self.btn_editar.setCursor(Qt.PointingHandCursor)
+        self.btn_editar.setToolTip("Editar modelo actual")
+        self.btn_editar.setStyleSheet(self.btn_add_modelo.styleSheet().replace("font-size: 20px;", "font-size: 14px;"))
+        self.btn_editar.clicked.connect(self.editar_modelo_solicitado.emit)
+
+        self.btn_eliminar = QPushButton("🗑️")
+        self.btn_eliminar.setFixedSize(32, 32)
+        self.btn_eliminar.setCursor(Qt.PointingHandCursor)
+        self.btn_eliminar.setToolTip("Eliminar modelo actual")
+        self.btn_eliminar.setStyleSheet(self.btn_add_modelo.styleSheet().replace("font-size: 20px;", "font-size: 14px; color: #ff5555;"))
+        self.btn_eliminar.clicked.connect(self.eliminar_modelo_solicitado.emit)
+
         fila_modelo.addWidget(self.combo_modelos)
         fila_modelo.addWidget(self.btn_add_modelo)
+        fila_modelo.addWidget(self.btn_editar)
+        fila_modelo.addWidget(self.btn_eliminar)
         
         # 3. Etiqueta de Servidores
         self.lbl_servidores = QLabel("Servidores conectados:")

@@ -2,6 +2,7 @@ import dspy
 import os
 import json
 from typing import Dict, Any, List, Optional
+from datetime import datetime
 from dotenv import load_dotenv
 
 # Cargar API Keys
@@ -42,6 +43,13 @@ class Planeador(dspy.Signature):
         )
     )
 
+    temporal_preferences: dict = dspy.InputField(
+        desc=(
+            "Preferencias horarias del usuario. Es un diccionario que mapea conceptos abstractos (ej. 'madrugada', 'noche') "
+            "a horas específicas. Utiliza esta información para traducir términos vagos en horas de inicio y fin claras."
+        )
+    )
+
     plan_acciones: list[dict] = dspy.OutputField(
         desc=(
             "Lista estructurada de acciones planificadas para resolver las solicitudes del usuario. "
@@ -72,7 +80,7 @@ class PlaneadorAgente(dspy.Module):
         
         # Almacenamos el resumen para acceso posterior (ej. validación)
         self.system_summary = system_summary
-        
+
         # Se transforma el Json para que le llegue mejor al modelo y se inicia como instrucciones del sistema
         instruccion_sistema = (
             "Herramientas disponibles en el sistema junto a su descripción e indicaciones de uso:\n"
@@ -180,10 +188,81 @@ class PlaneadorAgente(dspy.Module):
             "conteo_acciones": len(plan) if isinstance(plan, list) else 0
         }
 
-    def __call__(self, solicitudes_categorizadas: dict, temporal_context: dict):
-        # El __call__ es para poder llamar al agente como si fuera una función.
-        # Devuelve el resultado directo del predictor (objeto Prediction de dspy)
-        return self.predictor(solicitudes_categorizadas=solicitudes_categorizadas, temporal_context=temporal_context)
+    def _convertir_referencias_a_24h(self, prefs: dict) -> dict:
+        """
+        Convierte preferencias horarias del usuario (ej: "12:00 AM - 05:59 AM") 
+        a formato militar de 24 horas (ej: "00:00 - 05:59").
+        """
+        def convertir_hora(hora_str):
+            try:
+                # Intenta parsear como "04:30 PM"
+                dt = datetime.strptime(hora_str.strip(), "%I:%M %p")
+                return dt.strftime("%H:%M")
+            except ValueError:
+                # Si falla o no tiene AM/PM, lo devuelve como estaba
+                return hora_str.strip()
+
+        prefs_convertidas = {}
+        for k, v in prefs.items():
+            if not isinstance(v, str):
+                prefs_convertidas[k] = v
+                continue
+            
+            # Buscamos si es un rango "Inicio - Fin"
+            partes = v.split("-")
+            if len(partes) == 2:
+                inicio_24 = convertir_hora(partes[0])
+                fin_24 = convertir_hora(partes[1])
+                prefs_convertidas[k] = f"{inicio_24} - {fin_24}"
+            else:
+                # Si es un valor único
+                prefs_convertidas[k] = convertir_hora(v)
+                
+        return prefs_convertidas
+
+    def _cargar_fewshots(self) -> List[dspy.Example]:
+        """Carga los ejemplos para few-shots desde FewShots_planeador.json."""
+        ruta_json = os.path.join(os.path.dirname(__file__), 'FewShots_planeador.json')
+        try:
+            with open(ruta_json, 'r', encoding='utf-8') as f:
+                ejemplos_raw = json.load(f)
+                return [dspy.Example(**ej).with_inputs('solicitudes_categorizadas', 'temporal_context', 'temporal_preferences') for ej in ejemplos_raw]
+        except (FileNotFoundError, json.JSONDecodeError):
+            return []
+
+    def entrenar_con_fewshots(self):
+        """
+        Función para entrenar/compilar el predictor usando BootstrapFewShot.
+        No se llama automáticamente por defecto.
+        """
+        from dspy.teleprompt import BootstrapFewShot
+        
+        trainset = self._cargar_fewshots()
+        if not trainset:
+            return
+
+        trainer = BootstrapFewShot()
+        compiled_predictor = trainer.compile(
+            student=self.predictor,
+            trainset=trainset
+        )
+        self.predictor = compiled_predictor
+
+    def __call__(self, solicitudes_categorizadas: dict, temporal_context: dict, temporal_preferences: dict):
+        # 1. Limpiar las preferencias horarias convirtiéndolas a 24h
+        prefs_24h = self._convertir_referencias_a_24h(temporal_preferences)
+
+        # 2. Llamar al predictor (objeto Prediction de dspy)
+        resultado = self.predictor(
+            solicitudes_categorizadas=solicitudes_categorizadas, 
+            temporal_context=temporal_context,
+            temporal_preferences=prefs_24h
+        )
+        
+        print(f"\n📊 [PlaneadorAgente] OUTPUT DIRECTO PRE-WORKER:")
+        print(f"Plan de Acciones: {getattr(resultado, 'plan_acciones', 'N/A')}\n")
+        
+        return resultado
 
 
 
@@ -211,13 +290,31 @@ if __name__ == "__main__":
         "fecha_actual": "2024-10-24T14:30:00"
     }
 
+    # Preferencias horarias (Dummy basado en UI RightBar)
+    temporal_preferences = {
+        "madrugada": "12:00 AM - 05:59 AM",
+        "mañana": "06:00 AM - 11:59 AM",
+        "tarde": "12:00 PM - 03:59 PM",
+        "media tarde": "04:00 PM - 06:59 PM",
+        "noche": "07:00 PM - 08:59 PM",
+        "media noche": "09:00 PM - 11:59 PM"
+    }
+
     # Inicialización del agente
     agente = PlaneadorAgente()
     
+    # Demostración del parseo interno
+    prefs_24h = agente._convertir_referencias_a_24h(temporal_preferences)
+    print("--- PREFERENCIAS HORARIAS DUMMY (ENTRADA UI vs CONVERSIÓN INTERNA) ---")
+    print(f"UI Original: {json.dumps(temporal_preferences, indent=2, ensure_ascii=False)}")
+    print(f"Convertidas a 24H: {json.dumps(prefs_24h, indent=2, ensure_ascii=False)}")
+    print("-" * 50 + "\n")
+
     # Ejecución de prueba
     resultado = agente(
         solicitudes_categorizadas=solicitudes_categorizadas, 
-        temporal_context=temporal_context
+        temporal_context=temporal_context,
+        temporal_preferences=temporal_preferences
     )
     
     print("--- RESULTADO DEL PLANIFICADOR ---")
@@ -229,6 +326,8 @@ if __name__ == "__main__":
     reporte = agente.worker2(resultado)
     print(json.dumps(reporte, indent=2, ensure_ascii=False))
     
+
+
 
 
 """

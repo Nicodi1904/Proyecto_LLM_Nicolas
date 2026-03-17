@@ -132,10 +132,43 @@ class InterpretadorAgente(dspy.Module):
             "conteo_peticiones": len(solicitudes) if isinstance(solicitudes, dict) else 0
         }
 
+    def _cargar_fewshots(self) -> List[dspy.Example]:
+        """Carga los ejemplos para few-shots desde FewShots_interpretador.json."""
+        ruta_json = os.path.join(os.path.dirname(__file__), 'FewShots_interpretador.json')
+        try:
+            with open(ruta_json, 'r', encoding='utf-8') as f:
+                ejemplos_raw = json.load(f)
+                return [dspy.Example(**ej).with_inputs('prompt_usuario') for ej in ejemplos_raw]
+        except (FileNotFoundError, json.JSONDecodeError):
+            return []
+
+    def entrenar_con_fewshots(self):
+        """
+        Función para entrenar/compilar el predictor usando BootstrapFewShot.
+        No se llama automáticamente por defecto.
+        """
+        from dspy.teleprompt import BootstrapFewShot
+        
+        trainset = self._cargar_fewshots()
+        if not trainset:
+            return
+
+        trainer = BootstrapFewShot()
+        compiled_predictor = trainer.compile(
+            student=self.predictor,
+            trainset=trainset
+        )
+        self.predictor = compiled_predictor
+
     def __call__(self, prompt_usuario: str):
         # El __call__ es para poder llamar al agente como si fuera una función.
         # Devuelve el resultado directo del predictor (objeto Prediction de dspy)
-        return self.predictor(prompt_usuario=prompt_usuario)
+        resultado = self.predictor(prompt_usuario=prompt_usuario)
+        
+        print(f"\n📊 [InterpretadorAgente] OUTPUT DIRECTO PRE-WORKER:")
+        print(f"Solicitudes: {getattr(resultado, 'solicitudes_categorizadas', 'N/A')}\n")
+        
+        return resultado
 
 # -------------------------------------------------------------------------
 # Inicialización y Carga de Datos

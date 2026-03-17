@@ -1,6 +1,6 @@
 import sys
 import os
-from PySide6.QtWidgets import QApplication, QWidget, QStackedWidget, QVBoxLayout
+from PySide6.QtWidgets import QApplication, QWidget, QStackedWidget, QVBoxLayout, QPushButton, QLineEdit, QComboBox, QLabel, QMessageBox
 from PySide6.QtCore import Qt
 from datetime import datetime
 
@@ -15,6 +15,9 @@ from QueryWindow.query_window import Query_Window
 from ResultWindow.result_window import Result_Window
 from Temas import Tema
 from Recursos_compartidos.Recursos_entrada import QueryRequest
+from Recursos_compartidos.Recursos_salida import RecursosSalida
+import sqlite3
+from cript import encriptar_clave, desencriptar_clave
 
 class Navigator(QWidget):
     """
@@ -24,15 +27,26 @@ class Navigator(QWidget):
     def __init__(self):
         super().__init__()
         self.ultima_consulta = None
+        self.recursos_salida = None
+        self.db_path = r'C:\sqlite_tesis\Base_datos_tesis\Hogar_Sincelejo.db'
+        
+        # Guardaremos referencias a los hilos para evitar que el recolector de basura los destruya
+        self.hilo_interpretador = None
+        self.hilo_planeador = None
+        self.hilo_cliente = None
+        self.hilo_presentador = None
+
+        self._inicializar_tabla_modelos()
         self._configurar_ventana()
         self._setup_ui()
+        self._cargar_modelos_dropdown()
         self._conectar_senales()
 
     def _configurar_ventana(self):
         self.setWindowTitle("Agente Energético - MAS")
         self.resize(1000, 600)
         self.setAttribute(Qt.WA_TranslucentBackground)
-        self.setWindowFlags(Qt.FramelessWindowHint | Qt.Window)
+        self.setWindowFlags(Qt.Window)
 
     def _setup_ui(self):
         self.layout_principal = QVBoxLayout(self)
@@ -56,25 +70,302 @@ class Navigator(QWidget):
         self.query_window.consulta_disparada.connect(self._navegar_a_resultados)
         # Cuando se solicita volver desde ResultWindow
         self.result_window.solicitud_regreso.connect(self._navegar_a_consulta)
+        # Botón "+" para añadir modelo
+        self.query_window.status_info.btn_add_modelo.clicked.connect(self._abrir_ventana_db)
+        # Botones de gestión
+        self.query_window.status_info.editar_modelo_solicitado.connect(self._editar_modelo_actual)
+        self.query_window.status_info.eliminar_modelo_solicitado.connect(self._eliminar_modelo_actual)
 
-    def _navegar_a_resultados(self, consulta):
-        # Capturar datos integrales desde la ventana de consulta
-        datos = self.query_window.get_full_query_data()
-        
-        # Guardar en recursos compartidos
-        self.ultima_consulta = QueryRequest(
-            pregunta=datos["pregunta"],
-            fecha=datos["fecha"],
-            hora=datos["hora"],
-            modelo=datos["modelo"],
-            referencias_horarias=datos["referencias_horarias"],
-            few_shots=datos["few_shots"],
-            widget=datos["widget"]
+    def _inicializar_tabla_modelos(self):
+        try:
+            conn = sqlite3.connect(self.db_path)
+            cursor = conn.cursor()
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS Modelos_lenguaje (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    Model TEXT UNIQUE NOT NULL,
+                    Api_base TEXT NOT NULL,
+                    Encripted_ApiKey TEXT
+                )
+            """)
+            conn.commit()
+            conn.close()
+        except Exception as e:
+            print(f"Error inicializando tabla Modelos_lenguaje: {e}")
+
+    def _cargar_modelos_dropdown(self):
+        try:
+            self.query_window.status_info.combo_modelos.clear()
+            conn = sqlite3.connect(self.db_path)
+            cursor = conn.cursor()
+            cursor.execute("SELECT Model FROM Modelos_lenguaje")
+            modelos = cursor.fetchall()
+            conn.close()
+
+            if modelos:
+                modelos_nombre = [m[0] for m in modelos]
+                self.query_window.status_info.combo_modelos.addItems(modelos_nombre)
+            else:
+                 # Fallback por si está vacía
+                 self.query_window.status_info.combo_modelos.addItem("Sin modelos")
+        except Exception as e:
+             print(f"Error cargando modelos al dropdown: {e}")
+
+    def _abrir_ventana_db(self):
+        from QueryWindow.DbWindow.db_window import DbWindow
+        ventana = DbWindow(self)
+        ventana.guardar_presionado.connect(self._guardar_nuevo_modelo)
+        ventana.exec() # Corre en modo Dialog bloqueante
+
+    def _editar_modelo_actual(self):
+        nombre_modelo = self.query_window.status_info.get_selected_model()
+        if not nombre_modelo or nombre_modelo == "Sin modelos":
+             QMessageBox.warning(self, "Advertencia", "No hay un modelo seleccionado para editar.")
+             return
+             
+        # Cargar datos de la DB
+        api_base = ""
+        api_key_desencriptada = ""
+        try:
+            conn = sqlite3.connect(self.db_path)
+            cursor = conn.cursor()
+            cursor.execute("SELECT Api_base, Encripted_ApiKey FROM Modelos_lenguaje WHERE Model=?", (nombre_modelo,))
+            res = cursor.fetchone()
+            conn.close()
+            
+            if res:
+                api_base = res[0]
+                if res[1]:
+                    from cript import desencriptar_clave
+                    api_key_desencriptada = desencriptar_clave(res[1])
+        except Exception as e:
+            print(f"Error cargando modelo para editar: {e}")
+
+        from QueryWindow.DbWindow.db_window import DbWindow
+        ventana = DbWindow(self, model=nombre_modelo, base=api_base, key=api_key_desencriptada)
+        ventana.guardar_presionado.connect(self._guardar_nuevo_modelo)
+        ventana.exec()
+
+    def _eliminar_modelo_actual(self):
+        nombre_modelo = self.query_window.status_info.get_selected_model()
+        if not nombre_modelo or nombre_modelo == "Sin modelos":
+             QMessageBox.warning(self, "Advertencia", "No hay un modelo seleccionado para eliminar.")
+             return
+
+        respuesta = QMessageBox.question(
+            self, 
+            "Eliminar Modelo", 
+            f"¿Estás seguro de que deseas eliminar el modelo '{nombre_modelo}'?",
+            QMessageBox.Yes | QMessageBox.No
         )
         
-        # Pasar datos a la ventana de resultados y cambiar vista
-        self.result_window.mostrar_datos(consulta, f"Procesando respuesta del agente con el modelo {datos['modelo']}...")
-        self.stacked_widget.setCurrentIndex(1)
+        if respuesta == QMessageBox.Yes:
+            try:
+                conn = sqlite3.connect(self.db_path)
+                cursor = conn.cursor()
+                cursor.execute("DELETE FROM Modelos_lenguaje WHERE Model=?", (nombre_modelo,))
+                conn.commit()
+                conn.close()
+                
+                QMessageBox.information(self, "Éxito", f"Modelo '{nombre_modelo}' eliminado correctamente.")
+                self._cargar_modelos_dropdown()
+            except Exception as e:
+                print(f"Error al eliminar modelo: {e}")
+                QMessageBox.critical(self, "Error", f"No se pudo eliminar el modelo.\nDetalle: {e}")
+
+    def _guardar_nuevo_modelo(self, model, base, key):
+        try:
+            # 1. Encriptar Key usando cript.py
+            key_encriptada = encriptar_clave(key)
+
+            # 2. Guardar en SQLite
+            conn = sqlite3.connect(self.db_path)
+            cursor = conn.cursor()
+            cursor.execute("""
+                INSERT OR REPLACE INTO Modelos_lenguaje (Model, Api_base, Encripted_ApiKey)
+                VALUES (?, ?, ?)
+            """, (model, base, key_encriptada))
+            conn.commit()
+            conn.close()
+            
+            QMessageBox.information(self, "Éxito", f"Modelo '{model}' guardado correctamente en la base de datos.")
+
+            # 3. Recargar el dropdown para que se vea reflejado el cambio
+            self._cargar_modelos_dropdown()
+            # Seleccionar el recién agregado
+            index = self.query_window.status_info.combo_modelos.findText(model)
+            if index >= 0:
+                 self.query_window.status_info.combo_modelos.setCurrentIndex(index)
+
+        except Exception as e:
+             print(f"Error al guardar modelo en DB: {e}")
+             QMessageBox.critical(self, "Error", f"No se pudo guardar el modelo.\nDetalle: {e}")
+
+    def _navegar_a_resultados(self, consulta):
+        try:
+            # Capturar datos integrales desde la ventana de consulta
+            datos = self.query_window.get_full_query_data()
+            
+            # VALIDACIÓN: Si no hay un modelo válido seleccionado, no dejar avanzar
+            modelo_elegido = datos.get("modelo")
+            if not modelo_elegido or modelo_elegido == "Sin modelos":
+                # Puedes retornar o incluso imprimir una advertencia
+                print("Consulta de procesamiento cancelada: No se ha seleccionado un modelo de lenguaje válido.")
+                return
+            
+            # Guardar en recursos compartidos
+            self.ultima_consulta = QueryRequest(
+                Mensaje_usuario=datos["pregunta"],
+                fecha=datos["fecha"],
+                hora=datos["hora"],
+                modelo=datos["modelo"],
+                referencias_horarias=datos["referencias_horarias"],
+                few_shots=datos["few_shots"],
+                widget=datos["widget"]
+            )
+            
+            # Pasar datos a la ventana de resultados y cambiar vista temporal
+            self.result_window.mostrar_datos(consulta, "Iniciando análisis inteligente...")
+            self.stacked_widget.setCurrentIndex(1)
+            
+            # Iniciar la cadena de ejecución asíncrona
+            self._iniciar_procesamiento_en_cadena()
+
+        except Exception as e:
+            print(f"Error en _navegar_a_resultados: {e}")
+            QMessageBox.critical(self, "Error", f"Error crítico al procesar navegación:\n{e}")
+
+    def _iniciar_procesamiento_en_cadena(self):
+        # 0. Importaciones Diferidas (Lazy Loading)
+        from Hilos.Hilo_interpretador import HiloInterpretador
+        from Hilos.Hilo_planeador import HiloPlaneador
+        from Hilos.Hilo_cliente import HiloCliente
+        from Hilos.Hilo_presentador import HiloPresentador
+        import dspy
+        
+        # 1. Recuperar Modelo desde DB y Desencriptar
+        nombre_modelo = self.ultima_consulta.modelo
+        api_base = "http://localhost:11434"
+        api_key = ""
+        
+        try:
+            conn = sqlite3.connect(self.db_path)
+            cursor = conn.cursor()
+            cursor.execute("SELECT Api_base, Encripted_ApiKey FROM Modelos_lenguaje WHERE Model=?", (nombre_modelo,))
+            resultado = cursor.fetchone()
+            conn.close()
+            
+            if resultado:
+                api_base = resultado[0]
+                encrypted_key = resultado[1]
+                
+                # Desencriptar usando cript.py
+                api_key = desencriptar_clave(encrypted_key)
+            
+        except Exception as e:
+            print(f"Error recuperando credenciales de la DB: {e}")
+            # Fallback continuará con lo que tenga
+
+        # 2. Configurar el LLM dinámico en dspy
+        try:
+            # Si el modelo ya especifica un proveedor (ej: gemini/, openai/), usarlo tal cual
+            if "/" in nombre_modelo:
+                modelo_final = nombre_modelo
+                base_final = api_base if api_base else None
+            else:
+                # Fallback para modelos locales tipo Ollama
+                modelo_final = f'ollama_chat/{nombre_modelo}'
+                base_final = api_base if api_base else "http://localhost:11434"
+
+            # Se omite la inicialización de dspy.LM aquí para evitar congelar la GUI.
+            # Se realizará dentro del HiloInterpretador.run().
+            pass
+        except Exception as e:
+             print(f"Error configurando dspy.LM: {e}")
+
+        # 3. Reiniciar recursos de salida limpios para esta consulta
+        self.recursos_salida = RecursosSalida()
+        
+        print("\n" + "="*50)
+        print("📥 RECURSOS DE ENTRADA ENVIADOS (navegador.py)")
+        print(f"Mensaje: {self.ultima_consulta.Mensaje_usuario}")
+        print(f"Fecha: {self.ultima_consulta.fecha} | Hora: {self.ultima_consulta.hora}")
+        print(f"Modelo: {self.ultima_consulta.modelo}")
+        print(f"Few-Shots: {self.ultima_consulta.few_shots}")
+        import json
+        print(f"Referencias Horarias:\n{json.dumps(self.ultima_consulta.referencias_horarias, indent=2)}")
+        print("="*50 + "\n")
+        
+        # 1. Instanciar Hilos
+        self.hilo_interpretador = HiloInterpretador(self.ultima_consulta, self.recursos_salida)
+        # Pasar credenciales para inicializar el LLM de forma asíncrona
+        self.hilo_interpretador.modelo_final = modelo_final
+        self.hilo_interpretador.base_final = base_final
+        self.hilo_interpretador.api_key = api_key
+        
+        self.hilo_planeador = HiloPlaneador(self.ultima_consulta, self.recursos_salida)
+        self.hilo_planeador.modelo_final = modelo_final
+        self.hilo_planeador.base_final = base_final
+        self.hilo_planeador.api_key = api_key
+        
+        self.hilo_cliente = HiloCliente(self.recursos_salida)
+        self.hilo_presentador = HiloPresentador(self.recursos_salida)
+        self.hilo_presentador.modelo_final = modelo_final
+        self.hilo_presentador.base_final = base_final
+        self.hilo_presentador.api_key = api_key
+        
+        # Articular lógica de Few-Shots
+        if self.ultima_consulta.few_shots:
+            self.hilo_interpretador.usar_few_shots = True
+            self.hilo_planeador.usar_few_shots = True
+        
+        # 2. Conectar Señales de Flujo (Éxito)
+        self.hilo_interpretador.terminado.connect(self._al_terminar_interpretador)
+        self.hilo_planeador.terminado.connect(self._al_terminar_planeador)
+        self.hilo_cliente.terminado.connect(self._al_terminar_cliente)
+        self.hilo_presentador.terminado.connect(self._al_terminar_presentador)
+        
+        # 3. Conectar Señales de Error
+        self.hilo_interpretador.error.connect(self._manejar_error_hilo)
+        self.hilo_planeador.error.connect(self._manejar_error_hilo)
+        self.hilo_cliente.error.connect(self._manejar_error_hilo)
+        self.hilo_presentador.error.connect(self._manejar_error_hilo)
+        
+        # 4. Arrancar la cadena (Empieza Interpretador)
+        self.hilo_interpretador.start()
+
+    # --- Callbacks de Transición de Hilos ---
+    def _al_terminar_interpretador(self):
+        print("\n=== [1] SALIDA DEL INTERPRETADOR (Inferencia) ===")
+        print(self.recursos_salida.solicitudes_categorizadas)
+        self.result_window.mostrar_datos(self.ultima_consulta.Mensaje_usuario, "Comprendiendo su solicitud... ☑\nDiseñando plan de acciones energéticas...")
+        self.hilo_planeador.start()
+        
+    def _al_terminar_planeador(self):
+        print("\n=== [2] SALIDA DEL PLANEADOR (Worker 1) ===")
+        print(self.recursos_salida.plan_acciones)
+        self.result_window.mostrar_datos(self.ultima_consulta.Mensaje_usuario, "Plan diseñado... ☑\nConectando a bases de datos MCP para recuperar información...")
+        self.hilo_cliente.start()
+        
+    def _al_terminar_cliente(self):
+        print("\n=== [3] SALIDA DEL CLIENTE MCP (Worker 2) ===")
+        print(self.recursos_salida.reporte_ejecucion_worker3)
+        self.result_window.mostrar_datos(self.ultima_consulta.Mensaje_usuario, "Información recuperada... ☑\nGenerando gráficas y redactando informe final...")
+        self.hilo_presentador.start()
+
+    def _al_terminar_presentador(self):
+        respuesta = self.recursos_salida.respuesta_presentador
+        graficas = self.recursos_salida.graficas_worker3
+        
+        print("\n=== [4] SALIDA DEL PRESENTADOR (Informe Final) ===")
+        print(respuesta)
+        
+        self.result_window.mostrar_datos(self.ultima_consulta.Mensaje_usuario, respuesta)
+        self.result_window.resources_panel.display_graphs(graficas)
+
+    def _manejar_error_hilo(self, mensaje_error):
+        texto_error = f"\n\nERROR EN EL SISTEMA MAS:\n{mensaje_error}"
+        self.result_window.mostrar_datos(self.ultima_consulta.Mensaje_usuario, texto_error)
 
     def _navegar_a_consulta(self):
         # Descartar paquete de recursos compartidos y limpiar interfaz
@@ -82,24 +373,7 @@ class Navigator(QWidget):
         self.query_window.limpiar_interfaz()
         self.stacked_widget.setCurrentIndex(0)
 
-    # Permitir arrastrar la ventana
-    def mousePressEvent(self, event):
-        # Si se hace clic en un widget interactivo, no iniciar arrastre
-        child = self.childAt(event.position().toPoint())
-        if isinstance(child, (QPushButton, QLineEdit, QComboBox, QLabel)) and child.cursor().shape() == Qt.PointingHandCursor:
-            return
-        # Caso especial para QLineEdit y QComboBox que no siempre tienen PointingHandCursor
-        if isinstance(child, (QLineEdit, QComboBox)):
-            return
-
-        if event.button() == Qt.LeftButton:
-            self.drag_pos = event.globalPosition().toPoint()
-
-    def mouseMoveEvent(self, event):
-        if event.buttons() == Qt.LeftButton:
-            self.move(self.pos() + event.globalPosition().toPoint() - self.drag_pos)
-            self.drag_pos = event.globalPosition().toPoint()
-            event.accept()
+    # Métodos de arrastre removidos
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
