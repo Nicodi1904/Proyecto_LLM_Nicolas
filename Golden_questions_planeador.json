@@ -1,0 +1,62 @@
+{
+  "Nivel_1_Basico": {
+    "L1_01": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo energético de la nevera el 2026-03-28.", "escenario": "consumo_basico"}}},
+    "L1_02": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo energético del aire acondicionado el 2026-03-27.", "escenario": "consumo_basico"}}},
+    "L1_03": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo energético del horno el 2026-03-26.", "escenario": "consumo_basico"}}},
+    "L1_04": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo energético del televisor el 2026-03-25.", "escenario": "consumo_basico"}}},
+    "L1_05": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo energético de la lavadora el 2026-03-24.", "escenario": "consumo_basico"}}},
+    "L1_06": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo energético de la nevera ayer.", "escenario": "consumo_basico"}}},
+    "L1_07": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo energético del aire acondicionado ayer.", "escenario": "consumo_basico"}}},
+    "L1_08": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo energético del horno ayer.", "escenario": "consumo_basico"}}},
+    "L1_09": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo energético del televisor ayer.", "escenario": "consumo_basico"}}},
+    "L1_10": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo energético de la lavadora ayer.", "escenario": "consumo_basico"}}}
+  },
+  "Nivel_2_Temporal_Relativo": {
+    "L2_01": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo energético de la nevera en los últimos 3 días.", "escenario": "consumo_basico"}}},
+    "L2_02": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo energético del aire acondicionado en los últimos 5 días.", "escenario": "consumo_basico"}}},
+    "L2_03": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo energético del horno esta semana.", "escenario": "consumo_basico"}}},
+    "L2_04": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo energético del televisor hoy.", "escenario": "consumo_basico"}}},
+    "L2_05": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo energético de la lavadora en los últimos 2 días.", "escenario": "consumo_basico"}}},
+    "L2_06": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo energético de la nevera desde hace 4 días hasta hoy.", "escenario": "consumo_basico"}}},
+    "L2_07": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo energético del horno en los últimos 7 días.", "escenario": "consumo_basico"}}},
+    "L2_08": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo energético del televisor desde ayer hasta hoy.", "escenario": "consumo_basico"}}},
+    "L2_09": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo energético de la lavadora en los últimos 10 días.", "escenario": "consumo_basico"}}},
+    "L2_10": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo energético del aire acondicionado desde hace 3 días.", "escenario": "consumo_basico"}}}
+  },
+  "Nivel_3_Temporal_Difuso": {
+    "L3_01": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo de la nevera en la noche de ayer.", "escenario": "consumo_basico"}}},
+    "L3_02": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo del horno en la mañana de hoy.", "escenario": "consumo_basico"}}},
+    "L3_03": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo del televisor en la tarde de ayer.", "escenario": "consumo_basico"}}},
+    "L3_04": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo de la lavadora en la media tarde de hoy.", "escenario": "consumo_basico"}}},
+    "L3_05": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo del aire acondicionado en la madrugada de ayer.", "escenario": "consumo_basico"}}},
+    "L3_06": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo de la nevera en la noche de hoy.", "escenario": "consumo_basico"}}},
+    "L3_07": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo del horno en la media noche de ayer.", "escenario": "consumo_basico"}}},
+    "L3_08": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo del televisor en la mañana de ayer.", "escenario": "consumo_basico"}}},
+    "L3_09": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo de la lavadora en la tarde de hoy.", "escenario": "consumo_basico"}}},
+    "L3_10": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo del aire acondicionado en la noche de ayer.", "escenario": "consumo_basico"}}}
+  },
+  "Nivel_4_Multi_Step": {
+    "L4_01": {"solicitudes_categorizadas": {"@1": {"solicitud": "Comparar el consumo de la nevera entre ayer y hoy.", "escenario": "comparacion_consumos"}}},
+    "L4_02": {"solicitudes_categorizadas": {"@1": {"solicitud": "Comparar el consumo del horno entre los últimos 2 días y los 2 días anteriores.", "escenario": "comparacion_consumos"}}},
+    "L4_03": {"solicitudes_categorizadas": {"@1": {"solicitud": "Comparar el consumo del televisor entre la mañana de ayer y la mañana de hoy.", "escenario": "comparacion_consumos"}}},
+    "L4_04": {"solicitudes_categorizadas": {"@1": {"solicitud": "Comparar el consumo de la lavadora entre esta semana y la semana pasada.", "escenario": "comparacion_consumos"}}},
+    "L4_05": {"solicitudes_categorizadas": {"@1": {"solicitud": "Comparar el consumo del aire acondicionado entre ayer y hace 3 días.", "escenario": "comparacion_consumos"}}},
+    "L4_06": {"solicitudes_categorizadas": {"@1": {"solicitud": "Comparar el consumo de la nevera entre la noche de ayer y la noche de hoy.", "escenario": "comparacion_consumos"}}},
+    "L4_07": {"solicitudes_categorizadas": {"@1": {"solicitud": "Comparar el consumo del horno entre la tarde de ayer y la mañana de hoy.", "escenario": "comparacion_consumos"}}},
+    "L4_08": {"solicitudes_categorizadas": {"@1": {"solicitud": "Comparar el consumo del televisor entre hoy y los últimos 3 días.", "escenario": "comparacion_consumos"}}},
+    "L4_09": {"solicitudes_categorizadas": {"@1": {"solicitud": "Comparar el consumo de la lavadora entre la mañana y la noche de ayer.", "escenario": "comparacion_consumos"}}},
+    "L4_10": {"solicitudes_categorizadas": {"@1": {"solicitud": "Comparar el consumo del aire acondicionado entre esta semana y hoy.", "escenario": "comparacion_consumos"}}}
+  },
+  "Nivel_5_Complejo_Realista": {
+    "L5_01": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo de la nevera ayer.", "escenario": "consumo_basico"}, "@2": {"solicitud": "Compararlo con el consumo del lunes.", "escenario": "comparacion_consumos"}}},
+    "L5_02": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo del horno en los últimos 3 días.", "escenario": "consumo_basico"}, "@2": {"solicitud": "Detectar anomalías en ese periodo.", "escenario": "deteccion_anomalias"}}},
+    "L5_03": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo del televisor esta semana.", "escenario": "consumo_basico"}, "@2": {"solicitud": "Analizar su tendencia.", "escenario": "analizar_tendencia"}}},
+    "L5_04": {"solicitudes_categorizadas": {"@1": {"solicitud": "Comparar el consumo de la lavadora entre ayer y hoy.", "escenario": "comparacion_consumos"}, "@2": {"solicitud": "Detectar anomalías hoy.", "escenario": "deteccion_anomalias"}}},
+    "L5_05": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo del aire acondicionado en la noche de ayer.", "escenario": "consumo_basico"}, "@2": {"solicitud": "Compararlo con la noche del lunes.", "escenario": "comparacion_consumos"}}},
+    "L5_06": {"solicitudes_categorizadas": {"@1": {"solicitud": "Detectar anomalías en la nevera en los últimos 5 días.", "escenario": "deteccion_anomalias"}, "@2": {"solicitud": "Analizar la tendencia en ese mismo periodo.", "escenario": "analizar_tendencia"}}},
+    "L5_07": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo del horno hoy.", "escenario": "consumo_basico"}, "@2": {"solicitud": "Compararlo con ayer.", "escenario": "comparacion_consumos"}, "@3": {"solicitud": "Detectar anomalías hoy.", "escenario": "deteccion_anomalias"}}},
+    "L5_08": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo del televisor en la mañana de hoy.", "escenario": "consumo_basico"}, "@2": {"solicitud": "Compararlo con la tarde de ayer.", "escenario": "comparacion_consumos"}}},
+    "L5_09": {"solicitudes_categorizadas": {"@1": {"solicitud": "Mostrar el consumo de la lavadora esta semana.", "escenario": "consumo_basico"}, "@2": {"solicitud": "Analizar la tendencia.", "escenario": "analizar_tendencia"}, "@3": {"solicitud": "Detectar anomalías.", "escenario": "deteccion_anomalias"}}},
+    "L5_10": {"solicitudes_categorizadas": {"@1": {"solicitud": "Comparar el consumo del aire acondicionado entre hoy y ayer.", "escenario": "comparacion_consumos"}, "@2": {"solicitud": "Analizar la tendencia en los últimos 3 días.", "escenario": "analizar_tendencia"}}}
+  }
+}

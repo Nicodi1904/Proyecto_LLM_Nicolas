@@ -1,0 +1,1964 @@
+[
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "¿Cuánto consumió el PC hoy?",
+        "escenario": "consumo_basico"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24T15:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "obtener_consumo",
+        "inputs": {
+          "dispositivos": [
+            "PC"
+          ],
+          "fecha_inicio": "2024-10-24T00:00:00",
+          "fecha_fin": "2024-10-24T23:59:59",
+          "granularidad": "total"
+        },
+        "descripcion": "Obtener el consumo acumulado del PC hoy."
+      }
+    ],
+    "notas": "Se requiere un valor único de consumo para hoy. La granularidad 'total' es la adecuada."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Quiero ver la gráfica de consumo de la nevera y el TV de ayer.",
+        "escenario": "consumo_basico"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24T10:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "obtener_consumo",
+        "inputs": {
+          "dispositivos": [
+            "nevera",
+            "TV"
+          ],
+          "fecha_inicio": "2024-10-23T00:00:00",
+          "fecha_fin": "2024-10-23T23:59:59",
+          "granularidad": "hora"
+        },
+        "descripcion": "Obtener evolución horaria de la nevera y TV durante todo el día de ayer."
+      }
+    ],
+    "notas": "La solicitud de 'gráfica de consumo' implica analizar la evolución en el tiempo. Por ello, se agrupa la consulta de ambos dispositivos bajo la granularidad 'hora'."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Muéstrame cómo ha variado el consumo total de la casa en lo que va del mes.",
+        "escenario": "consumo_basico"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-15T09:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "obtener_consumo",
+        "inputs": {
+          "dispositivos": [
+            "Total_Casa"
+          ],
+          "fecha_inicio": "2024-10-01T00:00:00",
+          "fecha_fin": "2024-10-31T23:59:59",
+          "granularidad": "dia"
+        },
+        "descripcion": "Obtener serie temporal diaria del consumo acumulado de toda la casa para octubre."
+      }
+    ],
+    "notas": "Al pedir 'cómo ha variado', el usuario quiere ver tendencia en el tiempo. Como habla de 'el mes', la granularidad 'dia' es óptima para graficar la evolución. El dispositivo especial 'Total_Casa' captura la suma global."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "¿Cuánto gastó el refrigerador ayer en la noche?",
+        "escenario": "consumo_basico"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-05-02T11:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "obtener_consumo",
+        "inputs": {
+          "dispositivos": [
+            "refrigerador"
+          ],
+          "fecha_inicio": "2024-05-01T19:00:00",
+          "fecha_fin": "2024-05-01T20:59:59",
+          "granularidad": "total"
+        },
+        "descripcion": "Obtener consumo acumulado del refrigerador en el rango horario correspondiente a 'noche' (19:00 - 20:59) del día anterior."
+      }
+    ],
+    "notas": "El usuario pide un único valor de un rango concreto. Según las preferencias, 'noche' se traduce en 19:00 a 20:59 de ayer (1 de mayo). Granularidad 'total' ya que no requiere serie."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Dame el reporte de consumo del aire acondicionado mes a mes durante 2023.",
+        "escenario": "consumo_basico"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-01-15T10:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "obtener_consumo",
+        "inputs": {
+          "dispositivos": [
+            "aire acondicionado"
+          ],
+          "fecha_inicio": "2023-01-01T00:00:00",
+          "fecha_fin": "2023-12-31T23:59:59",
+          "granularidad": "mes"
+        },
+        "descripcion": "Obtener evolución mensual del aire acondicionado en 2023."
+      }
+    ],
+    "notas": "La expresión 'mes a mes' delinea claramente la granularidad 'mes' requerida para analizar el año completo de forma agregada."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Dime el consumo total del PC y la lámpara la semana pasada.",
+        "escenario": "consumo_basico"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-11-12T10:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "obtener_consumo",
+        "inputs": {
+          "dispositivos": [
+            "PC",
+            "lámpara"
+          ],
+          "fecha_inicio": "2024-11-04T00:00:00",
+          "fecha_fin": "2024-11-10T23:59:59",
+          "granularidad": "total"
+        },
+        "descripcion": "Obtener consumo acumulado comparativo para el PC y la lámpara la semana pasada."
+      }
+    ],
+    "notas": "Al pedir 'total', se usa granularidad 'total'. La semana pasada (de un martes 12) fue del lunes 4 al domingo 10."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Quiero saber el consumo horario de la casa hoy en la madrugada.",
+        "escenario": "consumo_basico"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24T18:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "obtener_consumo",
+        "inputs": {
+          "dispositivos": [
+            "Total_Casa"
+          ],
+          "fecha_inicio": "2024-10-24T00:00:00",
+          "fecha_fin": "2024-10-24T05:59:59",
+          "granularidad": "hora"
+        },
+        "descripcion": "Extraer serie temporal por hora del consumo total durante la madrugada."
+      }
+    ],
+    "notas": "La 'madrugada' mapea a 00:00-05:59. El pedido de 'horario' marca claramente una granularidad de 'hora'."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "¿Cuánto gastó el ventilador ayer en total?",
+        "escenario": "consumo_basico"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24T08:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "obtener_consumo",
+        "inputs": {
+          "dispositivos": [
+            "ventilador"
+          ],
+          "fecha_inicio": "2024-10-23T00:00:00",
+          "fecha_fin": "2024-10-23T23:59:59",
+          "granularidad": "total"
+        },
+        "descripcion": "Obtener suma de ayer para el ventilador."
+      }
+    ],
+    "notas": "Granularidad total para consumo directo del día de ayer."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Muéstrame el consumo por día del PC el fin de semana pasado.",
+        "escenario": "consumo_basico"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-28T09:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "obtener_consumo",
+        "inputs": {
+          "dispositivos": [
+            "PC"
+          ],
+          "fecha_inicio": "2024-10-26T00:00:00",
+          "fecha_fin": "2024-10-27T23:59:59",
+          "granularidad": "dia"
+        },
+        "descripcion": "Consumo por día el sábado y domingo."
+      }
+    ],
+    "notas": "Se requiere granularidad 'dia' sobre el fin de semana para visualizar la diferencia de consumo entre el sábado y el domingo."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Total de energía de la lavadora y microondas en septiembre.",
+        "escenario": "consumo_basico"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-05T10:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "obtener_consumo",
+        "inputs": {
+          "dispositivos": [
+            "lavadora",
+            "microondas"
+          ],
+          "fecha_inicio": "2024-09-01T00:00:00",
+          "fecha_fin": "2024-09-30T23:59:59",
+          "granularidad": "total"
+        },
+        "descripcion": "Extracción agregada de dos equipos en septiembre."
+      }
+    ],
+    "notas": "Pide el 'total de energía' por lo que no es necesario observar evolución temporal."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "¿Qué consumió más ayer, la nevera o el TV?",
+        "escenario": "comparacion_consumos"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24T10:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "analizar_comparacion",
+        "inputs": {
+          "objetivo_a": {
+            "dispositivo": "nevera",
+            "fecha_inicio": "2024-10-23T00:00:00",
+            "fecha_fin": "2024-10-23T23:59:59"
+          },
+          "objetivo_b": {
+            "dispositivo": "TV",
+            "fecha_inicio": "2024-10-23T00:00:00",
+            "fecha_fin": "2024-10-23T23:59:59"
+          }
+        },
+        "descripcion": "Comparar consumo total de ambos en el día de ayer."
+      }
+    ],
+    "notas": "Comparación directa entre distintos dispositivos en el mismo periodo."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Compara el consumo del PC entre el lunes y el martes de esta semana.",
+        "escenario": "comparacion_consumos"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24T12:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "analizar_comparacion",
+        "inputs": {
+          "objetivo_a": {
+            "dispositivo": "PC",
+            "fecha_inicio": "2024-10-21T00:00:00",
+            "fecha_fin": "2024-10-21T23:59:59"
+          },
+          "objetivo_b": {
+            "dispositivo": "PC",
+            "fecha_inicio": "2024-10-22T00:00:00",
+            "fecha_fin": "2024-10-22T23:59:59"
+          }
+        },
+        "descripcion": "Analizar la diferencia de gasto del PC entre lunes 21 y martes 22."
+      }
+    ],
+    "notas": "Comparación del mismo dispositivo en periodos temporales contiguos diferentes."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "¿Gastamos más luz hoy en la mañana o ayer en la tarde?",
+        "escenario": "comparacion_consumos"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24T20:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "analizar_comparacion",
+        "inputs": {
+          "objetivo_a": {
+            "dispositivo": "Total_Casa",
+            "fecha_inicio": "2024-10-24T06:00:00",
+            "fecha_fin": "2024-10-24T11:59:59"
+          },
+          "objetivo_b": {
+            "dispositivo": "Total_Casa",
+            "fecha_inicio": "2024-10-23T12:00:00",
+            "fecha_fin": "2024-10-23T15:59:59"
+          }
+        },
+        "descripcion": "Comparar el consumo Total de la Casa de hoy por la mañana frente a ayer en la tarde."
+      }
+    ],
+    "notas": "Plantea un contraste cruzando días y prefenrencias de rangos humanos ('mañana' vs 'tarde') para toda la casa."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "¿Fue mayor el consumo del AC en julio frente a agosto?",
+        "escenario": "comparacion_consumos"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-01T12:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "analizar_comparacion",
+        "inputs": {
+          "objetivo_a": {
+            "dispositivo": "AC",
+            "fecha_inicio": "2024-07-01T00:00:00",
+            "fecha_fin": "2024-07-31T23:59:59"
+          },
+          "objetivo_b": {
+            "dispositivo": "AC",
+            "fecha_inicio": "2024-08-01T00:00:00",
+            "fecha_fin": "2024-08-31T23:59:59"
+          }
+        },
+        "descripcion": "Comparación mensual acumulada de los meses de Julio y Agosto."
+      }
+    ],
+    "notas": "Se mapean los meses completos como los respectivos rangos ISO 8601 de inicio a fin de mes."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Compara el consumo de la casa la semana pasada con esta semana hasta ahora.",
+        "escenario": "comparacion_consumos"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-23T12:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "analizar_comparacion",
+        "inputs": {
+          "objetivo_a": {
+            "dispositivo": "Total_Casa",
+            "fecha_inicio": "2024-10-14T00:00:00",
+            "fecha_fin": "2024-10-20T23:59:59"
+          },
+          "objetivo_b": {
+            "dispositivo": "Total_Casa",
+            "fecha_inicio": "2024-10-21T00:00:00",
+            "fecha_fin": "2024-10-23T12:00:00"
+          }
+        },
+        "descripcion": "Diferencia entre la semana pasada completa y los días que van de esta semana."
+      }
+    ],
+    "notas": "El objetivo 'a' cubre la semana anterior y el 'b' llega solo hasta la 'fecha_actual', demostrando precisión en cálculo vivo."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Dime qué dispositivo fue más caro de mantener ayer, el ventilador o la tv.",
+        "escenario": "comparacion_consumos"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24T05:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "analizar_comparacion",
+        "inputs": {
+          "objetivo_a": {
+            "dispositivo": "ventilador",
+            "fecha_inicio": "2024-10-23T00:00:00",
+            "fecha_fin": "2024-10-23T23:59:59"
+          },
+          "objetivo_b": {
+            "dispositivo": "tv",
+            "fecha_inicio": "2024-10-23T00:00:00",
+            "fecha_fin": "2024-10-23T23:59:59"
+          }
+        },
+        "descripcion": "Comparativa entre dos consumos del día de ayer."
+      }
+    ],
+    "notas": "Comparar equipos idénticos para el mismo intervalo temporal exacto."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "¿Gastó más la playstation en la media tarde de ayer o en la media tarde de hoy?",
+        "escenario": "comparacion_consumos"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24T19:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "analizar_comparacion",
+        "inputs": {
+          "objetivo_a": {
+            "dispositivo": "playstation",
+            "fecha_inicio": "2024-10-23T16:00:00",
+            "fecha_fin": "2024-10-23T18:59:59"
+          },
+          "objetivo_b": {
+            "dispositivo": "playstation",
+            "fecha_inicio": "2024-10-24T16:00:00",
+            "fecha_fin": "2024-10-24T18:59:59"
+          }
+        },
+        "descripcion": "Comparar rangos de 'media tarde' de días consecutivos para la consola."
+      }
+    ],
+    "notas": "Mapeo a la preferencia horaria 16:00 a 18:59 para dos días en particular."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Necesito saber la diferencia del consumo de la casa entre el fin de semana y los de entre semana (lunes a viernes)",
+        "escenario": "comparacion_consumos"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-28T09:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "analizar_comparacion",
+        "inputs": {
+          "objetivo_a": {
+            "dispositivo": "Total_Casa",
+            "fecha_inicio": "2024-10-26T00:00:00",
+            "fecha_fin": "2024-10-27T23:59:59"
+          },
+          "objetivo_b": {
+            "dispositivo": "Total_Casa",
+            "fecha_inicio": "2024-10-21T00:00:00",
+            "fecha_fin": "2024-10-25T23:59:59"
+          }
+        },
+        "descripcion": "Contraste de valores brutos entre los 2 días del fin de semana (sábado-domingo) vs los 5 días de la semana (lunes-viernes)."
+      }
+    ],
+    "notas": "Requiere definir dos intervalos que componen la estructura de una semana."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "¿Qué consumió más en el año, la nevera o todo lo demás de la casa?",
+        "escenario": "comparacion_consumos"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-01T00:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "analizar_comparacion",
+        "inputs": {
+          "objetivo_a": {
+            "dispositivo": "nevera",
+            "fecha_inicio": "2024-01-01T00:00:00",
+            "fecha_fin": "2024-10-01T00:00:00"
+          },
+          "objetivo_b": {
+            "dispositivo": "Total_Casa",
+            "fecha_inicio": "2024-01-01T00:00:00",
+            "fecha_fin": "2024-10-01T00:00:00"
+          }
+        },
+        "descripcion": "Comparación del peso de la nevera vs el total facturado globalmente."
+      }
+    ],
+    "notas": "El comparador soporta rangos de 10 meses e incluye a la Total_Casa como objetivo."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Compara la lavadora contra la secadora ayer.",
+        "escenario": "comparacion_consumos"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24T10:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "analizar_comparacion",
+        "inputs": {
+          "objetivo_a": {
+            "dispositivo": "lavadora",
+            "fecha_inicio": "2024-10-23T00:00:00",
+            "fecha_fin": "2024-10-23T23:59:59"
+          },
+          "objetivo_b": {
+            "dispositivo": "secadora",
+            "fecha_inicio": "2024-10-23T00:00:00",
+            "fecha_fin": "2024-10-23T23:59:59"
+          }
+        },
+        "descripcion": "Comparar consumo neto de ambos equipos del día de ayer."
+      }
+    ],
+    "notas": "Simple y directo, comprueba que mapea ambos dispositivos de forma independiente para el mismo día."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Revisa si el PC tuvo algún pico anormal ayer.",
+        "escenario": "deteccion_anomalias"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24T10:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "detectar_anomalias",
+        "inputs": {
+          "dispositivo": "PC",
+          "fecha_inicio": "2024-10-23T00:00:00",
+          "fecha_fin": "2024-10-23T23:59:59",
+          "sensibilidad": 3.0
+        },
+        "descripcion": "Analizar la serie temporal de ayer del PC en busca de picos por encima de la media."
+      }
+    ],
+    "notas": "Es mandatorio usar 'detectar_anomalias' basándose en la petición explícita de verificar 'picos anormales'. Adherimos una sensibilidad base de 3."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "¿Hubo un evento de alto consumo en la casa la semana pasada? Usa alta sensibilidad.",
+        "escenario": "deteccion_anomalias"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24T10:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "detectar_anomalias",
+        "inputs": {
+          "dispositivo": "Total_Casa",
+          "fecha_inicio": "2024-10-14T00:00:00",
+          "fecha_fin": "2024-10-20T23:59:59",
+          "sensibilidad": 2.0
+        },
+        "descripcion": "Identificar eventualidades extremas en el consumo Total de la casa, disminuyendo el umbral Z a 2 para alta sensibilidad."
+      }
+    ],
+    "notas": "La directiva 'alta sensibilidad' le indica al modelo ajustar el parámetro numérico de 3.0 hacia algo más bajo, por ejemplo 2 o 1.5, para detectar más eventos."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Quiero saber si hubo fugas de energía del TV durante febrero.",
+        "escenario": "deteccion_anomalias"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-03-01T10:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "detectar_anomalias",
+        "inputs": {
+          "dispositivo": "TV",
+          "fecha_inicio": "2024-02-01T00:00:00",
+          "fecha_fin": "2024-02-29T23:59:59",
+          "sensibilidad": 3.0
+        },
+        "descripcion": "Buscar posibles eventos por encima de lo normal en todo el mes de febrero del año bisiesto."
+      }
+    ],
+    "notas": "Al buscar 'fugas' o consumos extraños prolongados, anomalías es adecuado."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Chequea si durante todos los fines de semana del mes hubo picos raros de la iluminación.",
+        "escenario": "deteccion_anomalias"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-11-01T10:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "detectar_anomalias",
+        "inputs": {
+          "dispositivo": "iluminación",
+          "fecha_inicio": "2024-10-01T00:00:00",
+          "fecha_fin": "2024-10-31T23:59:59",
+          "sensibilidad": 3.0
+        },
+        "descripcion": "Detectar consumo anómalo a lo largo de todo octubre."
+      }
+    ],
+    "notas": "Como el sistema MCP de anomalías evalúa el periodo contiguo completo, mandamos todo el mes de octubre (la post-selección se evaluaría en el análisis numérico del informe)."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Dime si ayer en la madrugada la lavadora se activó sin permiso (consumo atípico).",
+        "escenario": "deteccion_anomalias"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24T12:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "detectar_anomalias",
+        "inputs": {
+          "dispositivo": "lavadora",
+          "fecha_inicio": "2024-10-23T00:00:00",
+          "fecha_fin": "2024-10-23T05:59:59",
+          "sensibilidad": 3.0
+        },
+        "descripcion": "Revisar rango de madrugada explícito de ayer en la lavadora por eventos."
+      }
+    ],
+    "notas": "Muestra cómo aislar la detección a unas pocas horas definidas por 'madrugada'."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Hubo anomalías del AC?",
+        "escenario": "deteccion_anomalias"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24T12:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "detectar_anomalias",
+        "inputs": {
+          "dispositivo": "AC",
+          "fecha_inicio": "2024-10-24T00:00:00",
+          "fecha_fin": "2024-10-24T23:59:59",
+          "sensibilidad": 3.0
+        },
+        "descripcion": "Ejecutar detectar_anomalias"
+      }
+    ],
+    "notas": "Detección rápida en el día en curso."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Anomalías de ayer.",
+        "escenario": "deteccion_anomalias"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24T12:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "detectar_anomalias",
+        "inputs": {
+          "dispositivo": "Total_Casa",
+          "fecha_inicio": "2024-10-23T00:00:00",
+          "fecha_fin": "2024-10-23T23:59:59",
+          "sensibilidad": 3.0
+        },
+        "descripcion": "Ejecutar detectar_anomalias"
+      }
+    ],
+    "notas": "Total Casa por omisión si no específica dispositivo."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Detectar picos este mes.",
+        "escenario": "deteccion_anomalias"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-15T12:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "detectar_anomalias",
+        "inputs": {
+          "dispositivo": "Total_Casa",
+          "fecha_inicio": "2024-10-01T00:00:00",
+          "fecha_fin": "2024-10-31T23:59:59",
+          "sensibilidad": 3.0
+        },
+        "descripcion": "Ejecutar detectar_anomalias"
+      }
+    ],
+    "notas": "Total_Casa para el mes."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Valores locos en la noche de antier.",
+        "escenario": "deteccion_anomalias"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24T12:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "detectar_anomalias",
+        "inputs": {
+          "dispositivo": "Total_Casa",
+          "fecha_inicio": "2024-10-22T19:00:00",
+          "fecha_fin": "2024-10-22T20:59:59",
+          "sensibilidad": 3.0
+        },
+        "descripcion": "Ejecutar detectar_anomalias"
+      }
+    ],
+    "notas": "Uso de la preferencia relativa 'noche'."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Picos sospechosos de la PC en todo el año.",
+        "escenario": "deteccion_anomalias"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-12-31T12:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "detectar_anomalias",
+        "inputs": {
+          "dispositivo": "PC",
+          "fecha_inicio": "2024-01-01T00:00:00",
+          "fecha_fin": "2024-12-31T23:59:59",
+          "sensibilidad": 3.0
+        },
+        "descripcion": "Ejecutar detectar_anomalias"
+      }
+    ],
+    "notas": "Año completo, un componente."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "¿Hacia dónde va mi consumo de toda la casa este mes, sube o baja?",
+        "escenario": "analisis_tendencia"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-15T10:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "analizar_tendencia",
+        "inputs": {
+          "dispositivo": "Total_Casa",
+          "fecha_inicio": "2024-10-01T00:00:00",
+          "fecha_fin": "2024-10-31T23:59:59"
+        },
+        "descripcion": "Determinar tendencia y pendiente para todo lo que va de octubre."
+      }
+    ],
+    "notas": "Busca dirección (Creciente/Decreciente/Estable)."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Calcula la tendencia del consumo de aire acondicionado en el semestre pasado.",
+        "escenario": "analisis_tendencia"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-07-02T10:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "analizar_tendencia",
+        "inputs": {
+          "dispositivo": "aire acondicionado",
+          "fecha_inicio": "2024-01-01T00:00:00",
+          "fecha_fin": "2024-06-30T23:59:59"
+        },
+        "descripcion": "Ajuste de regresión sobre los pasados 6 meses."
+      }
+    ],
+    "notas": "Se espera un intervalo explícito amplio donde haya datos contiguos."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "¿Subió el gasto del PC la semana anterior?",
+        "escenario": "analisis_tendencia"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24T10:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "analizar_tendencia",
+        "inputs": {
+          "dispositivo": "PC",
+          "fecha_inicio": "2024-10-14T00:00:00",
+          "fecha_fin": "2024-10-20T23:59:59"
+        },
+        "descripcion": "Ejecutar analizar_tendencia"
+      }
+    ],
+    "notas": "Validación de tendencia corta"
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Tendencia de ayer de la TV.",
+        "escenario": "analisis_tendencia"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24T10:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "analizar_tendencia",
+        "inputs": {
+          "dispositivo": "TV",
+          "fecha_inicio": "2024-10-23T00:00:00",
+          "fecha_fin": "2024-10-23T23:59:59"
+        },
+        "descripcion": "Ejecutar analizar_tendencia"
+      }
+    ],
+    "notas": "Micro-Tensión en un día"
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Cómo fue el patrón global de marzo?",
+        "escenario": "analisis_tendencia"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-05-10T10:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "analizar_tendencia",
+        "inputs": {
+          "dispositivo": "Total_Casa",
+          "fecha_inicio": "2024-03-01T00:00:00",
+          "fecha_fin": "2024-03-31T23:59:59"
+        },
+        "descripcion": "Ejecutar analizar_tendencia"
+      }
+    ],
+    "notas": "Patrón general de marzo asume Total_casa"
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Tendencia de la ducha en las madrugadas de este mes",
+        "escenario": "analisis_tendencia"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-15T12:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "analizar_tendencia",
+        "inputs": {
+          "dispositivo": "ducha",
+          "fecha_inicio": "2024-10-01T00:00:00",
+          "fecha_fin": "2024-10-31T23:59:59"
+        },
+        "descripcion": "Ejecutar analizar_tendencia"
+      }
+    ],
+    "notas": "La tendencia sobre el mes absorbe la serie. Filtrarlo por madrugada es difícil para esta herramienta pero se procesa el mes."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Análisis de tendencia de la casa completa 2023.",
+        "escenario": "analisis_tendencia"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-01-05T10:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "analizar_tendencia",
+        "inputs": {
+          "dispositivo": "Total_Casa",
+          "fecha_inicio": "2023-01-01T00:00:00",
+          "fecha_fin": "2023-12-31T23:59:59"
+        },
+        "descripcion": "Ejecutar analizar_tendencia"
+      }
+    ],
+    "notas": "Trend de 12 meses."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Hacia dónde va el gasto del congelador desde el lunes hasta hoy?",
+        "escenario": "analisis_tendencia"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-25T11:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "analizar_tendencia",
+        "inputs": {
+          "dispositivo": "congelador",
+          "fecha_inicio": "2024-10-21T00:00:00",
+          "fecha_fin": "2024-10-25T23:59:59"
+        },
+        "descripcion": "Ejecutar analizar_tendencia"
+      }
+    ],
+    "notas": "Tendencia en vivo durante la semana"
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Tendencia del primer trimestre.",
+        "escenario": "analisis_tendencia"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-04-05T12:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "analizar_tendencia",
+        "inputs": {
+          "dispositivo": "Total_Casa",
+          "fecha_inicio": "2024-01-01T00:00:00",
+          "fecha_fin": "2024-03-31T23:59:59"
+        },
+        "descripcion": "Ejecutar analizar_tendencia"
+      }
+    ],
+    "notas": "Intervalo trimestre Enero a Marzo."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "El comportamiento del horno es creciente hoy?",
+        "escenario": "analisis_tendencia"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24T18:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "analizar_tendencia",
+        "inputs": {
+          "dispositivo": "horno",
+          "fecha_inicio": "2024-10-24T00:00:00",
+          "fecha_fin": "2024-10-24T23:59:59"
+        },
+        "descripcion": "Ejecutar analizar_tendencia"
+      }
+    ],
+    "notas": "Validar micro comportamiento intradiario."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Muéstrame el consumo de la PC ayer",
+        "escenario": "consumo_basico"
+      },
+      "@2": {
+        "solicitud": "Y dime si tuvo algún comportamiento anormal.",
+        "escenario": "deteccion_anomalias"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24T12:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "obtener_consumo",
+        "inputs": {
+          "dispositivos": [
+            "PC"
+          ],
+          "fecha_inicio": "2024-10-23T00:00:00",
+          "fecha_fin": "2024-10-23T23:59:59",
+          "granularidad": "hora"
+        },
+        "descripcion": "Obtener evolución temporal gráfica de la PC ayer."
+      },
+      {
+        "id": "@2.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "detectar_anomalias",
+        "inputs": {
+          "dispositivo": "PC",
+          "fecha_inicio": "2024-10-23T00:00:00",
+          "fecha_fin": "2024-10-23T23:59:59",
+          "sensibilidad": 3.0
+        },
+        "descripcion": "Aplicar detector de picos z-score para la misma franja de la solicitud 1."
+      }
+    ],
+    "notas": "Demuestra que el planificador puede atender dos necesidades separadas pero complementarias, mapeando los ids @1 y @2 independientemente sin perder contexto temporal cruzado."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Compara el consumo de enero contra febrero.",
+        "escenario": "comparacion_consumos"
+      },
+      "@2": {
+        "solicitud": "Cuál es la tendencia general de la casa este año?",
+        "escenario": "analisis_tendencia"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-01T10:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "analizar_comparacion",
+        "inputs": {
+          "objetivo_a": {
+            "dispositivo": "Total_Casa",
+            "fecha_inicio": "2024-01-01T00:00:00",
+            "fecha_fin": "2024-01-31T23:59:59"
+          },
+          "objetivo_b": {
+            "dispositivo": "Total_Casa",
+            "fecha_inicio": "2024-02-01T00:00:00",
+            "fecha_fin": "2024-02-29T23:59:59"
+          }
+        },
+        "descripcion": "Contraste mes 1 contra mes 2."
+      },
+      {
+        "id": "@2.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "analizar_tendencia",
+        "inputs": {
+          "dispositivo": "Total_Casa",
+          "fecha_inicio": "2024-01-01T00:00:00",
+          "fecha_fin": "2024-12-31T23:59:59"
+        },
+        "descripcion": "Ajuste de predicción con los datos YTD."
+      }
+    ],
+    "notas": "Uso de dos componentes MCP radicalmente diferentes en el mismo plan."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Quiero un resumen de cómo se comportó la iluminación ayer.",
+        "escenario": "consumo_basico"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24T12:00:00"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "obtener_consumo",
+        "inputs": {
+          "dispositivos": [
+            "iluminación"
+          ],
+          "fecha_inicio": "2024-10-23T00:00:00",
+          "fecha_fin": "2024-10-23T23:59:59",
+          "granularidad": "hora"
+        },
+        "descripcion": "Ejecutar obtener_consumo"
+      },
+      {
+        "id": "@1.2",
+        "server_id": "mcp_server_gravity",
+        "tool": "detectar_anomalias",
+        "inputs": {
+          "dispositivo": "iluminación",
+          "fecha_inicio": "2024-10-23T00:00:00",
+          "fecha_fin": "2024-10-23T23:59:59",
+          "sensibilidad": 3.0
+        },
+        "descripcion": "Ejecutar detectar_anomalias"
+      }
+    ],
+    "notas": "Un requerimiento genérico de 'resumen' permite que el LLM proponga autónomamente DOS pasos (M=1, M=2) bajo una misma solicitud matriz @1: obtener los datos crudos y cruzarles detector de picos."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Consumo PC ayer.",
+        "escenario": "consumo_basico"
+      },
+      "@2": {
+        "solicitud": "Consumo TV ayer.",
+        "escenario": "consumo_basico"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "obtener_consumo",
+        "inputs": {
+          "dispositivos": [
+            "PC"
+          ],
+          "fecha_inicio": "2024-10-23T00:00:00",
+          "fecha_fin": "2024-10-23T23:59:59",
+          "granularidad": "total"
+        },
+        "descripcion": "Ejecutar obtener_consumo"
+      },
+      {
+        "id": "@2.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "obtener_consumo",
+        "inputs": {
+          "dispositivos": [
+            "TV"
+          ],
+          "fecha_inicio": "2024-10-23T00:00:00",
+          "fecha_fin": "2024-10-23T23:59:59",
+          "granularidad": "total"
+        },
+        "descripcion": "Ejecutar obtener_consumo"
+      }
+    ],
+    "notas": "LLM resuelve intenciones simples distribuidas."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Compara TV y PC ayer",
+        "escenario": "comparacion_consumos"
+      },
+      "@2": {
+        "solicitud": "Hubo picos en la TV?",
+        "escenario": "deteccion_anomalias"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "analizar_comparacion",
+        "inputs": {
+          "objetivo_a": {
+            "dispositivo": "TV",
+            "fecha_inicio": "2024-10-23T00:00:00",
+            "fecha_fin": "2024-10-23T23:59:59"
+          },
+          "objetivo_b": {
+            "dispositivo": "PC",
+            "fecha_inicio": "2024-10-23T00:00:00",
+            "fecha_fin": "2024-10-23T23:59:59"
+          }
+        },
+        "descripcion": "Ejecutar analizar_comparacion"
+      },
+      {
+        "id": "@2.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "detectar_anomalias",
+        "inputs": {
+          "dispositivo": "TV",
+          "fecha_inicio": "2024-10-23T00:00:00",
+          "fecha_fin": "2024-10-23T23:59:59",
+          "sensibilidad": 3.0
+        },
+        "descripcion": "Ejecutar detectar_anomalias"
+      }
+    ],
+    "notas": "Comparar e investigar uno."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Tendencia mes",
+        "escenario": "analisis_tendencia"
+      },
+      "@2": {
+        "solicitud": "Anomalias mes",
+        "escenario": "deteccion_anomalias"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-15"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "analizar_tendencia",
+        "inputs": {
+          "dispositivo": "Total_Casa",
+          "fecha_inicio": "2024-10-01T00:00:00",
+          "fecha_fin": "2024-10-31T23:59:59"
+        },
+        "descripcion": "Ejecutar analizar_tendencia"
+      },
+      {
+        "id": "@2.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "detectar_anomalias",
+        "inputs": {
+          "dispositivo": "Total_Casa",
+          "fecha_inicio": "2024-10-01T00:00:00",
+          "fecha_fin": "2024-10-31T23:59:59",
+          "sensibilidad": 3.0
+        },
+        "descripcion": "Ejecutar detectar_anomalias"
+      }
+    ],
+    "notas": "Auditoria total de datos analiticos"
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Dame todo lo que paso hoy.",
+        "escenario": "consumo_basico"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "obtener_consumo",
+        "inputs": {
+          "dispositivos": [
+            "Total_Casa"
+          ],
+          "fecha_inicio": "2024-10-24T00:00:00",
+          "fecha_fin": "2024-10-24T23:59:59",
+          "granularidad": "hora"
+        },
+        "descripcion": "Ejecutar obtener_consumo"
+      },
+      {
+        "id": "@1.2",
+        "server_id": "mcp_server_gravity",
+        "tool": "detectar_anomalias",
+        "inputs": {
+          "dispositivo": "Total_Casa",
+          "fecha_inicio": "2024-10-24T00:00:00",
+          "fecha_fin": "2024-10-24T23:59:59",
+          "sensibilidad": 3.0
+        },
+        "descripcion": "Ejecutar detectar_anomalias"
+      }
+    ],
+    "notas": "Solicitud difusa -> doble paso"
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Consumo ayer.",
+        "escenario": "consumo_basico"
+      },
+      "@2": {
+        "solicitud": "Consumo antier",
+        "escenario": "consumo_basico"
+      },
+      "@3": {
+        "solicitud": "Cual es mayor?",
+        "escenario": "comparacion_consumos"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "obtener_consumo",
+        "inputs": {
+          "dispositivos": [
+            "Total_Casa"
+          ],
+          "fecha_inicio": "2024-10-23T00:00:00",
+          "fecha_fin": "2024-10-23T23:59:59",
+          "granularidad": "total"
+        },
+        "descripcion": "Ejecutar obtener_consumo"
+      },
+      {
+        "id": "@2.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "obtener_consumo",
+        "inputs": {
+          "dispositivos": [
+            "Total_Casa"
+          ],
+          "fecha_inicio": "2024-10-22T00:00:00",
+          "fecha_fin": "2024-10-22T23:59:59",
+          "granularidad": "total"
+        },
+        "descripcion": "Ejecutar obtener_consumo"
+      },
+      {
+        "id": "@3.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "analizar_comparacion",
+        "inputs": {
+          "objetivo_a": {
+            "dispositivo": "Total_Casa",
+            "fecha_inicio": "2024-10-23T00:00:00",
+            "fecha_fin": "2024-10-23T23:59:59"
+          },
+          "objetivo_b": {
+            "dispositivo": "Total_Casa",
+            "fecha_inicio": "2024-10-22T00:00:00",
+            "fecha_fin": "2024-10-22T23:59:59"
+          }
+        },
+        "descripcion": "Ejecutar analizar_comparacion"
+      }
+    ],
+    "notas": "Tres solicitudes seguidas."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Compara consumo PC en la mañana vs la noche de ayer",
+        "escenario": "comparacion_consumos"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "analizar_comparacion",
+        "inputs": {
+          "objetivo_a": {
+            "dispositivo": "PC",
+            "fecha_inicio": "2024-10-23T06:00:00",
+            "fecha_fin": "2024-10-23T11:59:59"
+          },
+          "objetivo_b": {
+            "dispositivo": "PC",
+            "fecha_inicio": "2024-10-23T19:00:00",
+            "fecha_fin": "2024-10-23T20:59:59"
+          }
+        },
+        "descripcion": "Ejecutar analizar_comparacion"
+      }
+    ],
+    "notas": "Rangos de preferencia dentro del mismo equipo."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Evolucion mensual del año",
+        "escenario": "consumo_basico"
+      },
+      "@2": {
+        "solicitud": "Y dime que tendencia lleva.",
+        "escenario": "analisis_tendencia"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-12-31"
+    },
+    "temporal_preferences": {
+      "madrugada": "00:00 - 05:59",
+      "mañana": "06:00 - 11:59",
+      "tarde": "12:00 - 15:59",
+      "media tarde": "16:00 - 18:59",
+      "noche": "19:00 - 20:59",
+      "media noche": "21:00 - 23:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "obtener_consumo",
+        "inputs": {
+          "dispositivos": [
+            "Total_Casa"
+          ],
+          "fecha_inicio": "2024-01-01T00:00:00",
+          "fecha_fin": "2024-12-31T23:59:59",
+          "granularidad": "mes"
+        },
+        "descripcion": "Ejecutar obtener_consumo"
+      },
+      {
+        "id": "@2.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "analizar_tendencia",
+        "inputs": {
+          "dispositivo": "Total_Casa",
+          "fecha_inicio": "2024-01-01T00:00:00",
+          "fecha_fin": "2024-12-31T23:59:59"
+        },
+        "descripcion": "Ejecutar analizar_tendencia"
+      }
+    ],
+    "notas": "Combinación muy útil anualmente."
+  }
+]

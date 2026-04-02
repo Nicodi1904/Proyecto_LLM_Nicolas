@@ -15,14 +15,16 @@ class MCP_Client:
         string que parezca un timestamp ISO (YYYY-MM-DDTHH:MM:SS).
         """
         import re
-        # Patrón para detectar YYYY-MM-DDTHH:MM:SS
-        pattern = re.compile(r'^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2})$')
+        # Patrón para detectar YYYY-MM-DDTHH:MM o YYYY-MM-DDTHH:MM:SS
+        pattern = re.compile(r'^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2})(?::(\d{2}))?$')
         
         def process_item(item):
             if isinstance(item, str):
                 match = pattern.match(item)
                 if match:
-                    return f"{match.group(1)} {match.group(2)}"
+                    # Para SQLite evitar exclusiones por len de string, si no trae seg añadir :00
+                    segundos = f":{match.group(3)}" if match.group(3) else ":00"
+                    return f"{match.group(1)} {match.group(2)}{segundos}"
                 return item
             elif isinstance(item, dict):
                 return {k: process_item(v) for k, v in item.items()}

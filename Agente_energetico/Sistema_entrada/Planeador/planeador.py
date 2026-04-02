@@ -15,57 +15,51 @@ load_dotenv(env_path)
 
 class Planeador(dspy.Signature):
     """
-    Su función es traducir las solicitudes categorizadas por el inferenciador
-    en un conjunto estructurado de acciones con las herramientas disponibles del sistema.
-    Decide qué herramientas utilizar, en qué orden y con qué parámetros,
-    evaluando la viabilidad funcional de cada solicitud.
+    Convierte solicitudes categorizadas en un plan de acciones ejecutables.
+    Define herramientas, orden y parámetros para cada solicitud.
     """
 
     solicitudes_categorizadas: dict[str, dict] = dspy.InputField(
         desc=(
-            "Conjunto de solicitudes previamente segmentadas y categorizadas por el inferenciador. "
-            "Cada clave representa una solicitud individual identificada con un identificador '@N'. "
-            "Cada valor es un diccionario con las siguientes claves:\n"
-            "- 'solicitud' (string): formulación autocontenida de la intención del usuario, utilizada "
-            "como base principal para la planificación de acciones.\n"
-            "- 'escenario' (string): clasificación funcional inferida (por ejemplo, consumo_basico, "
-            "comparacion_consumos, deteccion_anomalias). Este campo sirve como guía semántica para "
-            "priorizar y seleccionar herramientas.\n"
-            "- 'formato' (string): preferencia de presentación de la respuesta esperada por el usuario, "
-            "puede ser ('texto', 'grafico', 'mixto' o 'no_especificado') y debe ser considerada como parte de los requisitos de la solicitud."
+            "Solicitudes indexadas como '@N'. Cada valor contiene:\n"
+            "- solicitud: intención del usuario\n"
+            "- escenario: clasificación funcional inferida (ej. consumo_basico, comparacion_consumos, deteccion_anomalias); "
+            "guía semántica para priorizar y seleccionar herramientas"
         )
     )
 
     temporal_context: dict = dspy.InputField(
-        desc=(
-            "Contexto temporal (formato ISO 8601) del momento en que fue formulada la solicitud, "
-            "utilizado como referencia para interpretar expresiones temporales presentes en las solicitudes del usuario. "
-        )
+        desc="Referencia temporal en ISO 8601 para interpretar expresiones de tiempo."
     )
 
     temporal_preferences: dict = dspy.InputField(
-        desc=(
-            "Preferencias horarias del usuario. Es un diccionario que mapea conceptos abstractos (ej. 'madrugada', 'noche') "
-            "a horas específicas. Utiliza esta información para traducir términos vagos en horas de inicio y fin claras."
-        )
+        desc="Mapeo de términos temporales (ej. 'noche') a rangos horarios concretos."
     )
 
     plan_acciones: list[dict] = dspy.OutputField(
         desc=(
-            "Lista estructurada de acciones planificadas para resolver las solicitudes del usuario. "
-            "Cada elemento de la lista representa una acción individual e incluye:\n"
-            "- 'id' (string): identificador único de la acción, con el formato '@N.M', donde '@' es un símbolo diferenciador, 'N' "
-            "corresponde al número de la solicitud de origen y 'M' indica el orden secuencial (1,2,3...) en que se realizarán las acciones.\n"
-            "- 'server_id' (string): identificador del servidor donde se encuentra la herramienta a invocar.\n"
-            "- 'tool' (string): nombre de la herramienta seleccionada.\n"
-            "- 'inputs' (dict): parámetros de entrada de la herramienta, pueden incluir referencias a salidas de acciones previas mediante identificadores '@N.M'.\n"
-            "- 'descripcion' (string): breve descripción semántica de la acción y su propósito dentro del plan."
+            "Secuencia ordenada de acciones para resolver las solicitudes. "
+            "El plan descompone cada solicitud en pasos ejecutables.\n\n"
+
+            "Cada acción incluye:\n"
+            "- id: '@N.M' (N = solicitud origen, M = orden dentro de esa solicitud)\n"
+            "- server_id: servidor de la herramienta\n"
+            "- tool: herramienta seleccionada\n"
+            "- inputs: parámetros; puede referenciar salidas '@N.M'\n"
+            "- descripcion: propósito de la acción dentro de la solicitud\n\n"
+
+            "Criterios:\n"
+            "- cada solicitud (@N) se resuelve mediante una o más acciones\n"
+            "- el orden (M) define la secuencia de ejecución dentro de la solicitud\n"
+            "- una acción usa '@N.M' cuando requiere el resultado de una acción previa\n"
+            "- cada acción corresponde a una única invocación de herramienta"
         )
     )
 
     notas: str = dspy.OutputField(
         desc=(
-            "Razonamiento y breve explicación de cómo se planificó cada acción."
+            "Explicación del plan: cómo se interpretaron las solicitudes y criterios usados "
+            "para definir herramientas, orden, dependencias y parámetros."
         )
     )
 

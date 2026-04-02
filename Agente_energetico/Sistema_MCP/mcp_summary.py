@@ -76,3 +76,13 @@ except RuntimeError:
 
 
 system_summary = crear_system_summary(tools)
+
+import json
+import os
+
+ruta_json = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Sistema_entrada', 'Planeador', 'system_summary.json')
+
+with open(ruta_json, 'w', encoding='utf-8') as f:
+    json.dump(system_summary, f, ensure_ascii=False, indent=2)
+
+print(f"system_summary.json generado exitosamente en: {ruta_json}")

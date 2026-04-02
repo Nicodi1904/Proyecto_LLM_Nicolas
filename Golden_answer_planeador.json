@@ -1,0 +1,1139 @@
+{
+  "Nivel_1_Basico": {
+    "L1_01": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "nevera"
+            ],
+            "fecha_inicio": "2026-03-28T00:00",
+            "fecha_fin": "2026-03-28T23:59",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener el consumo total de la nevera para el día especificado."
+        }
+      ],
+      "notas": "Se interpreta una consulta directa de consumo diario (consumo_basico). Se usa granularidad 'total' para devolver el consumo acumulado del día completo."
+    },
+    "L1_02": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "aire_acondicionado"
+            ],
+            "fecha_inicio": "2026-03-27T00:00",
+            "fecha_fin": "2026-03-27T23:59",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener el consumo total del aire acondicionado para el día especificado."
+        }
+      ],
+      "notas": "Consulta directa de consumo diario. Se usa granularidad 'total' para obtener el valor acumulado del día."
+    },
+    "L1_03": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "horno"
+            ],
+            "fecha_inicio": "2026-03-26T00:00",
+            "fecha_fin": "2026-03-26T23:59",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener el consumo total del horno para el día especificado."
+        }
+      ],
+      "notas": "Consulta básica de consumo diario. Se solicita valor acumulado, por lo que se usa granularidad 'total'."
+    },
+    "L1_04": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "televisor"
+            ],
+            "fecha_inicio": "2026-03-25T00:00",
+            "fecha_fin": "2026-03-25T23:59",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener el consumo total del televisor para el día especificado."
+        }
+      ],
+      "notas": "Consulta directa sin necesidad de descomposición adicional. Se usa granularidad 'total'."
+    },
+    "L1_05": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "lavadora"
+            ],
+            "fecha_inicio": "2026-03-24T00:00",
+            "fecha_fin": "2026-03-24T23:59",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener el consumo total de la lavadora para el día especificado."
+        }
+      ],
+      "notas": "Consulta básica de consumo diario. Se usa granularidad 'total' para obtener el valor agregado."
+    },
+    "L1_06": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "nevera"
+            ],
+            "fecha_inicio": "2026-03-29T00:00",
+            "fecha_fin": "2026-03-29T23:59",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener el consumo total de la nevera para el día de ayer."
+        }
+      ],
+      "notas": "Se resuelve la referencia temporal 'ayer' usando el contexto (2026-03-30), resultando en 2026-03-29. Se usa granularidad 'total'."
+    },
+    "L1_07": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "aire_acondicionado"
+            ],
+            "fecha_inicio": "2026-03-29T00:00",
+            "fecha_fin": "2026-03-29T23:59",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener el consumo total del aire acondicionado para el día de ayer."
+        }
+      ],
+      "notas": "Se interpreta 'ayer' respecto al contexto temporal dado. Consulta simple con granularidad 'total'."
+    },
+    "L1_08": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "horno"
+            ],
+            "fecha_inicio": "2026-03-29T00:00",
+            "fecha_fin": "2026-03-29T23:59",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener el consumo total del horno para el día de ayer."
+        }
+      ],
+      "notas": "Resolución de 'ayer' usando el contexto temporal. Se mantiene granularidad 'total' al ser una consulta acumulada."
+    },
+    "L1_09": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "televisor"
+            ],
+            "fecha_inicio": "2026-03-29T00:00",
+            "fecha_fin": "2026-03-29T23:59",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener el consumo total del televisor para el día de ayer."
+        }
+      ],
+      "notas": "Consulta básica con resolución temporal implícita. Se usa granularidad 'total'."
+    },
+    "L1_10": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "lavadora"
+            ],
+            "fecha_inicio": "2026-03-29T00:00",
+            "fecha_fin": "2026-03-29T23:59",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener el consumo total de la lavadora para el día de ayer."
+        }
+      ],
+      "notas": "Se interpreta correctamente la referencia relativa 'ayer'. Se utiliza granularidad 'total' por tratarse de consumo acumulado."
+    }
+  },
+  "Nivel_2_Temporal_Relativo": {
+    "L2_01": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "nevera"
+            ],
+            "fecha_inicio": "2026-03-27T00:00",
+            "fecha_fin": "2026-03-29T23:59",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener el consumo total de la nevera en los últimos 3 días."
+        }
+      ],
+      "notas": "Se interpreta 'últimos 3 días' como días completos previos. Se excluye hoy (30). Se usa granularidad 'total' al ser consumo acumulado."
+    },
+    "L2_02": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "aire_acondicionado"
+            ],
+            "fecha_inicio": "2026-03-25T00:00",
+            "fecha_fin": "2026-03-29T23:59",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener el consumo total del aire acondicionado en los últimos 5 días."
+        }
+      ],
+      "notas": "Se restan 5 días descartando el actual, dando días completos. Se mantiene granularidad 'total'."
+    },
+    "L2_03": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "horno"
+            ],
+            "fecha_inicio": "2026-03-30T00:00",
+            "fecha_fin": "2026-03-30T10:25",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener el consumo del horno durante la semana actual."
+        }
+      ],
+      "notas": "Se interpreta 'esta semana' como la semana en curso. Dado el contexto (lunes), el intervalo inicia el mismo día. Se usa granularidad 'total'."
+    },
+    "L2_04": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "televisor"
+            ],
+            "fecha_inicio": "2026-03-30T00:00",
+            "fecha_fin": "2026-03-30T10:25",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener el consumo del televisor para el día de hoy."
+        }
+      ],
+      "notas": "Se interpreta 'hoy' usando el contexto temporal. Se toma desde inicio del día hasta el momento actual."
+    },
+    "L2_05": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "lavadora"
+            ],
+            "fecha_inicio": "2026-03-28T00:00",
+            "fecha_fin": "2026-03-29T23:59",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener el consumo total de la lavadora en los últimos 2 días."
+        }
+      ],
+      "notas": "Intervalo que excluye el día de hoy, midiendo únicamente los 2 días enteros previos."
+    },
+    "L2_06": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "nevera"
+            ],
+            "fecha_inicio": "2026-03-26T00:00",
+            "fecha_fin": "2026-03-30T10:25",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener el consumo total de la nevera desde hace 4 días hasta hoy."
+        }
+      ],
+      "notas": "Se interpreta el rango explícito relativo ('desde hace 4 días hasta hoy'). Se usa granularidad 'total'."
+    },
+    "L2_07": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "horno"
+            ],
+            "fecha_inicio": "2026-03-23T00:00",
+            "fecha_fin": "2026-03-29T23:59",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener el consumo total del horno en los últimos 7 días."
+        }
+      ],
+      "notas": "El cálculo 'últimos 7 días' excluye el día truncado en transcurso."
+    },
+    "L2_08": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "televisor"
+            ],
+            "fecha_inicio": "2026-03-29T00:00",
+            "fecha_fin": "2026-03-30T10:25",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener el consumo total del televisor desde ayer hasta hoy."
+        }
+      ],
+      "notas": "Se resuelve 'ayer' con el contexto y se extiende hasta el momento actual. Granularidad 'total'."
+    },
+    "L2_09": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "lavadora"
+            ],
+            "fecha_inicio": "2026-03-20T00:00",
+            "fecha_fin": "2026-03-29T23:59",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener el consumo total de la lavadora en los últimos 10 días."
+        }
+      ],
+      "notas": "Intervalo retrospectivo completo que detiene la toma en la medianoche previa al día de hoy."
+    },
+    "L2_10": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "aire_acondicionado"
+            ],
+            "fecha_inicio": "2026-03-27T00:00",
+            "fecha_fin": "2026-03-30T10:25",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener el consumo total del aire acondicionado desde hace 3 días hasta ahora."
+        }
+      ],
+      "notas": "Se interpreta 'desde hace 3 días' iniciando desde la medianoche de ese día hasta el reloj actual (10:25). Se usa granularidad 'total'."
+    }
+  },
+  "Nivel_3_Temporal_Difuso": {
+    "L3_01": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "nevera"
+            ],
+            "fecha_inicio": "2026-03-29T19:00",
+            "fecha_fin": "2026-03-29T20:59",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener el consumo de la nevera en la noche de ayer."
+        }
+      ],
+      "notas": "Se resuelve 'ayer' como 2026-03-29 y 'noche' usando preferencias (07:00 PM - 08:59 PM). Se usa granularidad total por tratarse de consumo acumulado en un intervalo."
+    },
+    "L3_02": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "horno"
+            ],
+            "fecha_inicio": "2026-03-30T06:00",
+            "fecha_fin": "2026-03-30T10:25",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener el consumo del horno en la mañana de hoy."
+        }
+      ],
+      "notas": "Se interpreta 'mañana' (06:00 AM - 11:59 AM) pero se trunca el fecha_fin a las 10:25 AM porque la mañana no ha terminado respecto al reloj virtual."
+    },
+    "L3_03": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "televisor"
+            ],
+            "fecha_inicio": "2026-03-29T12:00",
+            "fecha_fin": "2026-03-29T15:59",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener el consumo del televisor en la tarde de ayer."
+        }
+      ],
+      "notas": "Se resuelve 'ayer' y se aplica 'tarde' (12:00 PM - 03:59 PM). Se usa granularidad total."
+    },
+    "L3_04": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "accion_imposible",
+          "inputs": {
+            "solicitud": "Obtener el consumo de la lavadora en la media tarde de hoy.",
+            "justificacion": "La media tarde (16:00 a 18:59) está en el futuro respecto a la hora actual del sistema (10:25 AM)."
+          },
+          "descripcion": "Rechazar evaluar un bloque de tiempo futuro."
+        }
+      ],
+      "notas": "Se identifica que las horas solicitadas no han transcurrido, invocando accion_imposible justificando la regla temporal."
+    },
+    "L3_05": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "aire_acondicionado"
+            ],
+            "fecha_inicio": "2026-03-29T00:00",
+            "fecha_fin": "2026-03-29T05:59",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener el consumo del aire acondicionado en la madrugada de ayer."
+        }
+      ],
+      "notas": "Se resuelve 'madrugada' como 12:00 AM - 05:59 AM del día anterior."
+    },
+    "L3_06": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "accion_imposible",
+          "inputs": {
+            "solicitud": "Obtener el consumo de la nevera en la noche de hoy.",
+            "justificacion": "La noche (19:00 a 20:59) se encuentra en el futuro respecto a la hora actual (10:25 AM)."
+          },
+          "descripcion": "Bloquear solicitud futurística."
+        }
+      ],
+      "notas": "Se identifica una medición solicitada en el futuro y se utiliza accion_imposible como vía de escape argumentada."
+    },
+    "L3_07": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "horno"
+            ],
+            "fecha_inicio": "2026-03-29T21:00",
+            "fecha_fin": "2026-03-29T23:59",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener el consumo del horno en la media noche de ayer."
+        }
+      ],
+      "notas": "Se interpreta 'media noche' como 09:00 PM - 11:59 PM del día anterior."
+    },
+    "L3_08": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "televisor"
+            ],
+            "fecha_inicio": "2026-03-29T06:00",
+            "fecha_fin": "2026-03-29T11:59",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener el consumo del televisor en la mañana de ayer."
+        }
+      ],
+      "notas": "Se resuelve 'mañana' en el día anterior usando el rango definido."
+    },
+    "L3_09": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "accion_imposible",
+          "inputs": {
+            "solicitud": "Obtener el consumo de la lavadora en la tarde de hoy.",
+            "justificacion": "La tarde (12:00 a 15:59) aún no ha ocurrido dado que la hora actual del contexto es 10:25 AM."
+          },
+          "descripcion": "Rechazar por conflicto temporal futuro."
+        }
+      ],
+      "notas": "El modelo usa la accion_imposible al darse cuenta que 'la tarde de hoy' no puede evaluarse."
+    },
+    "L3_10": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "aire_acondicionado"
+            ],
+            "fecha_inicio": "2026-03-29T19:00",
+            "fecha_fin": "2026-03-29T20:59",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener el consumo del aire acondicionado en la noche de ayer."
+        }
+      ],
+      "notas": "Se combina resolución de 'ayer' con el rango de 'noche'. Consulta directa con granularidad total."
+    }
+  },
+  "Nivel_4_Multi_Step": {
+    "L4_01": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "nevera",
+              "fecha_inicio": "2026-03-29T00:00",
+              "fecha_fin": "2026-03-29T23:59"
+            },
+            "objetivo_b": {
+              "dispositivo": "nevera",
+              "fecha_inicio": "2026-03-30T00:00",
+              "fecha_fin": "2026-03-30T10:25"
+            }
+          },
+          "descripcion": "Comparar consumo de la nevera entre ayer y hoy."
+        }
+      ],
+      "notas": "Se usa directamente analizar_comparacion porque el escenario lo permite. Se resuelve 'ayer' y 'hoy' usando el contexto."
+    },
+    "L4_02": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "horno",
+              "fecha_inicio": "2026-03-28T00:00",
+              "fecha_fin": "2026-03-29T23:59"
+            },
+            "objetivo_b": {
+              "dispositivo": "horno",
+              "fecha_inicio": "2026-03-26T00:00",
+              "fecha_fin": "2026-03-27T23:59"
+            }
+          },
+          "descripcion": "Comparar consumo del horno entre los últimos 2 días y los 2 días anteriores."
+        }
+      ],
+      "notas": "Se construyen dos ventanas temporales consecutivas: últimos 2 días vs los 2 anteriores. Se usa analizar_comparacion directamente."
+    },
+    "L4_03": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "televisor",
+              "fecha_inicio": "2026-03-29T06:00",
+              "fecha_fin": "2026-03-29T11:59"
+            },
+            "objetivo_b": {
+              "dispositivo": "televisor",
+              "fecha_inicio": "2026-03-30T06:00",
+              "fecha_fin": "2026-03-30T10:25"
+            }
+          },
+          "descripcion": "Comparar consumo del televisor entre la mañana de ayer y hoy."
+        }
+      ],
+      "notas": "Se truncan los datos de la mañana de hoy hasta las 10:25 para evitar pedir eventos futuros."
+    },
+    "L4_04": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "lavadora",
+              "fecha_inicio": "2026-03-30T00:00",
+              "fecha_fin": "2026-03-30T10:25"
+            },
+            "objetivo_b": {
+              "dispositivo": "lavadora",
+              "fecha_inicio": "2026-03-23T00:00",
+              "fecha_fin": "2026-03-29T23:59"
+            }
+          },
+          "descripcion": "Comparar consumo de la lavadora entre esta semana y la semana pasada."
+        }
+      ],
+      "notas": "Se asume semana actual iniciando el lunes (contexto dado) y se construye la semana anterior. Se usa comparar directamente."
+    },
+    "L4_05": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "aire_acondicionado",
+              "fecha_inicio": "2026-03-29T00:00",
+              "fecha_fin": "2026-03-29T23:59"
+            },
+            "objetivo_b": {
+              "dispositivo": "aire_acondicionado",
+              "fecha_inicio": "2026-03-27T00:00",
+              "fecha_fin": "2026-03-27T23:59"
+            }
+          },
+          "descripcion": "Comparar consumo del aire acondicionado entre ayer y hace 3 días."
+        }
+      ],
+      "notas": "Se resuelven ambas referencias relativas. Comparación directa con herramienta especializada."
+    },
+    "L4_06": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "accion_imposible",
+          "inputs": {
+            "solicitud": "Comparar consumo de la nevera entre la noche de ayer y hoy.",
+            "justificacion": "La noche de hoy (19:00 a 20:59) todavía no ha transcurrido respecto al reloj de sistema (10:25), por tanto no hay datos comparables."
+          },
+          "descripcion": "Rechazar comparación futurista de rangos nocturnos."
+        }
+      ],
+      "notas": "Rechazo programado vía accion_imposible, el periodo B se encuentra horas en el futuro."
+    },
+    "L4_07": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "horno",
+              "fecha_inicio": "2026-03-29T12:00",
+              "fecha_fin": "2026-03-29T15:59"
+            },
+            "objetivo_b": {
+              "dispositivo": "horno",
+              "fecha_inicio": "2026-03-30T06:00",
+              "fecha_fin": "2026-03-30T10:25"
+            }
+          },
+          "descripcion": "Comparar consumo del horno entre la tarde de ayer y la mañana de hoy."
+        }
+      ],
+      "notas": "Se truncan los datos de la mañana vigente hasta el reloj de detención 10:25."
+    },
+    "L4_08": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "televisor",
+              "fecha_inicio": "2026-03-30T00:00",
+              "fecha_fin": "2026-03-30T10:25"
+            },
+            "objetivo_b": {
+              "dispositivo": "televisor",
+              "fecha_inicio": "2026-03-27T00:00",
+              "fecha_fin": "2026-03-29T23:59"
+            }
+          },
+          "descripcion": "Comparar consumo del televisor entre hoy y los últimos 3 días."
+        }
+      ],
+      "notas": "Se construye un intervalo puntual vs uno acumulado. Se usa herramienta de comparación directamente."
+    },
+    "L4_09": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "lavadora",
+              "fecha_inicio": "2026-03-29T06:00",
+              "fecha_fin": "2026-03-29T11:59"
+            },
+            "objetivo_b": {
+              "dispositivo": "lavadora",
+              "fecha_inicio": "2026-03-29T19:00",
+              "fecha_fin": "2026-03-29T20:59"
+            }
+          },
+          "descripcion": "Comparar consumo de la lavadora entre la mañana y la noche de ayer."
+        }
+      ],
+      "notas": "Se comparan dos franjas del mismo día. Uso directo de analizar_comparacion."
+    },
+    "L4_10": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "accion_imposible",
+          "inputs": {
+            "solicitud": "Comparar consumo del aire acondicionado entre esta semana y hoy.",
+            "justificacion": "Semánticamente en la fecha actual (Lunes 30), tanto 'esta semana' como 'hoy' representan exactamente las mismas horas (00:00 a 10:25), por tanto la comparación es circular y redundante matemáticamente."
+          },
+          "descripcion": "Identificada tautología matemática por superposición 100% de intervalos."
+        }
+      ],
+      "notas": "Hoy es el primer día de la nueva semana. Extraer los datos de 'esta semana' vs 'hoy' es comparar exactamente el mismo conjunto, causando un 100% de cruce indeseado. Debe invocar herramienta de escape lógicamente."
+    }
+  },
+  "Nivel_5_Complejo_Realista": {
+    "L5_01": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "nevera"
+            ],
+            "fecha_inicio": "2026-03-29T00:00",
+            "fecha_fin": "2026-03-29T23:59",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener consumo de la nevera ayer."
+        },
+        {
+          "id": "@2.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "nevera",
+              "fecha_inicio": "2026-03-29T00:00",
+              "fecha_fin": "2026-03-29T23:59"
+            },
+            "objetivo_b": {
+              "dispositivo": "nevera",
+              "fecha_inicio": "2026-03-23T00:00",
+              "fecha_fin": "2026-03-23T23:59"
+            }
+          },
+          "descripcion": "Comparar consumo de ayer con el lunes."
+        }
+      ],
+      "notas": "Se resuelve 'lunes' como el lunes de la semana pasada (23 de marzo) dado que el lunes actual aún no ha concluido."
+    },
+    "L5_02": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "horno"
+            ],
+            "fecha_inicio": "2026-03-27T00:00",
+            "fecha_fin": "2026-03-29T23:59",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener consumo del horno en los últimos 3 días."
+        },
+        {
+          "id": "@2.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "detectar_anomalias",
+          "inputs": {
+            "dispositivo": "horno",
+            "fecha_inicio": "2026-03-27T00:00",
+            "fecha_fin": "2026-03-29T23:59"
+          },
+          "descripcion": "Detectar anomalías en el mismo periodo."
+        }
+      ],
+      "notas": "La detección de anomalías requiere serie temporal, por lo que usa el mismo intervalo pero sin granularidad 'total'."
+    },
+    "L5_03": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "televisor"
+            ],
+            "fecha_inicio": "2026-03-30T00:00",
+            "fecha_fin": "2026-03-30T10:25",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener consumo del televisor esta semana."
+        },
+        {
+          "id": "@2.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_tendencia",
+          "inputs": {
+            "dispositivo": "televisor",
+            "fecha_inicio": "2026-03-30T00:00",
+            "fecha_fin": "2026-03-30T10:25"
+          },
+          "descripcion": "Analizar tendencia en el mismo periodo."
+        }
+      ],
+      "notas": "Se usa el mismo intervalo para ambas acciones. Tendencia requiere serie temporal implícita."
+    },
+    "L5_04": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "lavadora",
+              "fecha_inicio": "2026-03-29T00:00",
+              "fecha_fin": "2026-03-29T23:59"
+            },
+            "objetivo_b": {
+              "dispositivo": "lavadora",
+              "fecha_inicio": "2026-03-30T00:00",
+              "fecha_fin": "2026-03-30T10:25"
+            }
+          },
+          "descripcion": "Comparar consumo entre ayer y hoy."
+        },
+        {
+          "id": "@2.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "detectar_anomalias",
+          "inputs": {
+            "dispositivo": "lavadora",
+            "fecha_inicio": "2026-03-30T00:00",
+            "fecha_fin": "2026-03-30T10:25"
+          },
+          "descripcion": "Detectar anomalías en el día de hoy."
+        }
+      ],
+      "notas": "Se separan claramente comparación (acumulados) y detección (serie temporal)."
+    },
+    "L5_05": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "aire_acondicionado"
+            ],
+            "fecha_inicio": "2026-03-29T19:00",
+            "fecha_fin": "2026-03-29T20:59",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener consumo en la noche de ayer."
+        },
+        {
+          "id": "@2.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "aire_acondicionado",
+              "fecha_inicio": "2026-03-29T19:00",
+              "fecha_fin": "2026-03-29T20:59"
+            },
+            "objetivo_b": {
+              "dispositivo": "aire_acondicionado",
+              "fecha_inicio": "2026-03-23T19:00",
+              "fecha_fin": "2026-03-23T20:59"
+            }
+          },
+          "descripcion": "Comparar con la noche del lunes."
+        }
+      ],
+      "notas": "Se resuelve 'lunes' como el lunes de la semana pasada, debido a que la noche del lunes actual está en el futuro."
+    },
+    "L5_06": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "detectar_anomalias",
+          "inputs": {
+            "dispositivo": "nevera",
+            "fecha_inicio": "2026-03-25T00:00",
+            "fecha_fin": "2026-03-29T23:59"
+          },
+          "descripcion": "Detectar anomalías en los últimos 5 días."
+        },
+        {
+          "id": "@2.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_tendencia",
+          "inputs": {
+            "dispositivo": "nevera",
+            "fecha_inicio": "2026-03-25T00:00",
+            "fecha_fin": "2026-03-29T23:59"
+          },
+          "descripcion": "Analizar tendencia en el mismo periodo."
+        }
+      ],
+      "notas": "Ambas acciones usan el mismo intervalo. Ambas requieren series temporales."
+    },
+    "L5_07": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "horno"
+            ],
+            "fecha_inicio": "2026-03-30T00:00",
+            "fecha_fin": "2026-03-30T10:25",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener consumo de hoy."
+        },
+        {
+          "id": "@2.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "horno",
+              "fecha_inicio": "2026-03-30T00:00",
+              "fecha_fin": "2026-03-30T10:25"
+            },
+            "objetivo_b": {
+              "dispositivo": "horno",
+              "fecha_inicio": "2026-03-29T00:00",
+              "fecha_fin": "2026-03-29T23:59"
+            }
+          },
+          "descripcion": "Comparar con ayer."
+        },
+        {
+          "id": "@3.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "detectar_anomalias",
+          "inputs": {
+            "dispositivo": "horno",
+            "fecha_inicio": "2026-03-30T00:00",
+            "fecha_fin": "2026-03-30T10:25"
+          },
+          "descripcion": "Detectar anomalías hoy."
+        }
+      ],
+      "notas": "Se combinan tres tipos de análisis sobre el mismo dispositivo con coherencia temporal."
+    },
+    "L5_08": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "televisor"
+            ],
+            "fecha_inicio": "2026-03-30T06:00",
+            "fecha_fin": "2026-03-30T10:25",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener consumo en la mañana de hoy."
+        },
+        {
+          "id": "@2.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "televisor",
+              "fecha_inicio": "2026-03-30T06:00",
+              "fecha_fin": "2026-03-30T10:25"
+            },
+            "objetivo_b": {
+              "dispositivo": "televisor",
+              "fecha_inicio": "2026-03-29T12:00",
+              "fecha_fin": "2026-03-29T15:59"
+            }
+          },
+          "descripcion": "Comparar con la tarde de ayer."
+        }
+      ],
+      "notas": "Se corrige el límite derecho de la mañana de hoy truncado en 10:25."
+    },
+    "L5_09": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "lavadora"
+            ],
+            "fecha_inicio": "2026-03-30T00:00",
+            "fecha_fin": "2026-03-30T10:25",
+            "granularidad": "total"
+          },
+          "descripcion": "Obtener consumo de esta semana."
+        },
+        {
+          "id": "@2.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_tendencia",
+          "inputs": {
+            "dispositivo": "lavadora",
+            "fecha_inicio": "2026-03-30T00:00",
+            "fecha_fin": "2026-03-30T10:25"
+          },
+          "descripcion": "Analizar tendencia."
+        },
+        {
+          "id": "@3.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "detectar_anomalias",
+          "inputs": {
+            "dispositivo": "lavadora",
+            "fecha_inicio": "2026-03-30T00:00",
+            "fecha_fin": "2026-03-30T10:25"
+          },
+          "descripcion": "Detectar anomalías."
+        }
+      ],
+      "notas": "Se reutiliza el mismo intervalo para tres tipos de análisis complementarios."
+    },
+    "L5_10": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "aire_acondicionado",
+              "fecha_inicio": "2026-03-30T00:00",
+              "fecha_fin": "2026-03-30T10:25"
+            },
+            "objetivo_b": {
+              "dispositivo": "aire_acondicionado",
+              "fecha_inicio": "2026-03-29T00:00",
+              "fecha_fin": "2026-03-29T23:59"
+            }
+          },
+          "descripcion": "Comparar consumo entre hoy y ayer."
+        },
+        {
+          "id": "@2.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_tendencia",
+          "inputs": {
+            "dispositivo": "aire_acondicionado",
+            "fecha_inicio": "2026-03-27T00:00",
+            "fecha_fin": "2026-03-29T23:59"
+          },
+          "descripcion": "Analizar tendencia en los últimos 3 días."
+        }
+      ],
+      "notas": "Se separa la comparación puntual del análisis de tendencia en una ventana más amplia."
+    }
+  }
+}
