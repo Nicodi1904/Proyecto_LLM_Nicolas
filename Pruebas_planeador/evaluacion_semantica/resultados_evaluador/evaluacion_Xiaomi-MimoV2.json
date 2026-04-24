@@ -1,0 +1,231 @@
+{
+  "promedio_global": 0.698,
+  "total_casos_evaluados": 50,
+  "niveles": {
+    "Nivel_1_Basico": {
+      "casos": {
+        "L1_01": {
+          "score": 1.0,
+          "reason": "El modelo genera un plan de acciones idéntico al esperado, seleccionando correctamente la herramienta 'obtener_consumo' y parametrizándola de forma adecuada con 'dispositivos': ['nevera'], 'fecha_inicio': '2026-03-28T00:00', 'fecha_fin': '2026-03-28T23:59' y 'granularidad': 'total'. Interpreta correctamente el contexto temporal al reconocer que la fecha solicitada (2026-03-28) es anterior a la fecha actual (2026-03-30), lo que permite la consulta histórica. La coherencia interna y el orden lógico del plan son impecables, cumpliendo con todos los criterios de la rúbrica para una puntuación máxima."
+        },
+        "L1_02": {
+          "score": 0.7,
+          "reason": "El modelo seleccionó correctamente la herramienta 'obtener_consumo' y parametrizó adecuadamente las fechas de inicio y fin, así como la granularidad 'total'. La interpretación del contexto temporal en las notas es precisa, indicando que la fecha solicitada es histórica y factible. Sin embargo, existe una imprecisión en el parámetro 'dispositivos', donde el modelo utiliza 'aire acondicionado' en lugar del formato esperado 'aire_acondicionado'. Aunque la solicitud original usa el formato con espacio, el 'Expected Output' establece el formato con guion bajo como el correcto para la herramienta, lo que representa una inconsistencia parcial en la parametrización (A2) que podría afectar la viabilidad de la acción."
+        },
+        "L1_03": {
+          "score": 1.0,
+          "reason": "El modelo genera un plan de acciones completo y correcto, seleccionando la herramienta 'obtener_consumo' y parametrizándola adecuadamente con 'dispositivos: [\"horno\"]', 'fecha_inicio: \"2026-03-26T00:00\"', 'fecha_fin: \"2026-03-26T23:59\"' y 'granularidad: \"total\"'. Interpreta correctamente el contexto temporal al reconocer que la fecha solicitada (2026-03-26) es anterior a la fecha actual (2026-03-30), lo que hace la consulta factible. La coherencia interna es excelente, y las notas proporcionan una justificación detallada y precisa para cada decisión, cumpliendo con todos los criterios A1-A6."
+        },
+        "L1_04": {
+          "score": 1.0,
+          "reason": "El modelo genera un plan de acciones completo y correcto para la solicitud de consumo energético del televisor el 2026-03-25. La herramienta 'obtener_consumo' se selecciona adecuadamente, y los parámetros 'dispositivos' ('televisor'), 'fecha_inicio' ('2026-03-25T00:00'), 'fecha_fin' ('2026-03-25T23:59') y 'granularidad' ('total') son correctos y coinciden con el 'Expected Output'. La interpretación del contexto temporal es precisa, ya que la fecha solicitada está en el pasado respecto a la fecha actual (2026-03-30), lo que hace la consulta viable. Las 'notas' del modelo son más detalladas que las esperadas, pero son completamente precisas y coherentes con el plan y la solicitud, sin introducir errores o inconsistencias."
+        },
+        "L1_05": {
+          "score": 1.0,
+          "reason": "El modelo generó un plan de acciones idéntico al esperado, seleccionando correctamente la herramienta 'obtener_consumo' del servidor 'mcp_server_gravity'. Los parámetros de entrada, incluyendo 'dispositivos' ('lavadora'), 'fecha_inicio' ('2026-03-24T00:00'), 'fecha_fin' ('2026-03-24T23:59') y 'granularidad' ('total'), son precisos y coherentes con la solicitud de consumo energético para el día 2026-03-24. La interpretación del contexto temporal es correcta, ya que la fecha solicitada es anterior a la fecha actual (2026-03-30), lo que permite la obtención de datos históricos. Las notas del modelo son detalladas y justifican adecuadamente cada decisión, cumpliendo con todos los criterios de la rúbrica para una puntuación alta."
+        },
+        "L1_06": {
+          "score": 1.0,
+          "reason": "El modelo genera un plan de acciones completo y correcto, seleccionando la herramienta 'obtener_consumo' de manera adecuada para el escenario 'consumo_basico'. Interpreta correctamente el contexto temporal, traduciendo 'ayer' de la fecha actual '2026-03-30T10:25:10' a '2026-03-29T00:00' y '2026-03-29T23:59' para 'fecha_inicio' y 'fecha_fin' respectivamente. La granularidad 'total' es apropiada para obtener el consumo acumulado del día. Todos los parámetros son correctos y coherentes con la solicitud, cumpliendo con los criterios A1-A6."
+        },
+        "L1_07": {
+          "score": 1.0,
+          "reason": "El modelo genera un plan de acciones completo y correcto, seleccionando la herramienta `obtener_consumo` de manera adecuada. Interpreta correctamente el contexto temporal, traduciendo 'ayer' (respecto a la fecha actual '2026-03-30T10:25:10') a las fechas de inicio y fin '2026-03-29T00:00' y '2026-03-29T23:59' respectivamente. La granularidad 'total' es apropiada para la solicitud de consumo básico. Aunque el nombre del dispositivo en `dispositivos` es 'aire acondicionado' en lugar de 'aire_acondicionado' como en el Expected Output, ambos son strings válidos según el esquema de la herramienta y no hay una convención de nombres estricta definida en el contexto que lo haga incorrecto. La coherencia interna y el orden lógico son impecables."
+        },
+        "L1_08": {
+          "score": 1.0,
+          "reason": "El modelo genera un plan de acciones idéntico al esperado, seleccionando correctamente la herramienta 'obtener_consumo' y parametrizándola de forma adecuada. Interpreta 'ayer' como '2026-03-29' basándose en el contexto temporal '2026-03-30T10:25:10', estableciendo correctamente las fechas de inicio y fin, y la granularidad 'total'. La descripción y las notas son coherentes y explican el razonamiento de manera precisa, cumpliendo con todos los criterios A1-A6."
+        },
+        "L1_09": {
+          "score": 1.0,
+          "reason": "El modelo genera un plan de acciones completo y correcto, seleccionando la herramienta 'obtener_consumo' y parametrizándola adecuadamente. La interpretación del contexto temporal para 'ayer' (2026-03-29) a partir de la 'fecha_actual' (2026-03-30T10:25:10) es impecable, resultando en 'fecha_inicio': '2026-03-29T00:00' y 'fecha_fin': '2026-03-29T23:59'. La granularidad 'total' es correcta para la solicitud de consumo básico. Todos los criterios A1-A6 son correctos, y el plan coincide exactamente con el 'Expected Output' en su funcionalidad, aunque las 'notas' sean más detalladas."
+        },
+        "L1_10": {
+          "score": 1.0,
+          "reason": "El modelo genera un plan de acciones idéntico al esperado, seleccionando y parametrizando adecuadamente la herramienta `obtener_consumo`. Interpreta correctamente el contexto temporal, traduciendo 'ayer' (dada la fecha actual '2026-03-30T10:25:10') a las fechas de inicio y fin '2026-03-29T00:00' y '2026-03-29T23:59' respectivamente. La granularidad 'total' y el dispositivo 'lavadora' también son correctos para la solicitud de 'consumo energético de la lavadora ayer'. La sección 'notas' del modelo es coherente y justifica correctamente las decisiones tomadas."
+        }
+      },
+      "promedio": 0.97
+    },
+    "Nivel_2_Temporal_Relativo": {
+      "casos": {
+        "L2_01": {
+          "score": 0.6,
+          "reason": "El modelo selecciona correctamente la herramienta 'obtener_consumo' y el dispositivo 'nevera' (A1, A2). Sin embargo, presenta imprecisiones en la parametrización de las fechas y la granularidad (A3). La 'fecha_fin' se calcula incorrectamente como '2026-03-30T10:25', incluyendo el día actual, mientras que el 'Expected Output' interpreta 'últimos 3 días' como los tres días completos previos, excluyendo el día actual ('2026-03-29T23:59'). Además, la 'granularidad' se establece como 'dia' para visualizar la evolución, lo cual difiere del 'Expected Output' que especifica 'total' para un consumo acumulado. Estas discrepancias reflejan una interpretación parcial o inconsistente del contexto temporal (A4) y del objetivo de la solicitud (A5) en comparación con el 'Expected Output'."
+        },
+        "L2_02": {
+          "score": 0.7,
+          "reason": "El modelo selecciona correctamente la herramienta 'obtener_consumo' y el 'server_id'. La 'fecha_inicio' (2026-03-25T00:00) también es correcta, coincidiendo con el 'Expected Output'. Sin embargo, presenta dos desviaciones clave: la 'fecha_fin' se establece como '2026-03-30T10:25', incluyendo el día actual, mientras que el 'Expected Output' especifica '2026-03-29T23:59' para los 'últimos 5 días' completos. Además, la 'granularidad' se define como 'dia', cuando el 'Expected Output' y su justificación indican 'total' para 'mostrar el consumo', lo que representa una interpretación diferente de la solicitud."
+        },
+        "L2_03": {
+          "score": 0.3,
+          "reason": "El modelo selecciona correctamente la herramienta 'obtener_consumo' y el dispositivo 'horno' (A1, A2). Sin embargo, presenta errores significativos en la parametrización temporal (A3) y la granularidad (A4) en comparación con el 'Expected Output'. La 'fecha_inicio' del 'Actual Output' es '2026-03-24T00:00', interpretando 'esta semana' como la semana calendario completa, mientras que el 'Expected Output' la establece en '2026-03-30T00:00', interpretando 'esta semana' como el día actual (lunes 30 de marzo de 2026) según su lógica. Esta discrepancia en la 'fecha_inicio' es una interpretación deficiente del contexto temporal. Además, la 'granularidad' del 'Actual Output' es 'dia' para mostrar evolución, mientras que el 'Expected Output' especifica 'total'. Estas diferencias en parámetros clave hacen que el plan sea incorrecto según las expectativas, lo que lo sitúa en el rango de 0-4."
+        },
+        "L2_04": {
+          "score": 0.6,
+          "reason": "El modelo selecciona correctamente la herramienta 'obtener_consumo' y el dispositivo 'televisor'. Sin embargo, presenta imprecisiones en la interpretación del contexto temporal (A4) y en la parametrización (A2). La solicitud 'Mostrar el consumo energético del televisor hoy' con una fecha actual de '2026-03-30T10:25:10' debería interpretar 'hoy' como el período desde el inicio del día hasta el momento actual (2026-03-30T10:25), como se indica en el Expected Output. El modelo, en cambio, establece 'fecha_fin' como el final del día (2026-03-30T23:59). Además, el modelo elige una 'granularidad' de 'hora' para 'visualizar la evolución', mientras que el Expected Output opta por 'total', que es más adecuado para una solicitud simple de 'mostrar el consumo' hasta el momento actual, sin pedir explícitamente una evolución."
+        },
+        "L2_05": {
+          "score": 0.6,
+          "reason": "El modelo selecciona correctamente la herramienta 'obtener_consumo' y el dispositivo 'lavadora'. Sin embargo, presenta imprecisiones en la parametrización de las fechas y la granularidad. La 'fecha_fin' se establece como '2026-03-30T10:25', incluyendo el día actual, mientras que el 'Expected Output' indica '2026-03-29T23:59' para los 'últimos 2 días' completos. Además, la 'granularidad' se define como 'dia' con la justificación de 'visualizar la evolución', cuando la solicitud 'Mostrar el consumo' y el 'Expected Output' sugieren 'total' para un resumen básico, lo cual es más coherente con el escenario 'consumo_basico' y la descripción de la herramienta 'obtener_consumo' para visualización simple."
+        },
+        "L2_06": {
+          "score": 1.0,
+          "reason": "El modelo genera un plan de acciones completo y correcto, seleccionando la herramienta 'obtener_consumo' y parametrizándola adecuadamente con 'dispositivos': ['nevera'], 'fecha_inicio': '2026-03-26T00:00', 'fecha_fin': '2026-03-30T10:25' y 'granularidad': 'total'. Interpreta correctamente el contexto temporal 'desde hace 4 días hasta hoy' basándose en la 'fecha_actual' del contexto, y mantiene una coherencia interna impecable entre el plan y las notas. Todos los criterios A1-A6 son correctos."
+        },
+        "L2_07": {
+          "score": 0.6,
+          "reason": "El modelo seleccionó correctamente la herramienta 'obtener_consumo' y el dispositivo 'horno', así como la 'fecha_inicio' para los últimos 7 días. Sin embargo, cometió dos errores significativos en la parametrización: la 'fecha_fin' se estableció incorrectamente en '2026-03-30T10:25', incluyendo el día actual parcial, cuando el 'Expected Output' indica que los 'últimos 7 días' deben excluir el día en curso ('2026-03-29T23:59'). Además, la 'granularidad' se definió como 'dia', asumiendo una solicitud de evolución temporal, mientras que la solicitud original 'Mostrar el consumo energético' y el 'Expected Output' sugieren 'total' para un resumen del periodo, lo cual es más acorde con las recomendaciones de la herramienta para 'comparaciones de consumo' en lugar de 'análisis de evolución temporal'. Estos errores demuestran imprecisiones en la interpretación del contexto temporal (A4) y en la selección de parámetros (A2)."
+        },
+        "L2_08": {
+          "score": 1.0,
+          "reason": "El modelo genera un plan de acciones completo y correcto, seleccionando la herramienta 'obtener_consumo' con los parámetros adecuados. La interpretación del contexto temporal para 'ayer' y 'hoy' (2026-03-29T00:00 a 2026-03-30T10:25) es precisa, coincidiendo con la fecha actual 2026-03-30T10:25:10. La granularidad 'total' es correcta para la solicitud de consumo acumulado. La coherencia interna y la lógica del plan son impecables, y las notas del modelo explican claramente el razonamiento."
+        },
+        "L2_09": {
+          "score": 0.6,
+          "reason": "El modelo selecciona correctamente la herramienta 'obtener_consumo' y el dispositivo 'lavadora'. Sin embargo, presenta imprecisiones en la interpretación del contexto temporal y la parametrización. La 'fecha_fin' se establece en '2026-03-30T10:25', incluyendo parte del día actual, mientras que el 'Expected Output' la define como '2026-03-29T23:59', lo cual es una interpretación más precisa de 'últimos 10 días' para un intervalo retrospectivo completo. Además, la 'granularidad' se establece en 'dia' con la justificación de 'mostrar su evolución temporal', lo cual es una interpretación añadida por el modelo, ya que la solicitud original solo pide 'Mostrar el consumo'. El 'Expected Output' utiliza 'total', que es más adecuado para una solicitud simple de consumo agregado sin pedir explícitamente una evolución. Estas inconsistencias en A3, A4 y A5 impiden una puntuación más alta, aunque el plan sigue siendo funcional."
+        },
+        "L2_10": {
+          "score": 0.7,
+          "reason": "El modelo selecciona la herramienta `obtener_consumo` y los parámetros de fecha (`fecha_inicio`, `fecha_fin`) correctamente, interpretando adecuadamente el contexto temporal (A1, A3, A4). Sin embargo, difiere del 'Expected Output' en la granularidad, utilizando 'dia' en lugar de 'total'. Aunque el modelo justifica su elección de 'dia' para 'mostrar la evolución temporal', la solicitud original 'Mostrar el consumo energético' no especifica explícitamente una evolución, y el 'Expected Output' opta por la granularidad 'total' para un consumo agregado. Esta diferencia en la interpretación de la granularidad constituye una inconsistencia parcial en el razonamiento (A5) respecto a la salida esperada, aunque el plan sigue siendo viable."
+        }
+      },
+      "promedio": 0.67
+    },
+    "Nivel_3_Temporal_Difuso": {
+      "casos": {
+        "L3_01": {
+          "score": 0.7,
+          "reason": "El modelo selecciona correctamente la herramienta 'obtener_consumo' y los parámetros de dispositivos ('nevera'), así como las fechas de inicio y fin ('2026-03-29T19:00' a '2026-03-29T20:59'), interpretando correctamente el contexto temporal de 'ayer' y 'noche'. Sin embargo, el modelo elige una 'granularidad' de 'hora' en lugar de 'total', que es la esperada para una solicitud de 'mostrar el consumo' de un intervalo, implicando un valor acumulado. Esta discrepancia en la granularidad representa una inconsistencia parcial en el razonamiento (A5) respecto a la interpretación de la solicitud, aunque el plan sigue siendo viable."
+        },
+        "L3_02": {
+          "score": 0.5,
+          "reason": "El modelo selecciona correctamente la herramienta 'obtener_consumo' y el dispositivo 'horno', así como la 'fecha_inicio' (06:00). Sin embargo, presenta dos fallos clave: primero, la 'fecha_fin' se establece en '2026-03-30T11:59', solicitando datos futuros, en lugar de truncarse a la hora actual del contexto temporal (10:25) como indica el 'Expected Output'. Esto demuestra una interpretación imprecisa del contexto temporal (A4). Segundo, la 'granularidad' se define como 'hora' cuando la solicitud 'Mostrar el consumo' y el esquema de la herramienta sugieren 'total' como valor por defecto y más adecuado para una visualización simple, lo que representa una inconsistencia en la parametrización (A3) y el razonamiento (A5)."
+        },
+        "L3_03": {
+          "score": 0.5,
+          "reason": "El modelo seleccionó correctamente la herramienta 'obtener_consumo' y el dispositivo 'televisor'. Sin embargo, presentó imprecisiones significativas en la parametrización de las fechas y la granularidad. La 'fecha_fin' se estableció incorrectamente en '2026-03-29T18:59', extendiendo el período de 'tarde' más allá de lo definido en las 'temporal_preferences' (12:00 PM - 03:59 PM), a pesar de que las notas del modelo reconocen la definición correcta. Además, la 'granularidad' se fijó en 'hora' para 'visualizar la evolución', mientras que el 'Expected Output' especificaba 'total' para una simple visualización de consumo, lo que representa una desviación en la interpretación de la solicitud."
+        },
+        "L3_04": {
+          "score": 1.0,
+          "reason": "El modelo genera un plan completo y correcto. Identifica adecuadamente que la solicitud de consumo para la 'media tarde de hoy' es para un intervalo futuro (16:00 - 18:59) respecto a la hora actual (10:25:10), utilizando correctamente la herramienta `accion_imposible`. La justificación proporcionada en los inputs de la herramienta es precisa y detallada, referenciando el contexto temporal. La parametrización es adecuada y el plan es coherente con la lógica temporal (A1-A5 correctos)."
+        },
+        "L3_05": {
+          "score": 0.7,
+          "reason": "El modelo interpreta correctamente el contexto temporal para 'ayer' y 'madrugada' (2026-03-29T00:00 a 2026-03-29T05:59) y selecciona la herramienta 'obtener_consumo' adecuada. Sin embargo, el parámetro 'granularidad' se establece en 'hora' en lugar de 'total', como se indica en el 'Expected Output' y como sería más apropiado para una solicitud básica de 'Mostrar el consumo' sin pedir explícitamente una evolución. La justificación del modelo en las notas sobre 'mostrar la evolución' es una interpretación adicional no solicitada. Además, el nombre del dispositivo 'aire acondicionado' difiere ligeramente de 'aire_acondicionado' en el 'Expected Output', aunque esto es un detalle menor."
+        },
+        "L3_06": {
+          "score": 1.0,
+          "reason": "El modelo genera un plan completo y correcto. Selecciona adecuadamente la herramienta 'accion_imposible' porque la solicitud de 'Mostrar el consumo de la nevera en la noche de hoy' es futurista, dado que la 'fecha_actual' es 2026-03-30T10:25:10 y la 'noche' se define de 19:00 a 20:59. La parametrización de 'solicitud' y 'justificacion' es precisa y detallada, explicando claramente la imposibilidad lógica. La interpretación del contexto temporal (A4) es impecable, y la coherencia interna (A5) entre la solicitud, la justificación y las notas es excelente."
+        },
+        "L3_07": {
+          "score": 0.7,
+          "reason": "El modelo selecciona correctamente la herramienta 'obtener_consumo' y parametriza de forma precisa los dispositivos ('horno') y el intervalo temporal ('2026-03-29T21:00' a '2026-03-29T23:59'), interpretando correctamente 'media noche de ayer' según el contexto temporal. Sin embargo, la granularidad elegida es 'hora', mientras que el 'Expected Output' especifica 'total'. Para una solicitud simple de 'Mostrar el consumo', 'total' suele ser la granularidad más adecuada para obtener un valor acumulado, mientras que 'hora' implica una serie temporal más detallada no solicitada explícitamente. Esta imprecisión en la granularidad, aunque no invalida el plan, lo hace menos óptimo que el esperado."
+        },
+        "L3_08": {
+          "score": 0.7,
+          "reason": "El modelo selecciona correctamente la herramienta 'obtener_consumo' y parametriza de forma impecable los dispositivos ('televisor') y el contexto temporal ('fecha_inicio' y 'fecha_fin' para la mañana de ayer, 2026-03-29T06:00 a 2026-03-29T11:59), lo que demuestra una correcta interpretación de A1, A2, A3 y A4. Sin embargo, la 'granularidad' seleccionada es 'hora', mientras que el 'Expected Output' especifica 'total'. Aunque la granularidad 'hora' no es incorrecta para 'mostrar el consumo' y el modelo la justifica para 'visualizar la evolución', la solicitud original no pide explícitamente una evolución, y 'total' es el valor por defecto y a menudo más directo para una visualización básica. Esta diferencia en la granularidad representa una inconsistencia parcial en el razonamiento (A5) respecto a la interpretación más directa de la solicitud, sin comprometer la viabilidad del plan."
+        },
+        "L3_09": {
+          "score": 1.0,
+          "reason": "El modelo genera un plan completo y correcto, utilizando la herramienta `accion_imposible` de manera adecuada. Interpreta correctamente el contexto temporal, identificando que 'la tarde de hoy' (12:00 - 15:59) es un período futuro respecto a la hora actual (10:25:10). La justificación proporcionada en los inputs de la herramienta y en las notas es muy detallada y precisa, explicando claramente el conflicto temporal y las preferencias horarias, lo cual demuestra una excelente comprensión del contexto (A1-A5 correctos). El plan es coherente y no presenta errores en el orden o dependencias (A6 correcto)."
+        },
+        "L3_10": {
+          "score": 0.8,
+          "reason": "El modelo genera un plan correcto, seleccionando la herramienta 'obtener_consumo' y parametrizando adecuadamente las fechas de inicio y fin ('2026-03-29T19:00' a '2026-03-29T20:59') basándose en el contexto temporal de 'ayer' y 'noche'. Sin embargo, la granularidad elegida es 'hora' para 'visualizar la evolución', mientras que el 'Expected Output' especifica 'total' para una 'consulta directa'. Aunque la elección de 'hora' es justificable según los 'cuando_usar' de la herramienta para 'visualización de consumo en el tiempo', se desvía de la interpretación más directa y por defecto de 'mostrar el consumo' que implica un valor agregado, como se indica en el 'Expected Output' y el valor por defecto de la granularidad. La diferencia en el nombre del dispositivo ('aire acondicionado' vs 'aire_acondicionado') es menor y no afecta la viabilidad del plan."
+        }
+      },
+      "promedio": 0.76
+    },
+    "Nivel_4_Multi_Step": {
+      "casos": {
+        "L4_01": {
+          "score": 0.6,
+          "reason": "El modelo selecciona herramientas válidas para la comparación de consumos, utilizando 'obtener_consumo' y 'analizar_comparacion'. Sin embargo, presenta imprecisiones significativas en la interpretación del contexto temporal (A4) para 'hoy', estableciendo la fecha de fin como el final del día (2026-03-30T23:59) en lugar de la hora actual (2026-03-30T10:25), lo cual es un error crítico para una comparación en tiempo real. Además, el plan es subóptimo (A6), ya que utiliza tres acciones cuando la herramienta 'analizar_comparacion' permite realizar la comparación directamente en una sola acción, como se muestra en el Expected Output. Aunque el plan es viable, la interpretación temporal incorrecta y la ineficiencia reducen la calidad de la respuesta."
+        },
+        "L4_02": {
+          "score": 0.5,
+          "reason": "El modelo traduce la solicitud en acciones válidas, pero presenta varias deficiencias. La interpretación del periodo 'últimos 2 días' es incorrecta, extendiéndose hasta la fecha y hora actual (2026-03-30T10:25) en lugar de los dos días completos anteriores (28 y 29 de marzo), lo que afecta la parametrización de las fechas para el 'objetivo_a'. Además, el plan incluye dos llamadas redundantes a la herramienta `obtener_consumo` antes de `analizar_comparacion`. La herramienta `analizar_comparacion` está diseñada para recibir directamente los parámetros de dispositivo y fechas, sin necesidad de pasos previos de obtención de consumo, lo que indica un error en el orden y las dependencias del plan y una comprensión subóptima de la funcionalidad de las herramientas."
+        },
+        "L4_03": {
+          "score": 0.6,
+          "reason": "El modelo presenta una interpretación imprecisa del contexto temporal (A4) al establecer la 'fecha_fin' para la mañana de hoy en '2026-03-30T11:59', lo cual se extiende más allá de la 'fecha_actual' de '2026-03-30T10:25:10'. Esto contrasta con el 'Expected Output' que trunca correctamente la fecha fin a '2026-03-30T10:25' para evitar solicitar datos futuros. Además, el modelo genera un plan de tres acciones (dos 'obtener_consumo' y una 'analizar_comparacion') cuando la herramienta 'analizar_comparacion' puede manejar la comparación directamente en una sola acción, como se muestra en el 'Expected Output', lo que indica una falta de optimización en el uso de herramientas (A1). La justificación en las 'notas' del modelo, que afirma que \"No se detectaron imposibilidades temporales, ya que ambos intervalos están en el pasado\", es incorrecta y muestra una inconsistencia en el razonamiento (A5)."
+        },
+        "L4_04": {
+          "score": 0.6,
+          "reason": "El modelo genera un plan viable pero con imprecisiones significativas en comparación con el 'Expected Output'. Utiliza la herramienta `obtener_consumo` de forma redundante antes de `analizar_comparacion`, cuando la herramienta `analizar_comparacion` está diseñada para aceptar directamente los rangos de fechas para la comparación (A1). Además, la interpretación temporal de 'esta semana' y 'la semana pasada' difiere de la esperada. El 'Actual Output' define 'esta semana' como del 24 al 30 de marzo y 'la semana pasada' del 17 al 23 de marzo, mientras que el 'Expected Output' define 'esta semana' como solo el 30 de marzo y 'la semana pasada' del 23 al 29 de marzo (A2, A4). Aunque la interpretación del modelo es razonable en un contexto general, no coincide con la especificación del 'Expected Output'."
+        },
+        "L4_05": {
+          "score": 0.7,
+          "reason": "El modelo interpreta correctamente las referencias temporales 'ayer' y 'hace 3 días' basándose en el contexto temporal proporcionado, y parametriza adecuadamente las fechas y el dispositivo 'aire_acondicionado'. Sin embargo, el plan propuesto es redundante. La herramienta `analizar_comparacion` está diseñada para comparar dos consumos acumulados directamente, tomando como inputs el dispositivo y los rangos de fechas para cada objetivo. El modelo, en cambio, realiza dos llamadas a `obtener_consumo` para cada período antes de usar `analizar_comparacion`, lo cual es un paso innecesario y menos eficiente, ya que la herramienta de comparación debería manejar la obtención de datos internamente. Esto representa una imprecisión en la utilización óptima de las herramientas disponibles, aunque el plan es funcionalmente correcto."
+        },
+        "L4_06": {
+          "score": 0.3,
+          "reason": "El modelo genera un plan incorrecto al intentar obtener datos de consumo para un período futuro ('la noche de hoy', 2026-03-30T19:00 a 20:59), cuando la fecha actual es 2026-03-30T10:25:10. Esto representa una interpretación deficiente del contexto temporal (A4) y una selección de herramientas inadecuada (A1), ya que la herramienta `accion_imposible` está explícitamente diseñada para manejar solicitudes de datos de eventos futuros. La justificación en las notas del modelo, que sugiere que la herramienta puede 'proyectar o registrar datos futuros', es una invención de funcionalidad no soportada por la descripción de `obtener_consumo`, lo que demuestra una incoherencia significativa en el razonamiento (A5)."
+        },
+        "L4_07": {
+          "score": 0.4,
+          "reason": "El modelo presenta una interpretación deficiente del contexto temporal (A4) para la solicitud '@1'. Para 'mañana de hoy', el plan establece un `fecha_fin` de 2026-03-30T11:59, ignorando la `fecha_actual` de 2026-03-30T10:25:10. Esto implica solicitar datos de consumo futuros, lo cual es incorrecto y compromete la viabilidad de esa parte de la comparación. Además, la interpretación de 'tarde de ayer' se extiende hasta las 18:59, desviándose de la definición estricta de 'tarde' (12:00-15:59) en las preferencias temporales y del 'Expected Output'. Aunque utiliza herramientas válidas, el plan es ineficiente al usar dos llamadas a `obtener_consumo` antes de `analizar_comparacion`, cuando esta última herramienta puede procesar los rangos de fechas directamente, como se muestra en el 'Expected Output'."
+        },
+        "L4_08": {
+          "score": 0.7,
+          "reason": "El modelo interpreta correctamente el contexto temporal y los dispositivos, calculando las fechas de 'hoy' y 'los últimos 3 días' de manera precisa. Sin embargo, el plan de acciones es redundante. La herramienta `analizar_comparacion` está diseñada para recibir directamente los rangos de fechas de los objetivos a comparar, implicando que maneja la obtención y agregación de datos internamente. El modelo, en cambio, utiliza dos acciones `obtener_consumo` previas para luego pasar esos mismos rangos de fechas a `analizar_comparacion`, lo cual es un uso ineficiente de las herramientas disponibles y añade pasos innecesarios al plan, aunque no compromete la viabilidad del resultado final."
+        },
+        "L4_09": {
+          "score": 0.6,
+          "reason": "El modelo interpreta correctamente el contexto temporal para 'ayer', 'mañana' y 'noche' (A4) y parametriza correctamente la herramienta 'analizar_comparacion' con las fechas y el dispositivo solicitados (A2). Sin embargo, el plan incluye dos acciones redundantes de 'obtener_consumo' antes de la acción de 'analizar_comparacion'. La herramienta 'analizar_comparacion' está diseñada para recibir directamente los parámetros de dispositivo y rangos de fecha para la comparación, sin necesidad de pre-obtener los consumos. Esto demuestra una inconsistencia parcial en el razonamiento (A5) y una selección de herramientas subóptima (A1), ya que el plan podría ser más conciso y eficiente, como se muestra en el 'Expected Output'."
+        },
+        "L4_10": {
+          "score": 0.2,
+          "reason": "El modelo falla en la interpretación del contexto temporal (A4) al no reconocer la tautología semántica de comparar 'esta semana' y 'hoy' cuando 'hoy' es el primer día de la semana (Lunes 30 de marzo de 2026). El 'Expected Output' identifica correctamente esta redundancia y propone el uso de la herramienta 'accion_imposible' con una justificación clara. En contraste, el 'Actual Output' interpreta 'esta semana' como 'los últimos 7 días', lo que evita la tautología pero ignora la intención lógica de la solicitud y la necesidad de la herramienta de escape, generando un plan de acciones que, aunque técnicamente ejecutable con sus rangos de fecha, es fundamentalmente incorrecto en su aproximación al problema semántico."
+        }
+      },
+      "promedio": 0.52
+    },
+    "Nivel_5_Complejo_Realista": {
+      "casos": {
+        "L5_01": {
+          "score": 0.8,
+          "reason": "El modelo interpreta correctamente el contexto temporal para 'ayer' (2026-03-29) y 'lunes' (2026-03-23) basándose en la fecha actual (2026-03-30). Selecciona las herramientas válidas y parametriza correctamente la acción para obtener el consumo de ayer. Sin embargo, para la comparación, el modelo incluye un paso redundante de `obtener_consumo` para el lunes (acción @2.1) antes de llamar a `analizar_comparacion`. La herramienta `analizar_comparacion` está diseñada para recibir directamente los rangos de fechas y dispositivos de los objetivos a comparar, haciendo innecesaria la llamada previa a `obtener_consumo` para el segundo periodo. Aunque el plan es funcional y logra el objetivo, esta ineficiencia en el uso de herramientas y la construcción del plan lo hace menos óptimo y conciso que el esperado."
+        },
+        "L5_02": {
+          "score": 0.7,
+          "reason": "El modelo selecciona correctamente las herramientas 'obtener_consumo' y 'detectar_anomalias' y sus parámetros principales, como el dispositivo y la granularidad para la primera acción. La 'fecha_inicio' se calcula correctamente. Sin embargo, la 'fecha_fin' para ambas acciones es incorrecta. La solicitud 'últimos 3 días' se interpretó como incluyendo parte del día actual (2026-03-30T10:25), extendiendo el periodo más allá de los 3 días completos que se esperaban (hasta 2026-03-29T23:59). Esta imprecisión en la interpretación del contexto temporal (A4) y la parametrización (A2) es el principal fallo, aunque no compromete la viabilidad general del plan."
+        },
+        "L5_03": {
+          "score": 0.7,
+          "reason": "El modelo selecciona y parametriza correctamente las herramientas `obtener_consumo` y `analizar_tendencia` para las solicitudes @1 y @2, respectivamente, con los dispositivos y granularidad adecuados (A1-A3 correctos). Sin embargo, presenta una imprecisión en la interpretación del contexto temporal (A4). Mientras que el 'Expected Output' interpreta 'esta semana' como el día actual (2026-03-30T00:00 a 2026-03-30T10:25), el 'Actual Output' lo interpreta como los últimos 7 días (2026-03-24T00:00 a 2026-03-30T10:25). Aunque la interpretación del modelo es plausible en un contexto general, no coincide con la expectativa específica del caso de prueba. A pesar de esta diferencia, el plan sigue siendo viable y coherente internamente (A5 y A6 correctos), y las notas del modelo justifican claramente su razonamiento temporal."
+        },
+        "L5_04": {
+          "score": 0.4,
+          "reason": "El modelo presenta una interpretación deficiente del contexto temporal (A4), ya que para ambas solicitudes establece la `fecha_fin` de 'hoy' como '2026-03-30T23:59'. Dado que la `fecha_actual` es '2026-03-30T10:25:10', 'hoy' debería referirse al período hasta el momento actual ('2026-03-30T10:25'), lo que hace que el plan sea inviable para su ejecución inmediata. Además, para la solicitud de comparación (@1), el modelo introduce pasos redundantes de `obtener_consumo` antes de `analizar_comparacion`, cuando esta última herramienta puede procesar directamente los rangos de fechas y dispositivos (A5). Para la detección de anomalías (@2), el modelo utiliza 'Total_Casa' como dispositivo, mientras que la salida esperada infiere 'lavadora' del contexto, lo que demuestra una comprensión contextual menos precisa (A3)."
+        },
+        "L5_05": {
+          "score": 0.4,
+          "reason": "El modelo comete un error crítico en la interpretación del contexto temporal (A4) para la segunda solicitud. La fecha actual es 2026-03-30 (lunes). Para 'la noche del lunes', el modelo identifica incorrectamente el 24 de marzo de 2026 como el lunes anterior, cuando en realidad fue un martes. La fecha correcta para el lunes anterior debería haber sido el 23 de marzo de 2026. Este error se propaga a las acciones `@2.1` y `@2.2`, haciendo que la comparación sea incorrecta. Aunque el modelo utiliza las herramientas correctas y parametriza adecuadamente la primera solicitud, la deficiente interpretación temporal de la segunda solicitud compromete la viabilidad y corrección del plan general, situándolo en el rango de 0-4 según la rúbrica."
+        },
+        "L5_06": {
+          "score": 0.7,
+          "reason": "El modelo traduce correctamente las solicitudes a acciones y selecciona herramientas válidas (`detectar_anomalias`, `analizar_tendencia`) con el dispositivo correcto ('nevera'). La `fecha_inicio` ('2026-03-25T00:00') es consistente con 'los últimos 5 días' desde la fecha actual (2026-03-30T10:25:10). Sin embargo, la `fecha_fin` en el 'Actual Output' ('2026-03-30T10:25') incluye parte del día actual, lo cual difiere del 'Expected Output' ('2026-03-29T23:59') que interpreta 'últimos 5 días' como los 5 días completos anteriores al día actual. Esta es una imprecisión en la interpretación del contexto temporal (A4), pero no compromete la viabilidad general del plan."
+        },
+        "L5_07": {
+          "score": 0.5,
+          "reason": "El modelo selecciona correctamente las herramientas (`obtener_consumo`, `analizar_comparacion`, `detectar_anomalias`) y los dispositivos ('horno') para las solicitudes. Sin embargo, presenta una interpretación deficiente del contexto temporal (A4) al establecer la `fecha_fin` para las solicitudes de 'hoy' (@1.1, @2.2 objetivo_a, @3.1) hasta las `23:59` del `2026-03-30`, cuando la `fecha_actual` es `2026-03-30T10:25:10`. Esto implica solicitar datos futuros, lo cual es una imprecisión significativa en la parametrización (A2) y podría comprometer la viabilidad o exactitud de los resultados. Además, el plan incluye una acción redundante (`@2.1 obtener_consumo` para ayer) antes de `analizar_comparacion`, cuando la herramienta `analizar_comparacion` puede gestionar directamente los rangos de fechas para la comparación, lo que indica una inconsistencia parcial en el razonamiento (A5) y un orden menos eficiente (A6)."
+        },
+        "L5_08": {
+          "score": 0.6,
+          "reason": "El modelo presenta una imprecisión en la interpretación del contexto temporal (A4) al establecer la 'fecha_fin' para la mañana de hoy en '2026-03-30T11:59' en lugar de truncarla a la hora actual '2026-03-30T10:25', como indica el 'temporal_context'. Además, el plan incluye una acción 'obtener_consumo' redundante para la tarde de ayer (@2.1), ya que la herramienta 'analizar_comparacion' está diseñada para recibir directamente los parámetros de los periodos a comparar, lo que representa una inconsistencia en el orden o dependencias del plan (A6) en comparación con el 'Expected Output'."
+        },
+        "L5_09": {
+          "score": 0.4,
+          "reason": "El modelo presenta errores significativos en la parametrización de dispositivos y la interpretación temporal. Para las solicitudes @2 y @3, el modelo infiere incorrectamente el dispositivo 'Total_Casa' en lugar de 'lavadora', ignorando el contexto de la solicitud @1. Además, la interpretación de 'esta semana' es inconsistente y errónea: para @1.1, usa el lunes anterior (2026-03-24) en lugar del lunes actual (2026-03-30), y para @2.1 y @3.1, retrocede aún más al domingo (2026-03-23). Estas imprecisiones en los parámetros (A2, A3) y la deficiente interpretación del contexto temporal (A4) comprometen la validez del plan propuesto."
+        },
+        "L5_10": {
+          "score": 0.5,
+          "reason": "El modelo genera un plan que, aunque viable, presenta redundancias significativas y errores en la parametrización. Para la solicitud de comparación (@1), el modelo utiliza `obtener_consumo` dos veces antes de `analizar_comparacion`, a pesar de que la herramienta `analizar_comparacion` está diseñada para aceptar directamente los intervalos de tiempo y dispositivos, realizando la agregación internamente. Esto demuestra una interpretación deficiente de las capacidades de la herramienta (A1, A5). De manera similar, para la solicitud de tendencia (@2), el modelo usa `obtener_consumo` antes de `analizar_tendencia`, lo cual es innecesario ya que `analizar_tendencia` también maneja la generación de series temporales internamente (A1, A5). Además, para la solicitud @2, el modelo utiliza el dispositivo 'Total_Casa' en lugar de 'aire_acondicionado', que era el foco de la solicitud anterior y se infiere para esta, y establece una `fecha_fin` incorrecta (2026-03-30T10:25) para el análisis de tendencia de 'últimos 3 días', cuando lo esperado es el final del último día completo (2026-03-29T23:59) (A2, A3, A4). Las 'notas' del modelo justifican estas acciones redundantes, lo que evidencia una inconsistencia en el razonamiento (A5) respecto a la funcionalidad de las herramientas."
+        }
+      },
+      "promedio": 0.5700000000000001
+    }
+  }
+}

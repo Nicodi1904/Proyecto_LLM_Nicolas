@@ -1,7 +1,7 @@
 import sys
 import os
 from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel
-from PySide6.QtCore import Qt, QTimer, QDateTime
+from PySide6.QtCore import Qt, QTimer, QDateTime, QLocale
 
 # Asegurar visibilidad de los módulos en la raíz (Interfaz_usuario)
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
@@ -48,7 +48,8 @@ class HeadBar(QFrame):
     def _actualizar_tiempo(self):
         """Obtiene la fecha y hora actual del sistema y las muestra."""
         ahora = QDateTime.currentDateTime()
-        self.lbl_fecha.setText(ahora.toString("dddd, d 'de' MMMM 'de' yyyy").upper())
+        locale = QLocale(QLocale.Spanish, QLocale.Colombia)
+        self.lbl_fecha.setText(locale.toString(ahora, "dddd d /  MMMM / yyyy").upper())
         self.lbl_hora.setText(ahora.toString("hh:mm:ss"))
     def get_time_info(self):
         """Retorna un diccionario con la fecha y hora actuales mostradas."""

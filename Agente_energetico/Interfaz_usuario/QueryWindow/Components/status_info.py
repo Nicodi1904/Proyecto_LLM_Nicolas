@@ -87,14 +87,8 @@ class StatusInfo(QWidget):
         fila_modelo.addWidget(self.btn_editar)
         fila_modelo.addWidget(self.btn_eliminar)
         
-        # 3. Etiqueta de Servidores
-        self.lbl_servidores = QLabel("Servidores conectados:")
-        self.lbl_servidores.setStyleSheet(estilo_texto)
-        self.lbl_servidores.setAlignment(Qt.AlignCenter)
-        
         layout_principal.addWidget(self.lbl_modelo)
         layout_principal.addLayout(fila_modelo)
-        layout_principal.addWidget(self.lbl_servidores)
     def get_selected_model(self):
         """Retorna el modelo actualmente seleccionado en el combo box."""
         return self.combo_modelos.currentText()

@@ -1,6 +1,7 @@
 import dspy
 import os
 import json
+import re
 from typing import Dict, Any, List, Optional
 from datetime import datetime
 from dotenv import load_dotenv
@@ -106,13 +107,15 @@ class PlaneadorAgente(dspy.Module):
         if not plan_acciones:
             return ["El plan de acciones está vacío."]
 
+        patron_id = re.compile(r"^@\d+\.\d+$")
+
         for i, accion in enumerate(plan_acciones):
             if not isinstance(accion, dict):
                 errores.append(f"La acción en la posición {i} no es un diccionario.")
                 continue
             
             id_accion = accion.get("id")
-            if not id_accion or not str(id_accion).startswith("@") or "." not in str(id_accion):
+            if not id_accion or not isinstance(id_accion, str) or not patron_id.match(id_accion):
                 errores.append(f"El ID de la acción '{id_accion}' en la posición {i} no sigue el formato '@N.M'.")
             
             if not accion.get("server_id"):
@@ -120,6 +123,9 @@ class PlaneadorAgente(dspy.Module):
             
             if not accion.get("tool"):
                 errores.append(f"Falta 'tool' en la acción '{id_accion or i}'.")
+                
+            if "inputs" not in accion or not isinstance(accion.get("inputs"), dict):
+                errores.append(f"Falta el campo 'inputs' (o no es un diccionario) en la acción '{id_accion if 'id' in accion else i}'.")
                 
         return errores
 

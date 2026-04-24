@@ -1,0 +1,1515 @@
+{
+  "Nivel_1_Basico": {
+    "L1_01": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Nevera"
+            ],
+            "fecha_inicio": "2026-03-28T00:00",
+            "fecha_fin": "2026-03-28T23:59"
+          },
+          "descripcion": "Obtener consumo energético de la nevera el 2026-03-28."
+        }
+      ],
+      "notas": "El plan selecciona la herramienta 'obtener_consumo' en el servidor 'mcp_server_gravity' para obtener el consumo energético de la nevera el día especificado. El día y horario solicitados están dentro del rango 'noche'."
+    },
+    "L1_02": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "aire_acondicionado"
+            ],
+            "fecha_inicio": "2026-03-27",
+            "fecha_fin": "2026-03-27"
+          },
+          "descripcion": "Obtiene consumo energético del aire acondicionado el 2026-03-27."
+        }
+      ],
+      "notas": "En esta solicitud, se pide mostrar el consumo energético del aire acondicionado en un día específico. Para resolver la solicitud, utilizamos la herramienta \"obtener_consumo\" con el parámetro \"aire_acondicionado\", y fechas de inicio y fin correspondientes al día solicitado (2026-03-27)."
+    },
+    "L1_03": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Horno"
+            ],
+            "fecha_inicio": "2026-03-26",
+            "fecha_fin": "2026-03-26"
+          },
+          "descripcion": "Obtiene el consumo energético del horno el 26 de marzo de 2026."
+        }
+      ],
+      "notas": "Para resolver la solicitud se utilizó la herramienta 'obtener_consumo'. Dado que no hay información sobre períodos específicos, se tomó el día completo como referencia. El usuario puede consultar más detalles sobre el funcionamiento de las herramientas disponibles en el sistema mediante la sección 'Herramientas'."
+    },
+    "L1_04": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Televisor"
+            ],
+            "fecha_inicio": "2026-03-25",
+            "fecha_fin": "2026-03-25"
+          },
+          "descripcion": "Obtiene consumo del televisor el 2026-03-25"
+        }
+      ],
+      "notas": "Para mostrar el consumo energético del televisor el día específico se usa la herramienta 'obtener_consumo'. Se utiliza una sola llamada a la herramienta y se le pasan como parámetros: el dispositivo en cuestión ('Televisor') y las fechas de inicio y fin especificadas (2026-03-25)."
+    },
+    "L1_05": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Lavadora"
+            ],
+            "fecha_inicio": "2026-03-24",
+            "fecha_fin": "2026-03-24"
+          },
+          "descripcion": "Obtiene el consumo de la lavadora el 2026-03-24."
+        }
+      ],
+      "notas": "En esta solicitud, el usuario pide conocer el consumo energético de la lavadora en una fecha específica. Para cumplir con la misma, se utilizó la herramienta \"obtener_consumo\", que a su vez obtiene los datos del dispositivo y los consume acumulados en un determinado intervalo (día). Como se solicita el consumo para una fecha específica, el tiempo de inicio y fin es preciso."
+    },
+    "L1_06": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Nevera"
+            ],
+            "fecha_inicio": "2026-03-29T00:00",
+            "fecha_fin": "2026-03-29T23:59"
+          },
+          "descripcion": "Obtiene consumo energético de la nevera del 29 de marzo del año en curso."
+        }
+      ],
+      "notas": "Para cumplir con la solicitud de mostrar el consumo energético de la nevera de ayer, se ha usado la herramienta \"obtener_consumo\" para obtener los datos necesarios. Se ha especificado que los datos se tomarán del 29 de marzo del año en curso ya que se trata de los datos correspondientes al día anterior (el sistema tiene su tiempo con base en el año actual)."
+    },
+    "L1_07": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Aire acondicionado"
+            ],
+            "fecha_inicio": "2026-03-29T00:00",
+            "fecha_fin": "2026-03-29T23:59"
+          },
+          "descripcion": "Obtener consumo energético del aire acondicionado el día anterior."
+        }
+      ],
+      "notas": "La solicitud de mostrar el consumo del aire acondicionado requiere la obtención de datos históricos, por lo que se ha seleccionado la herramienta 'obtener_consumo'. Se han configurado los parámetros para buscar el consumo del dispositivo especificado (aire acondicionado) durante el día anterior al contexto temporal actual."
+    },
+    "L1_08": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Horno"
+            ],
+            "fecha_inicio": "2026-03-29T00:00",
+            "fecha_fin": "2026-03-29T23:59"
+          },
+          "descripcion": "Obtiene consumo energético del horno el día anterior."
+        }
+      ],
+      "notas": "El usuario solicita el consumo energético del horno, que se interpreta como un escenario de consumo básico. La herramienta adecuada para este caso es 'obtener_consumo', que requiere una fecha inicial y final explícitas en formato ISO 8601. Se calcula la fecha anterior al día actual proporcionado en el contexto temporal, para obtener el consumo del día solicitado."
+    },
+    "L1_09": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Televisor"
+            ],
+            "fecha_inicio": "2026-03-29T00:00",
+            "fecha_fin": "2026-03-29T23:59",
+            "granularidad": "hora"
+          },
+          "descripcion": "Obtiene consumo del televisor de la fecha pasada."
+        }
+      ],
+      "notas": "La solicitud es categorizada como una consulta básica sobre el consumo energético. La herramienta adecuada para resolverla es 'obtener_consumo'. El dispositivo especificado en la solicitud es televisor, por lo que se selecciona ese dispositivo como objeto de la consulta. Se usa 'hora' como granularidad para obtener una serie temporal más detallada del consumo."
+    },
+    "L1_10": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Lavadora"
+            ],
+            "fecha_inicio": "2026-03-29T00:00",
+            "fecha_fin": "2026-03-29T23:59"
+          },
+          "descripcion": "Obtener consumo de la lavadora del día anterior."
+        }
+      ],
+      "notas": "La solicitud se categoriza como 'consumo_basico' y se resuelve mediante una acción que utiliza la herramienta 'obtener_consumo'. Se le pide el consumo energético de la lavadora en un intervalo temporal específico, definido por la fecha actual menos un día."
+    }
+  },
+  "Nivel_2_Temporal_Relativo": {
+    "L2_01": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "nevera"
+            ],
+            "fecha_inicio": "2026-03-28T00:00",
+            "fecha_fin": "2026-03-30T23:59"
+          },
+          "descripcion": "Obtiene consumo energético de la nevera en los últimos 3 días."
+        }
+      ],
+      "notas": "La solicitud se ha interpretado como una solicitud básica de consumo, por lo que hemos elegido la herramienta \"obtener_consumo\". Se han definido los parámetros a partir del contexto temporal y las preferencias de tiempo proporcionados."
+    },
+    "L2_02": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "aire_acondicionado"
+            ],
+            "fecha_inicio": "2026-03-25T00:00",
+            "fecha_fin": "2026-03-29T23:59"
+          },
+          "descripcion": "Obtener el consumo energético del aire acondicionado en los últimos 5 días."
+        }
+      ],
+      "notas": "Para cumplir con la solicitud, se utilizó la herramienta de obtención de consumo. Se le pasaron los parámetros correspondientes al aire acondicionado y se estableció el rango temporal desde los últimos 5 días hasta la fecha actual."
+    },
+    "L2_03": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "horno"
+            ],
+            "fecha_inicio": "2026-03-24T00:00",
+            "fecha_fin": "2026-03-30T23:59"
+          },
+          "descripcion": "Obtiene consumo del horno durante la semana actual."
+        }
+      ],
+      "notas": "La solicitud de mostrar el consumo energético del horno esta semana se resuelve obteniendo los datos de consumo de un solo dispositivo, en este caso el horno, durante la semana actual. La herramienta utilizada es 'obtener_consumo' y se ejecutará en el servidor 'mcp_server_gravity'. Los parámetros pasados incluyen los intervalos de tiempo necesarios para obtener el consumo del dispositivo durante la semana actual."
+    },
+    "L2_04": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Televisor"
+            ],
+            "fecha_inicio": "2026-03-30T00:00",
+            "fecha_fin": "2026-03-30T23:59"
+          },
+          "descripcion": "Obtiene consumo energético del televisor hoy."
+        }
+      ],
+      "notas": "Para solicitudes de consumo energético en un día determinado, se utiliza la herramienta 'obtener_consumo' con los parámetros apropiados. En este caso, se busca el consumo del televisor, por lo que se especifica ese dispositivo como input. La fecha de inicio y fin son establecidas para cubrir un día completo, incluyendo la noche anterior (00:00) y hasta la hora en que se emitió la solicitud (10:25)."
+    },
+    "L2_05": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Lavadora"
+            ],
+            "fecha_inicio": "2026-03-29T00:00",
+            "fecha_fin": "2026-03-31T23:59",
+            "granularidad": "dia"
+          },
+          "descripcion": "Obtiene el consumo energético de la lavadora en los últimos 2 días."
+        }
+      ],
+      "notas": "El plan selecciona la herramienta 'obtener_consumo' para obtener el consumo energético de la lavadora en los últimos dos días. El parámetro 'granularidad' es configurado como 'día' para que se obtengan los datos diarios de consumo."
+    },
+    "L2_06": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Nevera"
+            ],
+            "fecha_inicio": "2026-03-27T00:00",
+            "fecha_fin": "2026-03-30T10:00"
+          },
+          "descripcion": "Obtiene consumo energético de la nevera desde hace 4 días hasta la hora actual."
+        }
+      ],
+      "notas": "Para resolver la solicitud se ejecutó una acción mediante la herramienta 'obtener_consumo'. Se pidió el consumo de la nevera desde hace 4 días hasta la fecha actual (10:25 del 30 de marzo del año 2026). La hora fin fue calculada como la fecha actual para incluir los datos hasta ese momento."
+    },
+    "L2_07": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Horno"
+            ],
+            "fecha_inicio": "2026-03-24T00:00:00",
+            "fecha_fin": "2026-03-30T23:59:59"
+          },
+          "descripcion": "Obtiene consumo energético del horno en los últimos 7 días."
+        }
+      ],
+      "notas": "Para resolver la solicitud del usuario de mostrar el consumo energético del horno en los últimos 7 días, se utiliza la herramienta \"obtener_consumo\" en el servidor \"mcp_server_gravity\". La fecha inicial y final se calculan a partir de la fecha actual, restandole los 7 dias."
+    },
+    "L2_08": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Televisor"
+            ],
+            "fecha_inicio": "2026-03-29T00:00",
+            "fecha_fin": "2026-03-30T10:25"
+          },
+          "descripcion": "Obtener consumo del televisor desde ayer hasta hoy."
+        }
+      ],
+      "notas": "La solicitud de consumo energético del televisor desde ayer hasta hoy se atendió mediante la herramienta 'obtener_consumo' en el servidor 'mcp_server_gravity'. Se especificó que los datos deben recogerse para el dispositivo 'Televisor', y el intervalo temporal es desde ayer hasta la hora actual (2026-03-29T00:00 - 2026-03-30T10:25)."
+    },
+    "L2_09": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Lavadora"
+            ],
+            "fecha_inicio": "2026-03-21T00:00",
+            "fecha_fin": "2026-03-30T23:59",
+            "granularidad": "dia"
+          },
+          "descripcion": "Obtener el consumo diario de la lavadora en los últimos 10 días."
+        }
+      ],
+      "notas": "Para responder a la solicitud se ha seleccionado la herramienta 'obtener_consumo' con una granularidad de 'día'. Esto nos permitirá obtener el consumo diario de la lavadora en los últimos 10 días. El resultado de esta acción servirá como entrada para la siguiente acción que se encargará de mostrar los datos obtenidos."
+    },
+    "L2_10": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "aire_acondicionado"
+            ],
+            "fecha_inicio": "2026-03-28T00:00",
+            "fecha_fin": "2026-03-30T23:59"
+          },
+          "descripcion": "Obtener el consumo energético del aire acondicionado desde hace 3 días."
+        }
+      ],
+      "notas": "Para mostrar el consumo energético del aire acondicionado desde hace 3 días, se utiliza la herramienta 'obtener_consumo' en el servidor 'mcp_server_gravity'. La granularidad es 'hora', pues no se solicita comparación ni análisis de tendencia."
+    }
+  },
+  "Nivel_3_Temporal_Difuso": {
+    "L3_01": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Nevera"
+            ],
+            "fecha_inicio": "2026-03-29T19:00",
+            "fecha_fin": "2026-03-29T23:59"
+          },
+          "descripcion": "Obtiene el consumo de la nevera durante la noche de ayer"
+        }
+      ],
+      "notas": "El usuario solicita ver el consumo de la nevera en la noche de ayer. La solicitud se resuelve mediante una acción que obtiene el consumo energético acumulado durante esa hora y fecha especificada. El plan utiliza las herramientas disponibles para analizar consumos, como 'obtener_consumo'."
+    },
+    "L3_02": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Horno"
+            ],
+            "fecha_inicio": "2026-03-30T06:00:00",
+            "fecha_fin": "2026-03-30T11:59",
+            "granularidad": "hora"
+          },
+          "descripcion": "Obtener consumo del horno desde la mañana hasta el mediodía de hoy."
+        }
+      ],
+      "notas": "Para mostrar el consumo del horno en la mañana de hoy, se ejecuta la herramienta \"obtener_consumo\" con granularidad horaria y fechas especificadas. Se utiliza el término 'mañana' para definir el rango temporal de la solicitud en base al diccionario `temporal_preferences`."
+    },
+    "L3_03": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Televisor"
+            ],
+            "fecha_inicio": "2026-03-29T12:00",
+            "fecha_fin": "2026-03-29T17:59"
+          },
+          "descripcion": "Obtiene consumo del televisor entre la tarde y noche de ayer."
+        }
+      ],
+      "notas": "Para mostrar el consumo del televisor en la tarde de ayer, se ha utilizado la herramienta 'obtener_consumo' con un intervalo temporal desde la tarde (12:00) hasta noche (17:59) del día anterior al contexto actual (30-03-2026)."
+    },
+    "L3_04": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Lavadora"
+            ],
+            "fecha_inicio": "{{ temporal_context['fecha_actual'] }}T12:00:00",
+            "fecha_fin": "{{ temporal_context['fecha_actual'] }}T18:59:59"
+          },
+          "descripcion": "Obtiene el consumo de la lavadora entre las 12:00 y las 18:59 del día actual."
+        }
+      ],
+      "notas": "Para responder a la solicitud, primero se utiliza la herramienta \"obtener_consumo\" disponible en el servidor \"mcp_server_gravity\". El parámetro de entrada \"dispositivos\" especifica el dispositivo que se desea analizar y se setea a \"Lavadora\". Para definir el intervalo temporal, se usa la referencia del contexto actual proporcionado (\"fecha_actual\") junto con los rangos horarios establecidos en \"temporal_preferences\" para definir \"fecha_inicio\" y \"fecha_fin\". No se requiere ninguna otra herramienta, así que el plan de acciones consta únicamente del paso 1."
+    },
+    "L3_05": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Aire acondicionado"
+            ],
+            "fecha_inicio": "2026-03-29T00:00",
+            "fecha_fin": "2026-03-29T05:59"
+          },
+          "descripcion": "Obtiene consumo energético del aire acondicionado en el período de la madrugada de ayer."
+        }
+      ],
+      "notas": "To address the user's request to show the consumption of the air conditioner in the early morning hours of yesterday, we have selected the \"obtener_consumo\" tool from the available tools. The tool requires a specific dispositivo (air conditioner), fecha_inicio and fecha_fin. We have used the provided temporal_preferences for mapping the terminology to the actual time range."
+    },
+    "L3_06": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "nevera"
+            ],
+            "fecha_inicio": "@2.noche",
+            "fecha_fin": "@2.media noche"
+          },
+          "descripcion": "Obtiene consumo energético de la nevera en la noche."
+        }
+      ],
+      "notas": "Se ha analizado la solicitud y se ha decidido utilizar la herramienta 'obtener_consumo' para obtener el consumo de la nevera durante las horas de la noche. Se ha utilizado la referencia temporal 'noche' del mapa temporal preferencial para definir los rangos horarios."
+    },
+    "L3_07": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "horno"
+            ],
+            "fecha_inicio": "2026-03-29T18:00",
+            "fecha_fin": "2026-03-29T23:59"
+          },
+          "descripcion": "Obtener el consumo del horno entre las 21:00 y la media noche (00:00) de ayer."
+        }
+      ],
+      "notas": "La solicitud se refiere al consumo del horno durante la media noche. En el contexto temporal actual, esa noche ya pasó pero aún es posible acceder a los datos. La herramienta adecuada es 'obtener_consumo' con granularidad diaria para obtener un valor agregado para la media noche."
+    },
+    "L3_08": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Televisor"
+            ],
+            "fecha_inicio": "2026-03-29T06:00",
+            "fecha_fin": "2026-03-29T11:59",
+            "granularidad": "hora"
+          },
+          "descripcion": "Obtener consumo del televisor durante la mañana de ayer (06:00 - 11:59)."
+        }
+      ],
+      "notas": "Para el solicitud categorizada \"@1\", se selecciona la herramienta \"obtener_consumo\". Se establece que debe procesar los datos del dispositivo 'Televisor', durante la mañana (06:00 - 11:59) del día anterior al contexto temporal. El resultado se agrega a una serie horaria para visualizar el consumo en el tiempo."
+    },
+    "L3_09": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Lavadora"
+            ],
+            "fecha_inicio": "{{ temporal_context['fecha_actual'] }}T12:00",
+            "fecha_fin": "{{ temporal_context['fecha_actual'] }}T15:59"
+          },
+          "descripcion": "Obtiene el consumo de la lavadora entre las 12:00 y las 15:59 de hoy."
+        }
+      ],
+      "notas": "Para mostrar el consumo de la lavadora en la tarde de hoy, se necesita obtener los datos de su consumo energético en el intervalo especificado. La herramienta \"obtener_consumo\" es la adecuada para este caso debido a que proporciona valores acumulados o series temporales según la granularidad elegida. En este caso, se seleccionó el intervalo de tiempo en base al diccionario de preferencias temporal y la fecha actual para obtener un consumo relevante."
+    },
+    "L3_10": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Aire Acondicionado"
+            ],
+            "fecha_inicio": "2026-03-29T19:00",
+            "fecha_fin": "2026-03-29T23:59"
+          },
+          "descripcion": "Obtiene el consumo del aire acondicionado en la noche de ayer."
+        }
+      ],
+      "notas": "El plan se ha generado para mostrar el consumo del aire acondicionado en la noche de ayer. Se utilizó la herramienta 'obtener_consumo' con los parámetros especificados (dispositivos: \"Aire Acondicionado\", fecha_inicio: \"2026-03-29T19:00\", fecha_fin: \"2026-03-29T23:59\"). La hora y fecha solicitada se han referenciado a través del contexto temporal proporcionado."
+    }
+  },
+  "Nivel_4_Multi_Step": {
+    "L4_01": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Nevera"
+            ],
+            "fecha_inicio": "2026-03-29T00:00",
+            "fecha_fin": "2026-03-30T10:00"
+          },
+          "descripcion": "Obtener consumo de la nevera del 30/03/2026 a las 10:00."
+        },
+        {
+          "id": "@1.2",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Nevera"
+            ],
+            "fecha_inicio": "2026-03-30T10:00",
+            "fecha_fin": "2026-03-30T23:59"
+          },
+          "descripcion": "Obtener consumo de la nevera del 30/03/2026 a las 23:59."
+        },
+        {
+          "id": "@1.3",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "Nevera",
+              "fecha_inicio": "2026-03-29T00:00",
+              "fecha_fin": "2026-03-30T10:00"
+            },
+            "objetivo_b": {
+              "dispositivo": "Nevera",
+              "fecha_inicio": "2026-03-30T10:00",
+              "fecha_fin": "2026-03-30T23:59"
+            }
+          },
+          "descripcion": "Comparar consumos de la nevera del 30/03/2026 a las 10:00 y el resto del día."
+        }
+      ],
+      "notas": "El plan se basa en tres acciones: obtener el consumo para ambas fechas, comparar los dos valores obtenidos y devolver la diferencia absoluta y porcentual entre ellos. El tiempo se ha interpretado usando la referencia temporal proporcionada y se han utilizado las herramientas disponibles en el sistema."
+    },
+    "L4_02": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Horno"
+            ],
+            "fecha_inicio": "2026-03-28T00:00",
+            "fecha_fin": "2026-03-29T23:59"
+          },
+          "descripcion": "Obtener consumo energético del horno en los últimos 2 días."
+        },
+        {
+          "id": "@1.2",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Horno"
+            ],
+            "fecha_inicio": "2026-03-30T00:00",
+            "fecha_fin": "2026-03-31T23:59"
+          },
+          "descripcion": "Obtener consumo energético del horno en los 2 días anteriores."
+        },
+        {
+          "id": "@1.3",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "Horno",
+              "fecha_inicio": "2026-03-28T00:00",
+              "fecha_fin": "2026-03-29T23:59"
+            },
+            "objetivo_b": {
+              "dispositivo": "Horno",
+              "fecha_inicio": "2026-03-30T00:00",
+              "fecha_fin": "2026-03-31T23:59"
+            }
+          },
+          "descripcion": "Comparar el consumo del horno entre los últimos 2 días y los 2 días anteriores."
+        }
+      ],
+      "notas": "Para comparar el consumo del horno entre los últimos dos días y los dos días anteriores, se utilizan las siguientes herramientas: obtener_consumo para obtener los datos de consumo energético necesarios, y analizar_comparacion para realizar la comparación."
+    },
+    "L4_03": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Televisor"
+            ],
+            "fecha_inicio": "2026-03-29T06:00:00",
+            "fecha_fin": "2026-03-30T10:59:00"
+          },
+          "descripcion": "Obtener el consumo del televisor de la mañana de ayer (entre las 6:00 y las 10:59)"
+        },
+        {
+          "id": "@1.2",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Televisor"
+            ],
+            "fecha_inicio": "2026-03-30T06:00:00",
+            "fecha_fin": "2026-03-30T10:59:00"
+          },
+          "descripcion": "Obtener el consumo del televisor de la mañana de hoy (entre las 6:00 y las 10:59)"
+        },
+        {
+          "id": "@1.3",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "Televisor",
+              "fecha_inicio": "2026-03-29T06:00:00",
+              "fecha_fin": "2026-03-30T10:59:00"
+            },
+            "objetivo_b": {
+              "dispositivo": "Televisor",
+              "fecha_inicio": "2026-03-30T06:00:00",
+              "fecha_fin": "2026-03-30T10:59:00"
+            }
+          },
+          "descripcion": "Comparar el consumo del televisor de la mañana de ayer y de hoy."
+        }
+      ],
+      "notas": "En este caso, se requiere comparar el consumo del televisor entre la mañana de ayer y la mañana de hoy. Primero, se obtiene el consumo de cada día individualmente con la herramienta `obtener_consumo`. Después, se utiliza la herramienta `analizar_comparacion` para comparar los datos obtenidos y determinar cuál fue el consumo del televisor en ambas mañanas."
+    },
+    "L4_04": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Lavadora"
+            ],
+            "fecha_inicio": "2026-03-24T00:00",
+            "fecha_fin": "2026-03-30T10:00"
+          },
+          "descripcion": "Obtiene consumo energético de la lavadora desde el comienzo de la semana hasta 10:00 del día actual."
+        },
+        {
+          "id": "@1.2",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Lavadora"
+            ],
+            "fecha_inicio": "2026-03-17T00:00",
+            "fecha_fin": "2026-03-23T23:59"
+          },
+          "descripcion": "Obtiene consumo energético de la lavadora desde el inicio de la semana pasada hasta el día anterior a la actual."
+        },
+        {
+          "id": "@1.3",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "Lavadora",
+              "fecha_inicio": "2026-03-24T00:00",
+              "fecha_fin": "2026-03-30T10:00"
+            },
+            "objetivo_b": {
+              "dispositivo": "Lavadora",
+              "fecha_inicio": "2026-03-17T00:00",
+              "fecha_fin": "2026-03-23T23:59"
+            }
+          },
+          "descripcion": "Compara el consumo de la lavadora entre esta semana y la semana pasada."
+        }
+      ],
+      "notas": "El plan utiliza la herramienta 'obtener_consumo' para obtener los consumos energéticos de la lavadora correspondientes a las fechas especificadas. Luego, utiliza la herramienta 'analizar_comparacion' para comparar los consumos obtenidos y determinar cuál es mayor."
+    },
+    "L4_05": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Aire_acondicionado"
+            ],
+            "fecha_inicio": "2026-03-27T00:00",
+            "fecha_fin": "2026-03-28T00:00"
+          },
+          "descripcion": "Obtener consumo aire acondicionado del día anterior."
+        },
+        {
+          "id": "@1.2",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Aire_acondicionado"
+            ],
+            "fecha_inicio": "2026-03-24T00:00",
+            "fecha_fin": "2026-03-25T00:00"
+          },
+          "descripcion": "Obtener consumo aire acondicionado hace 3 días."
+        },
+        {
+          "id": "@1.3",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "Aire_acondicionado",
+              "fecha_inicio": "@1.2.outputs[fecha_fin]",
+              "fecha_fin": "@1.2.outputs[fecha_fin]"
+            },
+            "objetivo_b": {
+              "dispositivo": "Aire_acondicionado",
+              "fecha_inicio": "@1.1.outputs[fecha_fin]",
+              "fecha_fin": "@1.1.outputs[fecha_fin]"
+            }
+          },
+          "descripcion": "Comparar el consumo del aire acondicionado entre ayer y hace 3 días."
+        }
+      ],
+      "notas": "El plan de acciones se basa en herramientas disponibles para obtener información sobre el consumo energético, compararlos y analizar tendencias. Se utilizó la herramienta 'obtener_consumo' para obtener los consumos aire acondicionado del día anterior y hace 3 días. Luego se utilizó la herramienta 'analizar_comparacion' para comparar esos valores e indicar cual era mayor, diferencia absoluta y porcentual entre ambas fechas."
+    },
+    "L4_06": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Nevera"
+            ],
+            "fecha_inicio": "2026-03-29T19:00",
+            "fecha_fin": "2026-03-30T05:59"
+          },
+          "descripcion": "Obtiene el consumo de la nevera de la noche del 29 de marzo al amanecer del 30 de marzo"
+        },
+        {
+          "id": "@1.2",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Nevera"
+            ],
+            "fecha_inicio": "2026-03-30T19:00",
+            "fecha_fin": "2026-03-31T05:59"
+          },
+          "descripcion": "Obtiene el consumo de la nevera de la noche del 30 de marzo al amanecer del 31 de marzo"
+        },
+        {
+          "id": "@1.3",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "Nevera",
+              "fecha_inicio": "2026-03-29T19:00",
+              "fecha_fin": "2026-03-30T05:59"
+            },
+            "objetivo_b": {
+              "dispositivo": "Nevera",
+              "fecha_inicio": "2026-03-30T19:00",
+              "fecha_fin": "2026-03-31T05:59"
+            }
+          },
+          "descripcion": "Compara el consumo de la nevera entre la noche del 29 al 30 de marzo y la noche del 30 al 31 de marzo"
+        }
+      ],
+      "notas": "El plan se compone de dos pasos para obtener el consumo diario de la nevera en los intervalos especificados, seguido por un paso que compara ambos valores. El tiempo se refiere a las preferencias de horarios proporcionadas, considerando la noche como el rango horario entre 19:00 y 20:59, y los intervalos restantes como el amanecer del día siguiente."
+    },
+    "L4_07": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Horno"
+            ],
+            "fecha_inicio": "2026-03-29T18:00",
+            "fecha_fin": "@1.2"
+          },
+          "descripcion": "Obtener consumo energético del horno durante la tarde de ayer."
+        },
+        {
+          "id": "@1.2",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Horno"
+            ],
+            "fecha_inicio": "2026-03-30T06:00",
+            "fecha_fin": "@1.3"
+          },
+          "descripcion": "Obtener consumo energético del horno durante la mañana de hoy."
+        },
+        {
+          "id": "@1.3",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "Horno",
+              "fecha_inicio": "@1.1",
+              "fecha_fin": "@1.2"
+            },
+            "objetivo_b": {
+              "dispositivo": "Horno",
+              "fecha_inicio": "2026-03-29T18:00",
+              "fecha_fin": "2026-03-30T05:59"
+            }
+          },
+          "descripcion": "Comparar consumo del horno entre la tarde de ayer y la mañana de hoy."
+        }
+      ],
+      "notas": "Las acciones se basan en la herramienta 'obtener_consumo' para obtener el consumo de un dispositivo en un intervalo temporal, y 'analizar_comparacion' para comparar los consumos obtenidos. Se utiliza '@1.2' como fecha final del primer paso porque no se especificó explícitamente para el día actual."
+    },
+    "L4_08": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Televisor"
+            ],
+            "fecha_inicio": "2026-03-27T00:00",
+            "fecha_fin": "2026-03-30T10:25"
+          },
+          "descripcion": "Obtener consumo energético del televisor de hoy y los últimos 3 días."
+        },
+        {
+          "id": "@1.2",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Televisor"
+            ],
+            "fecha_inicio": "2026-03-28T00:00",
+            "fecha_fin": "2026-03-29T23:59"
+          },
+          "descripcion": "Obtener consumo energético del televisor del 27 de marzo al 28 de marzo."
+        },
+        {
+          "id": "@1.3",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Televisor"
+            ],
+            "fecha_inicio": "2026-03-29T00:00",
+            "fecha_fin": "2026-03-29T23:59"
+          },
+          "descripcion": "Obtener consumo energético del televisor del 29 de marzo."
+        },
+        {
+          "id": "@1.4",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "Televisor",
+              "fecha_inicio": "2026-03-30T10:25"
+            },
+            "objetivo_b": {
+              "dispositivos": [
+                "@1.1",
+                "@1.2",
+                "@1.3"
+              ]
+            }
+          },
+          "descripcion": "Comparar consumo energético del televisor de hoy con el consumo energético de los últimos 3 días."
+        }
+      ],
+      "notas": "En esta solicitud, el usuario pide comparar el consumo energético del televisor entre hoy y los últimos 3 días. Dado que la fecha de hoy es el 30 de marzo de 2026, se ha realizado la solicitud a través de tres acciones:\n1. Se obtiene el consumo energético del televisor de hoy (30 de marzo).\n2. Se obtiene el consumo energético del televisor del 27 al 28 de marzo.\n3. Se obtiene el consumo energético del televisor del 29 de marzo. Luego, se realiza una acción adicional para comparar el consumo energético del televisor de hoy con el consumo energético de los últimos tres días, mediante la combinación de los resultados obtenidos en las tres primeras acciones."
+    },
+    "L4_09": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Lavadora"
+            ],
+            "fecha_inicio": "2026-03-29T00:00",
+            "fecha_fin": "2026-03-29T11:59"
+          },
+          "descripcion": "Obtener el consumo de la lavadora durante la mañana (06:00 - 11:59) del día anterior."
+        },
+        {
+          "id": "@1.2",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Lavadora"
+            ],
+            "fecha_inicio": "2026-03-29T19:00",
+            "fecha_fin": "2026-03-30T05:59"
+          },
+          "descripcion": "Obtener el consumo de la lavadora durante la noche (19:00 - 05:59) del día anterior."
+        },
+        {
+          "id": "@1.3",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "Lavadora",
+              "fecha_inicio": "2026-03-29T06:00",
+              "fecha_fin": "2026-03-29T11:59"
+            },
+            "objetivo_b": {
+              "dispositivo": "Lavadora",
+              "fecha_inicio": "2026-03-29T19:00",
+              "fecha_fin": "2026-03-30T05:59"
+            }
+          },
+          "descripcion": "Comparar el consumo de la lavadora entre la mañana y la noche del día anterior."
+        }
+      ],
+      "notas": "Para resolver esta solicitud, se utiliza la herramienta `obtener_consumo` para obtener los datos de consumo del dispositivo deseado en dos momentos diferentes. Las horas de inicio y fin son definidas por las preferencias temporales proporcionadas (madrugada, mañana, noche, etc.). Finalmente, se utiliza la herramienta `analizar_comparacion` para comparar los consumos obtenidos en cada momento."
+    },
+    "L4_10": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "aire_acondicionado"
+            ],
+            "fecha_inicio": "2026-03-24T00:00",
+            "fecha_fin": "2026-03-29T23:59"
+          },
+          "descripcion": "Obtener consumo energético del aire acondicionado esta semana."
+        },
+        {
+          "id": "@1.2",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "aire_acondicionado"
+            ],
+            "fecha_inicio": "@1.1.periodo",
+            "fecha_fin": "@temporal_context.fecha_actual"
+          },
+          "descripcion": "Obtener consumo energético del aire acondicionado hoy."
+        },
+        {
+          "id": "@1.3",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": "@1.1",
+            "objetivo_b": "@1.2"
+          },
+          "descripcion": "Comparar el consumo del aire acondicionado entre esta semana y hoy."
+        }
+      ],
+      "notas": "El plan de acciones se compone de tres pasos para comparar el consumo del aire acondicionado entre esta semana y hoy. En primer lugar, se obtiene el consumo energético del aire acondicionado en ambas fechas (semana completa y hasta el momento actual). Luego, estos datos se comparen utilizando la herramienta 'analizar_comparacion'."
+    }
+  },
+  "Nivel_5_Complejo_Realista": {
+    "L5_01": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Nevera"
+            ],
+            "fecha_inicio": "2026-03-29T00:00",
+            "fecha_fin": "2026-03-29T23:59"
+          },
+          "descripcion": "Obtener consumo de la nevera en el día anterior (29 de marzo de 2026)."
+        },
+        {
+          "id": "@1.2",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Nevera"
+            ],
+            "fecha_inicio": "2026-03-30T00:00",
+            "fecha_fin": "2026-03-30T10:59"
+          },
+          "descripcion": "Obtener consumo de la nevera el día actual hasta la solicitud (hasta las 10:59 del 30 de marzo de 2026)."
+        },
+        {
+          "id": "@2.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Nevera"
+            ],
+            "fecha_inicio": "2026-03-31T00:00",
+            "fecha_fin": "2026-03-31T23:59"
+          },
+          "descripcion": "Obtener consumo de la nevera en el lunes (31 de marzo de 2026)."
+        },
+        {
+          "id": "@2.2",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "Nevera",
+              "fecha_inicio": "@1.2.salida",
+              "fecha_fin": "@1.2.salida"
+            },
+            "objetivo_b": {
+              "dispositivo": "@2.1.salida",
+              "fecha_inicio": "@2.1.salida",
+              "fecha_fin": "@2.1.salida"
+            }
+          },
+          "descripcion": "Comparar el consumo de la nevera del día anterior con el del lunes."
+        }
+      ],
+      "notas": "La solicitud requiere obtener el consumo de la nevera en dos días diferentes, así que se utilizan cuatro acciones. Las primeras dos son para obtener los datos correspondientes al día anterior y al momento actual hasta la solicitud. La tercera es para obtener el consumo del lunes, ya que no está disponible cuando se realiza la solicitud. Finalmente, la cuarta acción utiliza las salidas de las primeras tres para comparar los consumos de ambos días."
+    },
+    "L5_02": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Horno"
+            ],
+            "fecha_inicio": "2026-03-31T00:00",
+            "fecha_fin": "2026-03-30T23:59"
+          },
+          "descripcion": "Obtiene consumo energético del horno en los últimos 3 días."
+        },
+        {
+          "id": "@1.2",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "Horno",
+              "fecha_inicio": "2026-03-31T00:00",
+              "fecha_fin": "2026-03-30T23:59"
+            },
+            "objetivo_b": {
+              "dispositivo": "@1.1",
+              "fecha_inicio": "@1.1['periodo']",
+              "fecha_fin": "@1.1['periodo'] + 1 day"
+            }
+          },
+          "descripcion": "Compara el consumo del horno con los datos obtenidos en la acción anterior."
+        },
+        {
+          "id": "@2",
+          "server_id": "mcp_server_gravity",
+          "tool": "detectar_anomalias",
+          "inputs": {
+            "dispositivo": "@1.2",
+            "fecha_inicio": "@1.2['periodo']",
+            "fecha_fin": "@1.2['periodo'] + 1 day"
+          },
+          "descripcion": "Detecta anomalías en el consumo del horno en los últimos 3 días."
+        }
+      ],
+      "notas": "El plan para resolver la solicitud se basa en obtener primero los datos de consumo energético del horno en los últimos 3 días. Luego, se compara el consumo con los datos obtenidos anteriormente para detectar si hay anomalías o cambios significativos en el comportamiento del dispositivo."
+    },
+    "L5_03": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Televisor"
+            ],
+            "fecha_inicio": "2026-03-21T00:00",
+            "fecha_fin": "2026-03-27T23:59"
+          },
+          "descripcion": "Obtiene el consumo del televisor entre las fechas de la semana actual"
+        },
+        {
+          "id": "@1.2",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "Televisor",
+              "fecha_inicio": "2026-03-21T00:00",
+              "fecha_fin": "2026-03-27T23:59"
+            },
+            "objetivo_b": {
+              "dispositivo": "Televisor",
+              "fecha_inicio": "@1.1.datos[periodo]",
+              "fecha_fin": "@1.1.datos[periodo]"
+            }
+          },
+          "descripcion": "Compara el consumo del televisor actual con el mismo período anterior para determinar tendencia"
+        }
+      ],
+      "notas": "Los usuarios desean obtener información sobre su consumo de energía y se les proporciona la herramienta \"obtener_consumo\" para solicitar datos acumulados en el tiempo, con la opción de especificar dispositivos individuales o agregados. Para analizar los datos recopilados, se usa la herramienta \"analizar_comparacion\", que calcula diferencias relativas entre consumos acumulados. Se requiere el rango de tiempo y el dispositivo especificado para todas las acciones."
+    },
+    "L5_04": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Lavadora"
+            ],
+            "fecha_inicio": "2026-03-29T00:00",
+            "fecha_fin": "2026-03-29T23:59"
+          },
+          "descripcion": "Obtener consumo energético de la lavadora del 29 de marzo de 2026."
+        },
+        {
+          "id": "@1.2",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Lavadora"
+            ],
+            "fecha_inicio": "2026-03-30T00:00",
+            "fecha_fin": "2026-03-30T23:59"
+          },
+          "descripcion": "Obtener consumo energético de la lavadora del 30 de marzo de 2026."
+        },
+        {
+          "id": "@3.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "Lavadora",
+              "fecha_inicio": "2026-03-29T00:00",
+              "fecha_fin": "2026-03-29T23:59"
+            },
+            "objetivo_b": {
+              "dispositivo": "Lavadora",
+              "fecha_inicio": "2026-03-30T00:00",
+              "fecha_fin": "2026-03-30T23:59"
+            }
+          },
+          "descripcion": "Comparar el consumo energético de la lavadora entre ayer y hoy."
+        }
+      ],
+      "notas": "Para resolver la solicitud, se obtienen los consumos de la lavadora para cada día. Luego, se compara el consumo de ambos días usando la herramienta analizar_comparacion. Los datos de los consumos se obtienen mediante la herramienta obtener_consumo."
+    },
+    "L5_05": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "aire_acondicionado"
+            ],
+            "fecha_inicio": "2026-03-29T19:00",
+            "fecha_fin": "2026-03-29T23:59"
+          },
+          "descripcion": "Obtiene consumo del aire acondicionado durante la noche de ayer."
+        },
+        {
+          "id": "@1.2",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "aire_acondicionado"
+            ],
+            "fecha_inicio": "2026-03-31T19:00",
+            "fecha_fin": "2026-03-31T23:59"
+          },
+          "descripcion": "Obtiene consumo del aire acondicionado durante la noche del lunes."
+        },
+        {
+          "id": "@2.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "aire_acondicionado",
+              "fecha_inicio": "2026-03-29T19:00",
+              "fecha_fin": "2026-03-29T23:59"
+            },
+            "objetivo_b": {
+              "dispositivo": "aire_acondicionado",
+              "fecha_inicio": "2026-03-31T19:00",
+              "fecha_fin": "2026-03-31T23:59"
+            }
+          },
+          "descripcion": "Compara el consumo del aire acondicionado entre las noches de ayer y del lunes."
+        }
+      ],
+      "notas": "El plan se compone de tres acciones para cumplir con las dos solicitudes. La primera acción obtiene el consumo del aire acondicionado durante la noche de ayer, mientras que la segunda acción hace lo mismo pero para la noche del lunes. En tercer lugar, se compara el consumo de ambas noches."
+    },
+    "L5_06": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "detectar_anomalias",
+          "inputs": {
+            "dispositivo": "nevera",
+            "fecha_inicio": "2026-03-26T00:00",
+            "fecha_fin": "2026-03-30T23:59",
+            "sensibilidad": 1.5
+          },
+          "descripcion": "Detectar anomalías en la nevera durante los últimos 5 días."
+        },
+        {
+          "id": "@1.2",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_tendencia",
+          "inputs": {
+            "dispositivo": "nevera",
+            "fecha_inicio": "2026-03-26T00:00",
+            "fecha_fin": "2026-03-30T23:59"
+          },
+          "descripcion": "Analizar la tendencia de la nevera durante los últimos 5 días."
+        }
+      ],
+      "notas": "El plan utiliza las herramientas 'detectar_anomalias' y 'analizar_tendencia' para detectar anomalías y analizar tendencias en la nevera durante los últimos cinco días. El período de tiempo es inferido del escenario 'deteccion_anomalias' y corresponde a los días transcurridos desde la fecha actual (30 de marzo de 2026) hasta el comienzo del mes siguiente (5 días atrás)."
+    },
+    "L5_07": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Horno"
+            ],
+            "fecha_inicio": "2026-03-30T00:00",
+            "fecha_fin": "2026-03-30T23:59"
+          },
+          "descripcion": "Obtener consumo del horno en el día actual."
+        },
+        {
+          "id": "@2.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Horno"
+            ],
+            "fecha_inicio": "2026-03-29T00:00",
+            "fecha_fin": "2026-03-29T23:59"
+          },
+          "descripcion": "Obtener consumo del horno en el día anterior."
+        },
+        {
+          "id": "@3.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "detectar_anomalias",
+          "inputs": {
+            "dispositivo": "Horno",
+            "fecha_inicio": "2026-03-30T00:00",
+            "fecha_fin": "2026-03-30T23:59"
+          },
+          "descripcion": "Detectar consumo anómalo del horno en el día actual."
+        }
+      ],
+      "notas": "Para resolver las solicitudes, se han seguido los siguientes criterios:\n- La solicitud de mostrar el consumo del horno en el día actual se ha cumplido mediante la herramienta 'obtener_consumo' con granularidad 'hora'.\n- Para comparar el consumo del horno en el día actual y el día anterior, se han invocado dos acciones de 'obtener_consumo', una para cada día.\n- La solicitud de detectar anomalías se ha resuelto con la herramienta 'detectar_anomalias' en el día actual."
+    },
+    "L5_08": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Televisor"
+            ],
+            "fecha_inicio": "2026-03-30T06:00:00",
+            "fecha_fin": "2026-03-30T11:59",
+            "granularidad": "hora"
+          },
+          "descripcion": "Obtiene consumo energético del televisor desde las 6:00 hasta las 11:59 de la mañana."
+        },
+        {
+          "id": "@2.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Televisor"
+            ],
+            "fecha_inicio": "2026-03-29T12:00:00",
+            "fecha_fin": "2026-03-29T17:59",
+            "granularidad": "hora"
+          },
+          "descripcion": "Obtiene consumo energético del televisor durante la tarde de ayer."
+        },
+        {
+          "id": "@3",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "Televisor",
+              "fecha_inicio": "2026-03-30T06:00:00",
+              "fecha_fin": "2026-03-30T11:59"
+            },
+            "objetivo_b": {
+              "dispositivo": "Televisor",
+              "fecha_inicio": "2026-03-29T12:00:00",
+              "fecha_fin": "2026-03-29T17:59"
+            }
+          },
+          "descripcion": "Compara el consumo del televisor en la mañana de hoy con la tarde de ayer."
+        }
+      ],
+      "notas": "Para mostrar el consumo del televisor en la mañana de hoy, se toma una sola acción que obtiene el consumo detallado durante esa hora. Para compararlo con la tarde de ayer, se necesitan dos acciones para obtener los datos y luego compararlos en una tercera acción."
+    },
+    "L5_09": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "Lavadora"
+            ],
+            "fecha_inicio": "2026-03-21",
+            "fecha_fin": "2026-03-27"
+          },
+          "descripcion": "Obtiene consumo energético de la lavadora desde el 21/03 al 27/03."
+        },
+        {
+          "id": "@2.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_tendencia",
+          "inputs": {
+            "dispositivo": "Lavadora"
+          },
+          "descripcion": "Determina la tendencia del consumo de la lavadora desde el 21/03 al 27/03."
+        },
+        {
+          "id": "@3.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "detectar_anomalias",
+          "inputs": {
+            "dispositivo": "Lavadora"
+          },
+          "descripcion": "Detecta consumos atípicos en el consumo de la lavadora desde el 21/03 al 27/03."
+        }
+      ],
+      "notas": "Para solicitudes de mostrar consumo energético, se utiliza la herramienta 'obtener_consumo' para obtener datos acumulados. La tendencia del consumo es analizada por la herramienta 'analizar_tendencia'. Para detectar anomalías en el consumo, la herramienta 'detectar_anomalias' se utiliza."
+    },
+    "L5_10": {
+      "plan_acciones": [
+        {
+          "id": "@1.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "aire_acondicionado"
+            ],
+            "fecha_inicio": "2026-03-29T00:00",
+            "fecha_fin": "2026-03-30T00:00"
+          },
+          "descripcion": "Obtiene consumo energético del aire acondicionado para el día anterior."
+        },
+        {
+          "id": "@1.2",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "aire_acondicionado"
+            ],
+            "fecha_inicio": "2026-03-30T00:00",
+            "fecha_fin": "2026-03-30T23:59"
+          },
+          "descripcion": "Obtiene consumo energético del aire acondicionado para el día actual."
+        },
+        {
+          "id": "@2.1",
+          "server_id": "mcp_server_gravity",
+          "tool": "obtener_consumo",
+          "inputs": {
+            "dispositivos": [
+              "aire_acondicionado"
+            ],
+            "fecha_inicio": "2026-03-28T00:00",
+            "fecha_fin": "2026-03-30T00:00"
+          },
+          "descripcion": "Obtiene consumo energético del aire acondicionado para los últimos 3 días."
+        },
+        {
+          "id": "@2.2",
+          "server_id": "mcp_server_gravity",
+          "tool": "analizar_comparacion",
+          "inputs": {
+            "objetivo_a": {
+              "dispositivo": "aire_acondicionado",
+              "fecha_inicio": "2026-03-29T00:00",
+              "fecha_fin": "2026-03-30T00:00"
+            },
+            "objetivo_b": {
+              "dispositivo": "aire_acondicionado",
+              "fecha_inicio": "2026-03-30T00:00",
+              "fecha_fin": "2026-03-30T23:59"
+            }
+          },
+          "descripcion": "Compara el consumo del aire acondicionado entre hoy y ayer."
+        }
+      ],
+      "notas": "The plan includes four steps to fulfill the user's requests. The first step is to get yesterday's consumption of the air conditioner, followed by getting today's consumption of the air conditioner for comparison purposes. Next, the consumption data from the past three days is gathered, and finally, the system compares the consumption between today and yesterday."
+    }
+  }
+}

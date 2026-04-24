@@ -29,7 +29,7 @@ class HiloPlaneador(QThread):
         try:
             import dspy
             print(f"🔌 [Hilo Planeador] Inicializando dspy.LM para {self.modelo_final}...")
-            llm_activo = dspy.LM(self.modelo_final, api_base=self.base_final, api_key=self.api_key, num_ctx=8192)
+            llm_activo = dspy.LM(self.modelo_final, api_base=self.base_final, api_key=self.api_key, num_ctx=8192, max_retries=1, timeout=120)
 
             with dspy.context(lm=llm_activo):
                 # 1. Crear el agente Planeador

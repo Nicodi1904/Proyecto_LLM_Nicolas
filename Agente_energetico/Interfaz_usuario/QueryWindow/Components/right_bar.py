@@ -55,13 +55,6 @@ class RightBar(QFrame):
         layout_control.setContentsMargins(0, 0, 0, 0)
         layout_control.setSpacing(0) # Sin espacio entre engranaje y flecha
 
-        # Botón Engranaje (Configuración)
-        self.btn_config = QPushButton("⚙")
-        self.btn_config.setFixedSize(60, 60)
-        self.btn_config.setCursor(Qt.PointingHandCursor)
-        # Reforzando color naranja/amarillo
-        self.btn_config.setStyleSheet(f"color: {Tema.AMARILLO} !important; font-size: 28px; border: none; background: transparent;")
-        
         # Botón Flecha (Toggle / Centrada verticalmente)
         self.btn_toggle = QPushButton("◀")
         self.btn_toggle.setFixedSize(60, 60)
@@ -69,9 +62,8 @@ class RightBar(QFrame):
         self.btn_toggle.setStyleSheet(f"color: {Tema.AMARILLO}; font-size: 22px; font-weight: bold; border: none; background: transparent;")
         self.btn_toggle.clicked.connect(self._toggle_menu)
 
-        # Para centrar el par (Engranaje + Flecha) verticalmente:
+        # Para centrar la Flecha verticalmente:
         layout_control.addStretch(1)
-        layout_control.addWidget(self.btn_config, 0, Qt.AlignCenter)
         layout_control.addWidget(self.btn_toggle, 0, Qt.AlignCenter)
         layout_control.addStretch(1)
 

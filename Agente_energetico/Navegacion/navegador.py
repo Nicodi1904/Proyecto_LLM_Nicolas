@@ -1,8 +1,8 @@
 import sys
 import os
-from PySide6.QtWidgets import QApplication, QWidget, QStackedWidget, QVBoxLayout, QPushButton, QLineEdit, QComboBox, QLabel, QMessageBox
-from PySide6.QtCore import Qt
-from datetime import datetime
+import json
+from PySide6.QtWidgets import QApplication, QWidget, QStackedWidget, QVBoxLayout, QMessageBox
+from PySide6.QtCore import Qt, QTimer
 
 # Asegurar visibilidad de los módulos de Interfaz_usuario
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -13,9 +13,9 @@ sys.path.append(interfaz_dir)
 
 from QueryWindow.query_window import Query_Window
 from ResultWindow.result_window import Result_Window
-from Temas import Tema
 from Recursos_compartidos.Recursos_entrada import QueryRequest
 from Recursos_compartidos.Recursos_salida import RecursosSalida
+from QueryWindow.DbWindow.db_window import DbWindow
 import sqlite3
 from cript import encriptar_clave, desencriptar_clave
 
@@ -35,6 +35,8 @@ class Navigator(QWidget):
         self.hilo_planeador = None
         self.hilo_cliente = None
         self.hilo_presentador = None
+        self.paso_actual_mas = 0 # Rastreador del hilo en ejecución
+        self.mensaje_espera_actual = "" # Almacena el texto de carga de fondo
 
         self._inicializar_tabla_modelos()
         self._configurar_ventana()
@@ -70,6 +72,8 @@ class Navigator(QWidget):
         self.query_window.consulta_disparada.connect(self._navegar_a_resultados)
         # Cuando se solicita volver desde ResultWindow
         self.result_window.solicitud_regreso.connect(self._navegar_a_consulta)
+        # Click en los pasos del LeftMenu
+        self.result_window.left_menu.step_clicked.connect(self._cambiar_vista_paso)
         # Botón "+" para añadir modelo
         self.query_window.status_info.btn_add_modelo.clicked.connect(self._abrir_ventana_db)
         # Botones de gestión
@@ -112,7 +116,6 @@ class Navigator(QWidget):
              print(f"Error cargando modelos al dropdown: {e}")
 
     def _abrir_ventana_db(self):
-        from QueryWindow.DbWindow.db_window import DbWindow
         ventana = DbWindow(self)
         ventana.guardar_presionado.connect(self._guardar_nuevo_modelo)
         ventana.exec() # Corre en modo Dialog bloqueante
@@ -136,12 +139,10 @@ class Navigator(QWidget):
             if res:
                 api_base = res[0]
                 if res[1]:
-                    from cript import desencriptar_clave
                     api_key_desencriptada = desencriptar_clave(res[1])
         except Exception as e:
             print(f"Error cargando modelo para editar: {e}")
 
-        from QueryWindow.DbWindow.db_window import DbWindow
         ventana = DbWindow(self, model=nombre_modelo, base=api_base, key=api_key_desencriptada)
         ventana.guardar_presionado.connect(self._guardar_nuevo_modelo)
         ventana.exec()
@@ -209,8 +210,9 @@ class Navigator(QWidget):
             # VALIDACIÓN: Si no hay un modelo válido seleccionado, no dejar avanzar
             modelo_elegido = datos.get("modelo")
             if not modelo_elegido or modelo_elegido == "Sin modelos":
-                # Puedes retornar o incluso imprimir una advertencia
                 print("Consulta de procesamiento cancelada: No se ha seleccionado un modelo de lenguaje válido.")
+                self.query_window.limpiar_interfaz()
+                QMessageBox.warning(self, "Advertencia", "No se ha configurado un modelo de lenguaje válido. Por favor, añada o seleccione uno.")
                 return
             
             # Guardar en recursos compartidos
@@ -225,11 +227,12 @@ class Navigator(QWidget):
             )
             
             # Pasar datos a la ventana de resultados y cambiar vista temporal
-            self.result_window.mostrar_datos(consulta, "Iniciando análisis inteligente...")
+            self.mensaje_espera_actual = "Iniciando análisis inteligente..."
+            self.result_window.mostrar_datos(consulta, self.mensaje_espera_actual)
             self.stacked_widget.setCurrentIndex(1)
             
-            # Iniciar la cadena de ejecución asíncrona
-            self._iniciar_procesamiento_en_cadena()
+            # Iniciar la cadena de ejecución asíncrona delegándola para evitar bloquear el renderizado
+            QTimer.singleShot(100, self._iniciar_procesamiento_en_cadena)
 
         except Exception as e:
             print(f"Error en _navegar_a_resultados: {e}")
@@ -241,7 +244,6 @@ class Navigator(QWidget):
         from Hilos.Hilo_planeador import HiloPlaneador
         from Hilos.Hilo_cliente import HiloCliente
         from Hilos.Hilo_presentador import HiloPresentador
-        import dspy
         
         # 1. Recuperar Modelo desde DB y Desencriptar
         nombre_modelo = self.ultima_consulta.modelo
@@ -266,25 +268,20 @@ class Navigator(QWidget):
             print(f"Error recuperando credenciales de la DB: {e}")
             # Fallback continuará con lo que tenga
 
-        # 2. Configurar el LLM dinámico en dspy
-        try:
-            # Si el modelo ya especifica un proveedor (ej: gemini/, openai/), usarlo tal cual
-            if "/" in nombre_modelo:
-                modelo_final = nombre_modelo
-                base_final = api_base if api_base else None
-            else:
-                # Fallback para modelos locales tipo Ollama
-                modelo_final = f'ollama_chat/{nombre_modelo}'
-                base_final = api_base if api_base else "http://localhost:11434"
+        # 2. Determinar variables de ruteo del modelo (fallback para locales)
+        if "/" in nombre_modelo:
+            modelo_final = nombre_modelo
+            base_final = api_base if api_base else None
+        else:
+            modelo_final = f'ollama_chat/{nombre_modelo}'
+            base_final = api_base if api_base else "http://localhost:11434"
 
-            # Se omite la inicialización de dspy.LM aquí para evitar congelar la GUI.
-            # Se realizará dentro del HiloInterpretador.run().
-            pass
-        except Exception as e:
-             print(f"Error configurando dspy.LM: {e}")
-
-        # 3. Reiniciar recursos de salida limpios para esta consulta
+        # 3. Reiniciar recursos de salida y estados visuales
         self.recursos_salida = RecursosSalida()
+        self.paso_actual_mas = 0
+        for i in range(4):
+            self.result_window.left_menu.set_step_status(i, 0)
+        self.result_window.left_menu.set_active_step(3) # Dejar enfocado el último por visual de carga
         
         print("\n" + "="*50)
         print("📥 RECURSOS DE ENTRADA ENVIADOS (navegador.py)")
@@ -292,7 +289,6 @@ class Navigator(QWidget):
         print(f"Fecha: {self.ultima_consulta.fecha} | Hora: {self.ultima_consulta.hora}")
         print(f"Modelo: {self.ultima_consulta.modelo}")
         print(f"Few-Shots: {self.ultima_consulta.few_shots}")
-        import json
         print(f"Referencias Horarias:\n{json.dumps(self.ultima_consulta.referencias_horarias, indent=2)}")
         print("="*50 + "\n")
         
@@ -338,19 +334,28 @@ class Navigator(QWidget):
     def _al_terminar_interpretador(self):
         print("\n=== [1] SALIDA DEL INTERPRETADOR (Inferencia) ===")
         print(self.recursos_salida.solicitudes_categorizadas)
-        self.result_window.mostrar_datos(self.ultima_consulta.Mensaje_usuario, "Comprendiendo su solicitud... ☑\nDiseñando plan de acciones energéticas...")
+        self.result_window.left_menu.set_step_status(0, 1) # Verde
+        self.paso_actual_mas = 1
+        self.mensaje_espera_actual = "Comprendiendo su solicitud... ☑\nDiseñando plan de acciones energéticas..."
+        self.result_window.mostrar_datos(self.ultima_consulta.Mensaje_usuario, self.mensaje_espera_actual)
         self.hilo_planeador.start()
         
     def _al_terminar_planeador(self):
         print("\n=== [2] SALIDA DEL PLANEADOR (Worker 1) ===")
         print(self.recursos_salida.plan_acciones)
-        self.result_window.mostrar_datos(self.ultima_consulta.Mensaje_usuario, "Plan diseñado... ☑\nConectando a bases de datos MCP para recuperar información...")
+        self.result_window.left_menu.set_step_status(1, 1) # Verde
+        self.paso_actual_mas = 2
+        self.mensaje_espera_actual = "Plan diseñado... ☑\nConectando a bases de datos MCP para recuperar información..."
+        self.result_window.mostrar_datos(self.ultima_consulta.Mensaje_usuario, self.mensaje_espera_actual)
         self.hilo_cliente.start()
         
     def _al_terminar_cliente(self):
         print("\n=== [3] SALIDA DEL CLIENTE MCP (Worker 2) ===")
         print(self.recursos_salida.reporte_ejecucion_worker3)
-        self.result_window.mostrar_datos(self.ultima_consulta.Mensaje_usuario, "Información recuperada... ☑\nGenerando gráficas y redactando informe final...")
+        self.result_window.left_menu.set_step_status(2, 1) # Verde
+        self.paso_actual_mas = 3
+        self.mensaje_espera_actual = "Información recuperada... ☑\nGenerando gráficas y redactando informe final..."
+        self.result_window.mostrar_datos(self.ultima_consulta.Mensaje_usuario, self.mensaje_espera_actual)
         self.hilo_presentador.start()
 
     def _al_terminar_presentador(self):
@@ -360,11 +365,79 @@ class Navigator(QWidget):
         print("\n=== [4] SALIDA DEL PRESENTADOR (Informe Final) ===")
         print(respuesta)
         
+        self.result_window.left_menu.set_step_status(3, 1) # Verde
+        self.result_window.left_menu.set_active_step(3)
+
+        
         self.result_window.mostrar_datos(self.ultima_consulta.Mensaje_usuario, respuesta)
         self.result_window.resources_panel.display_graphs(graficas)
 
+    def _cambiar_vista_paso(self, index):
+        """Disparado por el LeftMenu para visualizar auditoría de cada hilo."""
+        if not self.recursos_salida: return
+        self.result_window.left_menu.set_active_step(index)
+        
+        if index == 0:
+            # Interpretador
+            self.result_window.response_panel.set_title("Razonamiento del modelo")
+            self.result_window.response_panel.set_response_text(self.recursos_salida.notas_inferenciador)
+            
+            self.result_window.resources_panel.set_title("Solicitudes categorizadas")
+            self.result_window.resources_panel.display_text(json.dumps(self.recursos_salida.solicitudes_categorizadas, indent=2, ensure_ascii=False))
+        
+        elif index == 1:
+            # Planeador
+            self.result_window.response_panel.set_title("Razonamiento del modelo")
+            self.result_window.response_panel.set_response_text(self.recursos_salida.notas_planeador)
+            
+            self.result_window.resources_panel.set_title("Plan de acciones")
+            self.result_window.resources_panel.display_text(json.dumps(self.recursos_salida.plan_acciones, indent=2, ensure_ascii=False))
+            
+        elif index == 2:
+            # Cliente MCP
+            self.result_window.response_panel.set_title("Acciones Llamadas")
+            self.result_window.resources_panel.set_title("Resultados del Servidor")
+            
+            llamadas = {}
+            resultados = {}
+            for req_id, acciones in self.recursos_salida.reporte_ejecucion_worker3.items():
+                llamadas[req_id] = []
+                resultados[req_id] = []
+                for acc in acciones:
+                    # Copiar acción sin los resultados o gráficos para mostrar las puras llamadas (inputs)
+                    llamada = {k: v for k, v in acc.items() if k not in ["resultado", "figura", "error"]}
+                    llamadas[req_id].append(llamada)
+                    
+                    # Extraer puramente la salida del servidor
+                    res = acc.get("resultado", acc.get("error", "Sin resultado"))
+                    resultados[req_id].append({acc.get("accion_id", "accion"): res})
+            
+            self.result_window.response_panel.set_response_text(json.dumps(llamadas, indent=2, ensure_ascii=False))
+            self.result_window.resources_panel.display_text(json.dumps(resultados, indent=2, ensure_ascii=False))
+            
+        elif index == 3:
+            # Presentador (Vista predeterminada)
+            self.result_window.response_panel.set_title("RESPUESTA")
+            self.result_window.resources_panel.set_title("RECURSOS Y DATOS")
+            
+            if self.recursos_salida.respuesta_presentador:
+                self.result_window.response_panel.set_response_text(self.recursos_salida.respuesta_presentador)
+                self.result_window.resources_panel.display_graphs(self.recursos_salida.graficas_worker3)
+            else:
+                self.result_window.response_panel.set_response_text(self.mensaje_espera_actual)
+                self.result_window.resources_panel.display_graphs({})
+
     def _manejar_error_hilo(self, mensaje_error):
-        texto_error = f"\n\nERROR EN EL SISTEMA MAS:\n{mensaje_error}"
+        self.result_window.left_menu.set_step_status(self.paso_actual_mas, 3) # Rojo al paso que falló
+        texto_error = (
+            f"El agente ha detectado un problema grave de ejecución.\n\n"
+            f"Posibles causas referidas al Modelo o Comunicación:\n"
+            f"1. El modelo '{self.ultima_consulta.modelo}' no existe localmente (Ollama).\n"
+            f"2. Hubo un error de conexión con la Base URL (O el puerto provisto).\n"
+            f"3. La Clave API es inexistente, inválida o ha superado su límite.\n\n"
+            f"Detalle técnico emitido internamente:\n"
+            f"{mensaje_error}"
+        )
         self.result_window.mostrar_datos(self.ultima_consulta.Mensaje_usuario, texto_error)
 
     def _navegar_a_consulta(self):

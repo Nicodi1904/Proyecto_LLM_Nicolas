@@ -1,0 +1,56 @@
+[
+  {
+    "prompt_usuario": "Dime cuánto consumió la nevera ayer",
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Mostrar el consumo energético de la nevera para el día de ayer.",
+        "escenario": "consumo_basico"
+      }
+    },
+    "notas": "Se identifica una solicitud simple de consumo para un dispositivo en un periodo específico."
+  },
+  {
+    "prompt_usuario": "Compara el gasto de luz de hoy con el de hace una semana",
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Comparar el consumo energético total de hoy con el consumo energético total de hace exactamente una semana.",
+        "escenario": "comparacion_consumos"
+      }
+    },
+    "notas": "La solicitud implica una comparación entre dos puntos en el tiempo para el consumo total."
+  },
+  {
+    "prompt_usuario": "¿Hubo algún consumo extraño esta madrugada?",
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Detectar posibles anomalías o consumos inusuales durante el periodo de la madrugada de hoy.",
+        "escenario": "deteccion_anomalias"
+      }
+    },
+    "notas": "El término 'extraño' se mapea al escenario de detección de anomalías."
+  },
+  {
+    "prompt_usuario": "Quiero ver el gráfico de la lavadora de este mes y cuánto llevo gastado en total",
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Mostrar el consumo energético detallado de la lavadora durante el mes actual.",
+        "escenario": "consumo_basico"
+      },
+      "@2": {
+        "solicitud": "Mostrar el consumo energético total acumulado de todos los dispositivos durante el mes actual.",
+        "escenario": "consumo_basico"
+      }
+    },
+    "notas": "Se segmenta en dos solicitudes de consumo básico: una para la lavadora y otra para el total acumulado."
+  },
+  {
+    "prompt_usuario": "¿Cuál es el dispositivo que más consume en mi casa?",
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Identificar y clasificar los dispositivos por su nivel de consumo para determinar cuál es el mayor.",
+        "escenario": "ranking_consumo"
+      }
+    },
+    "notas": "La solicitud busca un ranking o comparativa de magnitudes entre dispositivos."
+  }
+]

@@ -1,0 +1,139 @@
+[
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Ejemplo 1: Obtener consumo de ayer para la nevera",
+        "escenario": "consumo_basico"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24T14:30:00"
+    },
+    "temporal_preferences": {
+      "noche": "07:00 PM - 08:59 PM"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "obtener_consumo",
+        "inputs": {
+          "dispositivos": ["nevera"],
+          "fecha_inicio": "2024-10-23T00:00:00",
+          "fecha_fin": "2024-10-23T23:59:59",
+          "granularidad": "hora"
+        },
+        "descripcion": "Obtener el consumo de la nevera del día anterior."
+      }
+    ],
+    "notas": "Se identifica la solicitud @1 como consumo básico..."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Ejemplo 2: Comparar consumo de hoy con el de hace una semana",
+        "escenario": "comparacion_consumos"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24T14:30:00"
+    },
+    "temporal_preferences": {},
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "analizar_comparacion",
+        "inputs": {
+          "objetivo_a": {"dispositivo": "total", "fecha_inicio": "2024-10-24T00:00:00", "fecha_fin": "2024-10-24T23:59:59"},
+          "objetivo_b": {"dispositivo": "total", "fecha_inicio": "2024-10-17T00:00:00", "fecha_fin": "2024-10-17T23:59:59"}
+        },
+        "descripcion": "Comparar el consumo total de hoy con el del mismo día de la semana pasada."
+      }
+    ],
+    "notas": "Se utiliza analizar_comparacion para contrastar los dos periodos."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Ejemplo 3: ¿Hubo anomalías anoche?",
+        "escenario": "deteccion_anomalias"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24T14:30:00"
+    },
+    "temporal_preferences": {
+      "noche": "19:00 - 20:59"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "detectar_anomalias",
+        "inputs": {
+          "fecha_inicio": "2024-10-23T19:00:00",
+          "fecha_fin": "2024-10-23T20:59:00"
+        },
+        "descripcion": "Buscar picos de consumo inesperados durante el rango de la noche de ayer."
+      }
+    ],
+    "notas": "Se mapea 'anoche' al contexto temporal y se invoca la herramienta de anomalías."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Ejemplo 4: Mostrar consumo de lavadora este mes",
+        "escenario": "consumo_basico"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24T14:30:00"
+    },
+    "temporal_preferences": {},
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "obtener_consumo",
+        "inputs": {
+          "dispositivos": ["lavadora"],
+          "fecha_inicio": "2024-10-01T00:00:00",
+          "fecha_fin": "2024-10-24T23:59:59",
+          "granularidad": "dia"
+        },
+        "descripcion": "Obtener el consumo acumulado diario de la lavadora durante el mes en curso."
+      }
+    ],
+    "notas": "Se establece el rango desde el primero del mes hasta la fecha actual."
+  },
+  {
+    "solicitudes_categorizadas": {
+      "@1": {
+        "solicitud": "Ejemplo 5: ¿Cuánto gasté en la tarde de ayer?",
+        "escenario": "consumo_basico"
+      }
+    },
+    "temporal_context": {
+      "fecha_actual": "2024-10-24T14:30:00"
+    },
+    "temporal_preferences": {
+      "tarde": "12:00 PM - 03:59 PM"
+    },
+    "plan_acciones": [
+      {
+        "id": "@1.1",
+        "server_id": "mcp_server_gravity",
+        "tool": "obtener_consumo",
+        "inputs": {
+          "dispositivos": ["total"],
+          "fecha_inicio": "2024-10-23T12:00:00",
+          "fecha_fin": "2024-10-23T15:59:00",
+          "granularidad": "hora"
+        },
+        "descripcion": "Consultar el consumo total durante el bloque horario definido como 'tarde' para el día de ayer."
+      }
+    ],
+    "notas": "Se cruza la preferencia horaria de 'tarde' con la fecha de ayer."
+  }
+]

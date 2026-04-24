@@ -30,7 +30,7 @@ class HiloInterpretador(QThread):
             # 0. Configurar dspy en segundo plano para evitar congelar la GUI
             import dspy
             print(f"🔌 [Hilo Interpretador] Inicializando dspy.LM para {self.modelo_final}...")
-            llm_activo = dspy.LM(self.modelo_final, api_base=self.base_final, api_key=self.api_key, num_ctx=8192)
+            llm_activo = dspy.LM(self.modelo_final, api_base=self.base_final, api_key=self.api_key, num_ctx=8192, max_retries=1, timeout=120)
 
             # Usar dspy.context para seguridad de hilos (Thread-Local)
             with dspy.context(lm=llm_activo):

@@ -63,13 +63,14 @@ class Worker3:
                             fechas = list(valores_temp.keys())
                             consumos = list(valores_temp.values())
                             
-                            # Usar Gráfico de Barras con valores unitarios
-                            fig.add_trace(go.Bar(
+                            # Usar Gráfico de Líneas y Puntos para mostrar series de tiempo evolutivas
+                            fig.add_trace(go.Scatter(
                                 x=fechas, 
                                 y=consumos, 
+                                mode='lines+markers',
                                 name=dispositivo,
-                                text=consumos,
-                                textposition='auto'
+                                line=dict(width=3),
+                                marker=dict(size=8)
                             ))
                                 
                         fig.update_layout(

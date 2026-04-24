@@ -53,6 +53,9 @@ class ResponsePanel(QFrame):
         layout.addWidget(self.titulo)
         layout.addWidget(self.txt_respuesta)
 
+    def set_title(self, titulo_texto):
+        self.titulo.setText(str(titulo_texto).upper())
+
     def set_response_text(self, respuesta):
         if isinstance(respuesta, dict):
             html_content = ""

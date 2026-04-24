@@ -67,6 +67,26 @@ class ResourcesPanel(QFrame):
         layout.addWidget(self.titulo)
         layout.addWidget(self.scroll_area, 1)
 
+    def set_title(self, titulo_texto):
+        self.titulo.setText(str(titulo_texto).upper())
+
+    def display_text(self, texto):
+        """Muestra texto en crudo/JSON en lugar de gráficas."""
+        for i in reversed(range(self.layout_graficos.count())): 
+            item = self.layout_graficos.itemAt(i)
+            widget = item.widget()
+            if widget is not None:
+                widget.setParent(None)
+            else:
+                self.layout_graficos.removeItem(item)
+                
+        lbl = QLabel(str(texto))
+        lbl.setStyleSheet("color: rgba(255, 255, 255, 220); font-size: 14px; background: transparent; font-family: Consolas, monospace;")
+        lbl.setWordWrap(True)
+        lbl.setTextInteractionFlags(Qt.TextSelectableByMouse)
+        lbl.setAlignment(Qt.AlignTop | Qt.AlignLeft)
+        self.layout_graficos.addWidget(lbl)
+
     def display_graphs(self, reporte_worker3: dict):
         """
         Recibe el diccionario de gráficas generadas por Worker3 y las muestra
