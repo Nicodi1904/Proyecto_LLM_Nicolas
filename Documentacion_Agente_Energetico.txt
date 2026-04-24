@@ -1,0 +1,104 @@
+# Documentación Técnica Profunda - Sistema Agente Energético
+
+## 1. Arquitectura del Sistema
+El proyecto está diseñado bajo un paradigma de **Sistema Multi-Agente (MAS)** orquestado de forma asíncrona. La arquitectura se divide en capas funcionales que garantizan el desacoplamiento entre la interfaz de usuario, la lógica de razonamiento de los Modelos de Lenguaje (LLMs) y el acceso a los datos.
+
+### Características Principales:
+*   **Modularidad Cognitiva:** Se utilizan tres roles de agentes (Router, Planner, Aggregator) para dividir la carga de razonamiento.
+*   **Protocolo MCP (Model Context Protocol):** Los agentes no acceden directamente a la base de datos; utilizan una capa de abstracción de herramientas expuestas por un servidor seguro.
+*   **Ejecución Asíncrona:** La interfaz de usuario (PySide6) se mantiene fluida mediante el uso de hilos (`QThread`) para cada etapa del procesamiento.
+*   **Programación Declarativa:** Uso de **DSPy** para definir firmas y predictores, permitiendo que el sistema sea agnóstico al modelo de lenguaje utilizado.
+
+---
+
+## 2. Análisis Detallado de Módulos y Scripts
+
+### 📂 Carpeta: `Agente_energetico/Navegacion`
+Este módulo actúa como el "cerebro" operativo que coordina el flujo de datos y la navegación entre pantallas.
+
+*   **`navegador.py` (Clase `Navigator`):**
+    *   **Función:** Es el controlador principal de la aplicación. Gestiona el ciclo de vida de las ventanas (`QueryWindow` y `ResultWindow`) mediante un `QStackedWidget`.
+    *   **Funcionamiento:** 
+        *   Implementa el mecanismo de **Señales y Slots** para reaccionar a eventos de la interfaz (ej: click en "Consultar").
+        *   Orquesta la ejecución secuencial de hilos. Cuando un hilo termina con éxito, el `Navigator` lanza automáticamente el siguiente en la cadena.
+        *   Maneja la persistencia de los modelos de lenguaje en una base de datos local SQLite (`Modelos_lenguaje`).
+    *   **Lógica de Hilos:** Importa de forma diferida (Lazy Loading) las clases de hilos (`HiloInterpretador`, `HiloPlaneador`, etc.) para optimizar el arranque.
+
+*   **`cript.py`:**
+    *   **Función:** Seguridad de credenciales.
+    *   **Funcionamiento:** Utiliza la librería `cryptography` con el algoritmo **Fernet** (cifrado simétrico) para encriptar las API Keys de los proveedores (OpenAI, Gemini, etc.) antes de guardarlas en la base de datos local. Esto evita que las claves sean visibles en texto plano.
+
+*   **📂 Subcarpeta: `Hilos/`:**
+    *   Contiene clases que heredan de `QThread` (`HiloInterpretador.py`, `HiloPlaneador.py`, etc.). Cada una encapsula la ejecución de un agente específico para no bloquear el hilo principal de la interfaz (GUI Thread).
+
+---
+
+### 📂 Carpeta: `Agente_energetico/Sistema_entrada`
+Encargada de transformar el lenguaje natural del usuario en un plan estructurado.
+
+*   **`Interpretador/interpretador.py` (Clase `InterpretadorAgente`):**
+    *   **Función:** Actúa como el **Router** del sistema.
+    *   **Funcionamiento:** 
+        *   Define una `dspy.Signature` que recibe el mensaje del usuario y devuelve un JSON con las solicitudes segmentadas y categorizadas.
+        *   **Escenarios:** Consulta el archivo `escenarios.json` para saber en qué categorías (Consumo Básico, Comparación, etc.) puede clasificar las dudas.
+        *   **Worker1:** Incluye métodos internos para validar que el LLM devolvió un formato JSON correcto y que los escenarios elegidos son válidos.
+
+*   **`Planeador/planeador.py` (Clase `PlaneadorAgente`):**
+    *   **Función:** Diseña el plan de ejecución técnica.
+    *   **Funcionamiento:**
+        *   Recibe las solicitudes categorizadas del Interpretador.
+        *   Utiliza el archivo `system_summary.json` (un catálogo de herramientas disponibles en el servidor MCP) para decidir qué herramientas llamar y con qué parámetros.
+        *   Genera un **Plan de Acciones** detallado, manejando dependencias entre tareas.
+        *   **Worker2:** Valida que las herramientas propuestas existan y que los parámetros (como fechas en formato ISO) sean coherentes.
+
+---
+
+### 📂 Carpeta: `Agente_energetico/Sistema_MCP`
+Puente entre la inteligencia artificial y los datos reales del hogar.
+
+*   **`MCP_Server_sqlite.py`:**
+    *   **Función:** Servidor de herramientas analíticas.
+    *   **Funcionamiento:** 
+        *   Utiliza el framework `FastMCP`. Se conecta a la base de datos `Hogar_Sincelejo.db`.
+        *   **Herramientas Expuestas:**
+            *   `obtener_consumo`: Realiza consultas SQL dinámicas con filtrado por fecha y agregación temporal (resampling con Pandas).
+            *   `analizar_comparacion`: Calcula diferencias matemáticas entre dos datasets.
+            *   `detectar_anomalias`: Implementa lógica estadística de **Z-Score** para hallar picos de consumo.
+            *   `analizar_tendencia`: Realiza una **regresión lineal** para determinar la pendiente del consumo.
+
+*   **`mcp_client.py`:**
+    *   **Función:** Consumidor asíncrono de herramientas.
+    *   **Funcionamiento:** Se comunica con el servidor MCP a través de una sesión de cliente. Recorre el "Plan de Acciones" y despacha las llamadas a las funciones correspondientes, recolectando los resultados para el siguiente paso.
+
+---
+
+### 📂 Carpeta: `Agente_energetico/Sistema_salida`
+Transforma los datos técnicos en una experiencia comprensible para el usuario.
+
+*   **`Presentador/presentador.py`:**
+    *   **Función:** El **Agregador** final.
+    *   **Funcionamiento:** Recibe los datos brutos de las herramientas y redacta una respuesta coherente, empática y explicativa en lenguaje natural.
+
+*   **`Worker3/worker3.py`:**
+    *   **Función:** Motor gráfico.
+    *   **Funcionamiento:** Analiza los resultados de `obtener_consumo`. Si hay series temporales, genera gráficos de líneas (`go.Scatter`). Si son totales comparativos, genera gráficos de barras (`go.Bar`) usando la librería **Plotly**. Estos gráficos se renderizan luego en la interfaz.
+
+---
+
+### 📂 Carpeta: `Agente_energetico/Interfaz_usuario`
+Capa visual del proyecto.
+
+*   **`QueryWindow/query_window.py`:** Pantalla de entrada. Gestiona la captura del prompt, selección de fechas y administración de modelos de lenguaje.
+*   **`ResultWindow/result_window.py`:** Pantalla de visualización. Contiene un sistema de pestañas o pasos para la auditoría técnica y un visor de gráficos interactivos.
+*   **`Temas.py`:** Centraliza el diseño visual mediante QSS (Qt Style Sheets), definiendo la paleta de colores, bordes redondeados y efectos de transparencia.
+
+---
+
+## 3. Flujo Operacional (Data Journey)
+1.  **Entrada:** El usuario escribe en `QueryWindow`.
+2.  **Ruteo:** El `Interpretador` divide la frase: "¿Cuánto consumió la TV y hubo picos?" -> Petición 1 (Consumo), Petición 2 (Anomalías).
+3.  **Planificación:** El `Planeador` asigna herramientas: `obtener_consumo` para la TV y `detectar_anomalias` para los picos.
+4.  **Ejecución:** El `MCP_Client` llama al servidor, el servidor ejecuta las consultas SQL en SQLite y devuelve JSON.
+5.  **Visualización:** `Worker3` crea las gráficas de los datos obtenidos.
+6.  **Síntesis:** El `Presentador` lee los datos y las gráficas y redacta: "Tu TV consumió X kWh, y efectivamente detecté un pico a las 8:00 PM...".
+7.  **Salida:** `ResultWindow` muestra todo al usuario.

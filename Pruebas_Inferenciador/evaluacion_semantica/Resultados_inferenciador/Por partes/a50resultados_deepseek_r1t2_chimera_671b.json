@@ -1,0 +1,8 @@
+[
+    {
+        "id": 1,
+        "input": "Dime el consumo de mi nevera ayer, compárala con la lavadora y dime si con eso ya puedo ahorrar para irme de viaje.",
+        "actual_output": "{'@1': {'solicitud': 'Obtener el consumo energético de la nevera durante el día anterior.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Comparar el consumo energético de la nevera con el de la lavadora durante el mismo periodo temporal.', 'escenario': 'comparacion_consumos'}, '@3': {'solicitud': 'Evaluar si el ahorro derivado de los consumos detectados permite financiar un viaje, requiriendo una proyección económica basada en datos energéticos.', 'escenario': 'prediccion_estimacion'}}",
+        "notas": "- **@1**: Clasificado como 'consumo_basico' porque se solicita un valor histórico puntual con un intervalo temporal explícito (\"ayer\").\n- **@2**: Clasificado como 'comparacion_consumos' por requerir una comparación directa entre dos dispositivos usando términos comparativos implícitos (\"compárala\").\n- **@3**: Clasificado como 'prediccion_estimacion' al implicar una estimación económica futura basada en patrones de consumo. Aunque el escenario financiero excede el dominio energético, se asigna esta categoría al requerir una proyección hipotética a partir de datos existentes."
+    }
+]

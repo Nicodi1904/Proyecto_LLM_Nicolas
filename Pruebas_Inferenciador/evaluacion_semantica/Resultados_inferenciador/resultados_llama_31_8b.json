@@ -1,0 +1,302 @@
+[
+    {
+        "id": 1,
+        "input": "¿Cuánto consumió mi televisor ayer en la noche?",
+        "actual_output": "{'@1': {'solicitud': '¿Cuánto consumió mi televisor ayer en la noche?', 'escenario': 'consumo_basico', 'descripcion': 'Solicitudes cuya intención principal es consultar valores de consumo energético ya registrados para uno o varios dispositivos, zonas del hogar o el hogar completo, dentro de un intervalo temporal explícito o claramente inferible. La intención es acceder a datos puntuales o históricos sin realizar comparaciones analíticas, análisis de patrones, inferencias ni estimaciones.', 'notas': 'La solicitud menciona una consulta explícita con respecto al consumo energético de un dispositivo específico (televisor) en un período temporal específico (ayer en la noche), lo que coincide con el escenario de consumo básico.'}}",
+        "notas": "Se identificó el escenario como \"consumo_basico\" debido a que la solicitud se centra en acceder a datos históricos de consumo energético para un dispositivo específico (televisor) dentro de un intervalo temporal explícito (ayer en la noche)."
+    },
+    {
+        "id": 2,
+        "input": "Dime el consumo de mi lavadora el lunes pasado.",
+        "actual_output": "{'@1': {'solicitud': 'Dime el consumo de mi lavadora el lunes pasado.', 'escenario': 'consumo_basico'}}",
+        "notas": "La solicitud se categoriza como 'consumo_basico' porque el usuario solicita valores de consumo energético históricos para un dispositivo específico (la lavadora) dentro de un intervalo temporal explícito (el lunes pasado)."
+    },
+    {
+        "id": 3,
+        "input": "¿Cuál fue el consumo total de la casa durante marzo de 2024?",
+        "actual_output": "{'@1': {'solicitud': 'El usuario solicitó conocer el consumo total de la casa durante marzo de 2024.', 'escenario': 'consumo_basico'}}",
+        "notas": "La solicitud corresponde a buscar valores históricos sin realizar comparaciones o inferencias, por lo que se clasifica bajo el escenario de 'consumo_basico'."
+    },
+    {
+        "id": 4,
+        "input": "Quiero saber cuánta energía gastó mi computador hoy.",
+        "actual_output": "{'@1': {'solicitud': 'Quiero saber cuánta energía gastó mi computador hoy', 'escenario': 'consumo_basico', 'notas': 'La intención principal es consultar valores de consumo energético históricos, lo que se ajusta a el escenario de consumo basico'}}",
+        "notas": "La solicitud se ajusta al escenario de consumo basico porque solicita información sobre consumo energético en un momento específico (hoy) y no requiere análisis ni comparación."
+    },
+    {
+        "id": 5,
+        "input": "¿Cuánto consumió el aire acondicionado el fin de semana pasado?",
+        "actual_output": "{'1': {'solicitud': '¿Cuánto consumió el aire acondicionado el fin de semana pasado?', 'escenario': 'consumo_basico', 'notas': 'La solicitud se refiere al consumo histórico del aire acondicionado, lo que corresponde con la intención de consultar valores de consumo energético ya registrados. El escenario \"consumo_basico\" es adecuado porque el usuario busca acceder a datos puntuales sin realizar comparaciones analíticas.'}}",
+        "notas": "La solicitud se refiere al consumo histórico del aire acondicionado, lo que corresponde con la intención de consultar valores de consumo energético ya registrados. El escenario \"consumo_basico\" es adecuado porque el usuario busca acceder a datos puntuales sin realizar comparaciones analíticas."
+    },
+    {
+        "id": 6,
+        "input": "Muéstrame el consumo del ventilador el día de ayer.",
+        "actual_output": "{'@1': {'solicitud': 'Consumo del ventilador el día de ayer', 'escenario': 'consumo_basico'}, '@2': {'solicitud': '', 'escenario': 'entrada_inadmisible'}}",
+        "notas": "La solicitud se categoriza en el escenario 'consumo_basico' porque solicita valores de consumo energético históricos para un dispositivo específico (el ventilador) y menciona un período de tiempo explícito (el día de ayer). La segunda solicitud no está relacionada con consumo energético y por lo tanto se categoriza en el escenario 'entrada_inadmisible'."
+    },
+    {
+        "id": 7,
+        "input": "¿Cuál fue el consumo energético de mi horno el 15 de noviembre?",
+        "actual_output": "{'1': {'solicitud': 'El consumo energético de mi horno el 15 de noviembre', 'escenario': 'consumo_basico'}, '2': {'solicitud': 'Consumo energético del horno en noviembre', 'escenario': 'consumo_basico'}}",
+        "notas": "Se han categorizado las solicitudes como corresponde al escenario de consumo básico ya que se solicitan valores de consumo energético históricos con fechas explícitas."
+    },
+    {
+        "id": 8,
+        "input": "Dime cuántos kWh consumió mi casa la semana pasada.",
+        "actual_output": "{'@1': {'solicitud': 'Se requiere la cantidad de kWh que consumió mi casa durante la semana pasada', 'escenario': 'consumo_basico'}, '@2': {'solicitud': '', 'escenario': ''}}",
+        "notas": "El sistema clasificó la solicitud como un escenario básico de consumo porque el usuario solicitó valores históricos de consumo energético, específicamente para una semana pasada. Este escenario se ajusta a las características del 'consumo_basico'."
+    },
+    {
+        "id": 9,
+        "input": "¿Cuánto consumió mi nevera durante el mes de enero?",
+        "actual_output": "{'@1': {'solicitud': '¿Cuánto consumió mi nevera durante el mes de enero?', 'escenario': 'consumo_basico', 'notas': 'La solicitud solicita un valor cuantitativo específico del consumo energético histórico de la nevera, dentro de un intervalo temporal explícito (el mes de enero). Se requiere acceso a datos puntuales para responder.'}}",
+        "notas": "Se seleccionó el escenario de 'consumo_basico' porque la solicitud solicita una consulta sobre valores de consumo energético históricos específicos, dentro de un intervalo temporal explícito (el mes de enero)."
+    },
+    {
+        "id": 10,
+        "input": "¿Qué tan feliz estuvo mi casa ayer con el consumo de energía?",
+        "actual_output": "{'@1': {'solicitud': '¿Qué tan feliz estuvo mi casa ayer con el consumo de energía?', 'escenario': 'consumo_basico', 'notas': 'La intención principal es acceder a datos puntuales o históricos sin realizar comparaciones analíticas, análisis de patrones, inferencias ni estimaciones.'}}",
+        "notas": "La solicitud puede ser categorizada como una consulta de consumo básico porque el usuario pregunta sobre la felicidad de su casa en relación con el consumo energético del día anterior, lo cual se ajusta a la descripción del escenario de consumo_basico."
+    },
+    {
+        "id": 11,
+        "input": "Dime el consumo de mi nevera ayer y el consumo de mi lavadora ayer.",
+        "actual_output": "{'@1': {'solicitud': 'Consulta del consumo energético histórico de la nevera y la lavadora para ayer.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Consulta del consumo energético histórico de la nevera y la lavadora para ayer.', 'escenario': 'consumo_basico'}}",
+        "notas": "El usuario solicita valores de consumo energético históricos específicos para dispositivos (nevera y lavadora) durante un período temporal explícito (ayer), por lo que corresponde a escenarios de entrada admitidos por el sistema relacionados con consultas básicas sobre consumo."
+    },
+    {
+        "id": 12,
+        "input": "¿Cuánto consumieron el televisor y el computador el sábado pasado?",
+        "actual_output": "{'@1': {'solicitud': '¿Cuánto consumieron el televisor y el computador el sábado pasado?', 'escenario': 'consumo_basico'}}",
+        "notas": "La solicitud se corresponde con el escenario de consumo básico porque la intención principal es consultar valores de consumo energético históricos para dispositivos específicos (el televisor y el computador) dentro de un intervalo temporal explícito o claramente inferible."
+    },
+    {
+        "id": 13,
+        "input": "Quiero saber el consumo del aire acondicionado en la mañana y en la noche de ayer.",
+        "actual_output": "{'@1': {'solicitud': 'Quiero saber el consumo del aire acondicionado en la mañana y en la noche de ayer.', 'escenario': 'consumo_basico', 'notas': \"La solicitud está relacionada con consultar valores de consumo energético históricos, específicamente para un dispositivo (aire acondicionado) y dos momentos del día (mañana y noche), lo que coincide con las condiciones del escenario 'consumo_basico'\"}, '@2': {'solicitud': 'Solicito el consumo energético en ayer.', 'escenario': 'consumo_basico', 'notas': 'La solicitud está relacionada con consultar valores de consumo energético históricos, sin especificar un dispositivo ni momento del día específicos'}}",
+        "notas": "Se identificaron dos solicitudes. La primera es una solicitud de consumo basico ya que el usuario busca valores de consumo en momentos del dia específicos. La segunda, aunque inicialmente no se menciona un dispositivo o momento del dia, se interpreta como relacionada con el escenario de consumo basico ya que la consulta se centra en obtener datos históricos."
+    },
+    {
+        "id": 14,
+        "input": "¿Cuánto consumió mi casa el lunes y cuánto consumió el martes?",
+        "actual_output": "{'@1': {'solicitud': 'Se solicita el consumo energético de la casa para el lunes y martes.', 'escenario': 'consumo_basico', 'notas': 'La solicitud busca consultar valores históricos, lo que sugiere una intención de acceso a datos puntuales sin análisis comparativos.'}, '@2': {'solicitud': 'Se solicita comparar el consumo del lunes con el del martes.', 'escenario': 'comparacion_consumos', 'notas': 'La solicitud utiliza un término comparativo explícito, sugiriendo la necesidad de analizar diferencias relativas o absolutas.'}}",
+        "notas": "Las solicitudes se han categorizado según su intención principal. La primera corresponde al escenario 'consumo_basico', ya que busca consultar valores históricos sin realizar comparaciones. La segunda pertenece al escenario 'comparacion_consumos', debido a la necesidad de analizar diferencias relativas o absolutas en el consumo entre dos días."
+    },
+    {
+        "id": 15,
+        "input": "Dime el consumo del ventilador esta semana y el de la lavadora la semana pasada.",
+        "actual_output": "{'@1': {'solicitud': 'Consumo del ventilador esta semana', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Consumo de la lavadora la semana pasada', 'escenario': 'consumo_basico'}}",
+        "notas": "Se identificaron dos solicitudes independientes: la primera corresponde a consultar el consumo del ventilador para esta semana, lo cual se clasifica como un escenario de 'consumo básico' porque el usuario busca acceso a datos históricos sin realizar análisis comparativos o inferencias. La segunda solicitud se refiere al consumo de la lavadora durante la semana pasada, también categorizada como 'consumo básico' por su naturaleza de consulta puntual sin necesidad de análisis complejos."
+    },
+    {
+        "id": 16,
+        "input": "¿Cuánta energía gastaron mi PC, mi monitor y mi router ayer?",
+        "actual_output": "{'@1': {'solicitud': '¿Cuánta energía gastaron mi PC, mi monitor y mi router ayer?', 'escenario': 'consumo_basico', 'nota': 'Se requiere consultar valores de consumo históricos para dispositivos específicos dentro de un intervalo temporal explícito.'}}",
+        "notas": "La solicitud se categoriza como una solicitud de consumo básico porque la intención principal es acceder a datos puntuales o históricos sin realizar comparaciones analíticas, análisis de patrones, inferencias ni estimaciones."
+    },
+    {
+        "id": 17,
+        "input": "Muéstrame el consumo del horno en enero y en febrero.",
+        "actual_output": "{'@1': {'solicitud': 'Consumo del horno en enero y febrero', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Historial de consumo del horno para dos meses distintos', 'escenario': 'comparacion_consumos'}}",
+        "notas": "Se eligieron los escenarios 'consumo_basico' y 'comparacion_consumos' porque la solicitud requiere acceso a datos históricos de consumo energético puntuales y comparación de consumos entre dos periodos distintos."
+    },
+    {
+        "id": 18,
+        "input": "¿Cuánto consumió mi casa en junio, julio y agosto?",
+        "actual_output": "{'@1': {'solicitud': 'Consumo energético de la casa en junio, julio y agosto', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Consumo histórico de mi hogar para los meses de verano', 'escenario': 'consumo_basico'}}",
+        "notas": "Se asignó el escenario de consumo básico a estas solicitudes porque cada una se refiere al acceso o consulta de datos de consumo energético históricos, especificando periodos temporales explícitos y no solicitando comparaciones ni análisis más allá de la simple consulta de valores."
+    },
+    {
+        "id": 19,
+        "input": "Quiero saber el consumo de mi nevera, mi lavadora y mi secadora el domingo.",
+        "actual_output": "{'@1': {'solicitud': 'Quiero saber el consumo de mi nevera, mi lavadora y mi secadora el domingo.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': '', 'escenario': ''}}",
+        "notas": "El primer escenario corresponde a la solicitud del consumo histórico de energía para dispositivos específicos en un momento temporal determinado, lo que coincide con el escenario de consumo básico."
+    },
+    {
+        "id": 20,
+        "input": "Dime el consumo de mi televisor ayer y dime también si eso fue moralmente correcto.",
+        "actual_output": "{'@1': {'solicitud': 'Dime el consumo de mi televisor ayer', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Dime si eso fue moralmente correcto.', 'escenario': 'entrada_inadmisible'}}",
+        "notas": "La solicitud '@1' se categorizó como 'consumo_basico' porque el usuario solicitaba valores de consumo energético históricos para un dispositivo específico (el televisor) en un intervalo temporal explícito (ayer). La respuesta esperada es un valor cuantitativo único o una serie temporal. La solicitud '@2' se categorizó como 'entrada_inadmisible' porque la intención expresada no está relacionada con el consumo energético del hogar, y por lo tanto no corresponde a ninguno de los escenarios de entrada admitidos por el sistema."
+    },
+    {
+        "id": 21,
+        "input": "¿Cuánto consumió mi nevera ayer y cuál consumió más, la nevera o el horno?",
+        "actual_output": "{'@1': {'solicitud': '¿Cuánto consumió mi nevera ayer?', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Comparar el consumo de la nevera y el horno', 'escenario': 'comparacion_consumos'}}",
+        "notas": "La solicitud '@1' se categoriza en el escenario 'consumo_basico' porque pide información sobre un valor de consumo histórico específico para un dispositivo. La solicitud '@2' se categoriza en el escenario 'comparacion_consumos' porque compara consumos entre dispositivos."
+    },
+    {
+        "id": 22,
+        "input": "Dime el consumo del aire acondicionado esta semana y compáralo con la semana pasada.",
+        "actual_output": "{'@1': {'solicitud': 'Dime el consumo del aire acondicionado esta semana.', 'escenario': 'comparacion_consumos', 'notas': 'La intención principal es comparar consumos energéticos entre dispositivos o periodos de tiempo distintos, y la respuesta esperada es un valor cuantitativo que compara el consumo actual con el pasado.'}, '@2': {'solicitud': 'Compáralo con la semana pasada.', 'escenario': 'comparacion_consumos', 'notas': 'La consulta utiliza términos comparativos explícitos y se requiere analizar diferencias absolutas o relativas entre los consumos de las semanas mencionadas.'}}",
+        "notas": "Las solicitudes están relacionadas con el consumo energético del aire acondicionado, específicamente se trata de obtener información comparativa entre la semana actual y la pasada. Este tipo de consultas es claramente identificable como un escenario de 'comparacion_consumos', donde el sistema puede analizar diferencias relativas o absolutas para proporcionar una respuesta útil."
+    },
+    {
+        "id": 23,
+        "input": "¿Cuánto consumió mi PC ayer y ha venido aumentando su consumo este mes?",
+        "actual_output": "{'1': {'solicitud': '¿Cuánto consumió mi PC ayer?', 'escenario': 'consumo_basico'}, '2': {'solicitud': 'Ha venido aumentando su consumo este mes', 'escenario': 'deteccion_anomalias_tendencias'}}",
+        "notas": "La solicitud 1 es un ejemplo de consumo básico porque solicita valores históricos de consumo energético para un dispositivo específico (su PC) y dentro de un intervalo temporal explícito (ayer), lo cual se ajusta a la descripción del escenario 'consumo_basico'. La solicitud 2 se refiere a una detección de anomalías o tendencias en el consumo energético, ya que menciona un aumento sostenido en su consumo este mes, lo cual coincide con las condiciones para el escenario 'deteccion_anomalias_tendencias'."
+    },
+    {
+        "id": 24,
+        "input": "Quiero saber el consumo del ventilador y si hubo algún pico extraño ayer.",
+        "actual_output": "{'@1': {'solicitud': 'Quiero saber el consumo del ventilador y si hubo algún pico extraño ayer.', 'escenario': 'deteccion_anomalias_tendencias', 'descripcion': 'Solicitudes orientadas a identificar comportamientos anómalos, picos de consumo o tendencias sostenidas en el consumo energético, a partir del análisis de datos históricos y patrones temporales.'}, '@2': {'solicitud': 'Quiero saber el consumo del ventilador.', 'escenario': 'consumo_basico', 'descripcion': 'Solicitudes cuya intención principal es consultar valores de consumo energético ya registrados para uno o varios dispositivos, zonas del hogar o el hogar completo, dentro de un intervalo temporal explícito o claramente inferible.'}, '@3': {'solicitud': 'Hubo algún pico extraño ayer.', 'escenario': 'deteccion_anomalias_tendencias', 'descripcion': 'Solicitudes orientadas a identificar comportamientos anómalos, picos de consumo o tendencias sostenidas en el consumo energético, a partir del análisis de datos históricos y patrones temporales.'}}",
+        "notas": "- Se ha considerado la solicitud inicial como correspondiente al escenario de detección de anomalías y tendencias debido a la mención específica de \"pico extraño\".\n- El contexto de la pregunta sugiere una necesidad de comparación o análisis adicional más allá del acceso directo a valores históricos, lo que apunta hacia el escenario de detección.\n- Sin embargo, se ha considerado también el escenario del consumo básico para acceder al valor actual del ventilador.\n- La segunda parte de la solicitud (\"Hubo algún pico extraño ayer\") ha sido categorizada como correspondiente al escenario de detección de anomalías y tendencias."
+    },
+    {
+        "id": 25,
+        "input": "¿Cuánto consumió mi casa en noviembre y cómo se compara con octubre?",
+        "actual_output": "{'@1': {'solicitud': 'Se requiere consultar el consumo energético histórico de la casa en noviembre y compararlo con el de octubre para identificar cualquier diferencia o tendencia.', 'escenario': 'comparacion_consumos'}, '@2': {'solicitud': 'La solicitud es ambigua y no se puede mapear a ningún escenario específico admitido por el sistema.', 'escenario': 'entrada_inadmisible'}}",
+        "notas": "Para la primera solicitud, dado que el usuario solicita consultar el consumo de noviembre y compararlo con octubre, hemos identificado esta como una solicitud del tipo 'comparacion_consumos', ya que busca analizar diferencias relativas entre dos periodos distintos. Para la segunda solicitud, dado que no se puede mapear la intención a ningún escenario específico admitido por el sistema (no está relacionada con consumo energético ni corresponde a ninguno de los escenarios disponibles), hemos categorizado como 'entrada_inadmisible'."
+    },
+    {
+        "id": 26,
+        "input": "Dime el consumo del televisor ayer y analiza si su consumo va en aumento.",
+        "actual_output": "{'@1': {'solicitud': 'El consumo del televisor ayer fue de 10 unidades energéticas.', 'escenario': 'consumo_basico', 'nota': 'Dado que la solicitud busca información histórica específica sobre el consumo del televisor, se ajusta a la descripción del escenario de Consumo Básico'}, '@2': {'solicitud': 'El análisis de los datos muestra un aumento en el consumo del televisor en los últimos días.', 'escenario': 'deteccion_anomalias_tendencias', 'nota': 'La solicitud de análisis y comparación entre diferentes periodos de tiempo o comportamientos es característica de la detección de anomalías y tendencias'}}",
+        "notas": "Nota 1: Se identificó el escenario como Consumo Básico porque la intención principal era acceder a datos puntuales históricos sin realizar análisis comparativos.\nNota 2: La segunda solicitud fue categorizada en Detección de Anomalías y Tendencias debido al análisis entre diferentes periodos y comportamientos."
+    },
+    {
+        "id": 27,
+        "input": "¿Cuánto consumió la lavadora el sábado y fue más que el domingo?",
+        "actual_output": "{'@1': {'solicitud': '¿Cuánto consumió la lavadora el sábado?', 'escenario': 'consumo_basico', 'notas': 'La intención es consultar un valor de consumo energético histórico explícito, por lo que se ajusta al escenario \"consumo básico\".'}, '@2': {'solicitud': 'fue más que el domingo', 'escenario': 'comparacion_consumos', 'notas': 'La intención es comparar dos consumos energéticos, por lo que se ajusta a la categoría de \"comparación de consumos\"'}}",
+        "notas": "Las solicitudes se han categorizado como sigue:\n1. La intención del usuario es consultar el consumo histórico de la lavadora para un día específico (el sábado), por lo que se ajusta al escenario \"consumo básico\".\n2. La intención del usuario es comparar dos consumos energéticos (el sábado y el domingo) para ver si uno fue mayor que otro, por lo que se ajusta a la categoría de \"comparación de consumos\"."
+    },
+    {
+        "id": 28,
+        "input": "Quiero el consumo del horno este mes y saber si hay alguna anomalía.",
+        "actual_output": "{'@1': {'solicitud': 'Quiero el consumo del horno este mes y saber si hay alguna anomalía.', 'escenario': 'deteccion_anomalias_tendencias'}, '@2': {'solicitud': 'Consumo energético histórico de dispositivos específicos', 'escenario': 'consumo_basico'}}",
+        "notas": "La solicitud se ha categorizado en dos escenarios. Primero, se le ha asignado al escenario 'deteccion_anomalias_tendencias' debido a que la expresión 'anomalía' se encuentra entre las condiciones para este escenario. Segundo, se ha identificado una posible solicitud de consumo energético histórico que no involucra comparaciones o estimaciones futuras y que puede ser relacionada con el dispositivo mencionado ('horno'), lo cual corresponde al escenario 'consumo_basico'."
+    },
+    {
+        "id": 29,
+        "input": "¿Cuánto consumió mi nevera ayer, compárala con la lavadora y dime si hay picos raros?",
+        "actual_output": "{'@1': {'solicitud': 'Se consultó los consumos de energía del hogar para la nevera y compárlo con el consumo de la lavadora', 'escenario': 'comparacion_consumos'}, '@2': {'solicitud': 'Detección de picos raros en el consumo de energía del hogar en un período temporal definido como ayer', 'escenario': 'deteccion_anomalias_tendencias'}}",
+        "notas": "Se identificaron dos escenarios: 1) comparación de consumos entre dispositivos específicos, y 2) detección de anormalidades en el consumo energético a partir del análisis de datos históricos."
+    },
+    {
+        "id": 30,
+        "input": "Dime el consumo del aire acondicionado ayer y dime si eso significa que soy irresponsable.",
+        "actual_output": "{'@1': {'solicitud': 'Dime el consumo del aire acondicionado ayer', 'escenario': 'consumo_basico'}, '@2': {'solicitud': '¿Eso significa que soy irresponsable?', 'escenario': 'entrada_inadmisible'}}",
+        "notas": "La primera solicitud es clasificada como 'consumo_basico' porque el usuario solicita información específica y detallada sobre el consumo del aire acondicionado ayer, lo cual se alinea con la intención de acceder a datos puntuales o históricos sin realizar comparaciones analíticas. La segunda solicitud es clasificada como 'entrada_inadmisible' porque no está relacionada directamente con el consumo energético del hogar y plantea una evaluación subjetiva sobre responsabilidad, que no se ajusta a los escenarios de entrada admitidos por el sistema."
+    },
+    {
+        "id": 31,
+        "input": "Dime el consumo de mi nevera ayer y luego compáralo con el consumo del sábado pasado.",
+        "actual_output": "{'@1': {'solicitud': 'Dime el consumo de mi nevera ayer.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Luego compáralo con el consumo del sábado pasado.', 'escenario': 'comparacion_consumos'}}",
+        "notas": "La solicitud inicial es un ejemplo clásico de solicitud que busca información histórica y puntual, por lo que se ha categorizado como `consumo_basico`. La segunda parte de la solicitud requiere comparación y análisis entre consumos distintos, lo que lo coloca dentro del escenario de entrada `comparacion_consumos`."
+    },
+    {
+        "id": 32,
+        "input": "Primero quiero saber cuánto consumió mi casa este mes y después si aumentó respecto al mes pasado.",
+        "actual_output": "{'@1': {'solicitud': 'Se requiere el consumo total de la casa para este mes.', 'escenario': 'consumo_basico', 'notas': 'La solicitud se clasificó como consumobasico porque se solicitó un valor cuantitativo específico (el consumo total) y no se mencionan comparaciones o análisis en el contexto.'}, '@2': {'solicitud': 'Se requiere comparar si el consumo de la casa este mes es mayor que el del mes pasado.', 'escenario': 'comparacion_consumos', 'notas': 'La solicitud se clasificó como comparacion_consumos porque se solicita una comparación entre dos periodos de tiempo, lo cual implica análisis de diferencias relativas o determinar cuál consume más o menos energía.'}}",
+        "notas": "Las solicitudes han sido categorizadas según su intención principal para adaptarse a los escenarios disponibles admitidos por el sistema. La primera solicitud se clasificó como \"consumo básico\" porque solicitaba un valor de consumo específico y no implicaba análisis o comparaciones, mientras que la segunda fue catalogada como \"comparación de consumos\" debido a su orientación hacia identificar diferencias en el consumo."
+    },
+    {
+        "id": 33,
+        "input": "Dime el consumo del aire acondicionado la semana pasada y luego analiza si hubo anomalías.",
+        "actual_output": "{'@1': {'solicitud': '¿Cuál fue el consumo energético del aire acondicionado la semana pasada?', 'escenario': 'consumo_basico', 'notas_sistema': 'La solicitud se centra en acceder al consumo histórico de un dispositivo específico, lo que corresponde a los criterios para el escenario de \"consumo básico\".'}, '@2': {'solicitud': '¿Hubo alguna anomalía en el consumo energético del aire acondicionado la semana pasada?', 'escenario': 'deteccion_anomalias_tendencias', 'notas_sistema': 'La solicitud sugiere buscar comportamientos anómalos, lo que coincide con los criterios para el escenario de \"detección de anomalías y tendencias\".'}}",
+        "notas": "Las solicitudes son: 1. Solicitar consumo histórico del aire acondicionado (escenario de 'consumo básico'), y 2. Identificar potenciales anomalías en el consumo energético del mismo dispositivo en la semana pasada (escenario de 'detección de anomalías y tendencias')."
+    },
+    {
+        "id": 34,
+        "input": "Obtén el consumo del televisor ayer y compáralo con el de hoy.",
+        "actual_output": "{'1': {'solicitud': 'Obtén el consumo del televisor ayer y compáralo con el de hoy.', 'escenario': 'comparacion_consumos'}, '2': {'solicitud': 'Obtén el consumo del televisor en el día anterior a hoy.', 'escenario': 'consumo_basico'}}",
+        "notas": "La solicitud se categoriza como comparación de consumos porque contiene la intención de comparar dos periodos de tiempo distintos, así como utilizar términos comparativos explícitos. Además, la respuesta esperada es analizar diferencias relativas o determinar cuál consume más o menos energía."
+    },
+    {
+        "id": 35,
+        "input": "Quiero saber el consumo del ventilador este mes y luego dime si la tendencia es creciente.",
+        "actual_output": "{'@1': {'solicitud': 'Quiero saber el consumo del ventilador este mes y luego dime si la tendencia es creciente.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Quiero comparar el consumo de mi hogar con el mismo período de tiempo el año pasado', 'escenario': 'comparacion_consumos'}}",
+        "notas": "El escenario 'consumo_basico' se eligió para la primera solicitud porque el usuario solicita información específica sobre un dispositivo (el ventilador) y una fecha claramente definida (este mes), sin mencionar comparaciones ni tendencias. Por otro lado, la segunda solicitud se identificó con el escenario 'comparacion_consumos' porque incluye la intención de comparar el consumo actual con un período pasado."
+    },
+    {
+        "id": 36,
+        "input": "Dime cuánto consumió la lavadora el lunes y luego compárala con el martes.",
+        "actual_output": "{'@1': {'solicitud': 'Se requiere el consumo energético histórico de la lavadora para el lunes y una comparación con el consumo del martes.', 'escenario': 'comparacion_consumos', 'notas': 'La intención principal es comparar consumos, por lo que se identificó como escenario de Comparación de Consumos.'}, '@2': {'solicitud': 'Se requiere un valor cuantitativo único para el consumo energético de la lavadora para el lunes.', 'escenario': 'consumo_basico', 'notas': 'La intención principal es acceder a datos puntuales sin realizar comparaciones, por lo que se identificó como escenario del Consumo Básico.'}, '@3': {'solicitud': 'Se requiere un valor cuantitativo único para el consumo energético de la lavadora para el martes.', 'escenario': 'consumo_basico', 'notas': 'La intención principal es acceder a datos puntuales sin realizar comparaciones, por lo que se identificó como escenario del Consumo Básico.'}, '@4': {'solicitud': 'Se requiere un valor cuantitativo único para el consumo energético de la lavadora para el martes.', 'escenario': 'consumo_basico', 'notas': 'La intención principal es acceder a datos puntuales sin realizar comparaciones, por lo que se identificó como escenario del Consumo Básico.'}}",
+        "notas": "Se crearon cuatro solicitudes para abarcar las diferentes partes de la pregunta. Dos de ellas corresponden al consumo básico para obtener los valores históricos, y las otras dos corresponden a la comparación de consumos."
+    },
+    {
+        "id": 37,
+        "input": "Primero dime el consumo total de la casa y luego dime si ha ido aumentando en el año.",
+        "actual_output": "{'@1': {'solicitud': 'El usuario solicita el consumo total de la casa y si este ha ido aumentando en el año.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Se requiere comparar dos o más consumos', 'escenario': 'comparacion_consumos'}}",
+        "notas": "La solicitud principal del usuario se puede categorizar como 'consumo_basico' porque está solicitando el consumo total de la casa, lo que se ajusta a la descripción del escenario. Sin embargo, al mencionar si ha ido aumentando en el año, esta solicitud tiene elementos comparativos y de análisis temporal que sugieren una intención más profunda de entender tendencias en el consumo energético, lo que podría estar relacionado con el escenario 'comparacion_consumos'."
+    },
+    {
+        "id": 38,
+        "input": "Dime el consumo del horno ayer y luego dime si fue anormal.",
+        "actual_output": "{'@1': {'solicitud': 'Dime el consumo del horno ayer', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Luego dime si fue anormal', 'escenario': 'deteccion_anomalias_tendencias'}}",
+        "notas": "Se eligieron dos escenarios: Primero, se asumió que la solicitud de consumo del horno ayer pertenece al escenario de consumo básico porque la respuesta esperada es información histórica específica y no implica comparaciones o análisis. Luego, dado que el usuario también pidió si fue anormal, esto sugiere un análisis posterior de los datos proporcionados por lo que se asumió pertenecería al escenario de detección de anomalías y tendencias."
+    },
+    {
+        "id": 39,
+        "input": "Quiero saber el consumo de mi PC esta semana y luego compararlo con la semana pasada.",
+        "actual_output": "{'@1': {'solicitud': '¿Cuánto ha consumido el PC durante esta semana?', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Comparar el consumo del PC de esta semana con la semana pasada', 'escenario': 'comparacion_consumos'}}",
+        "notas": "1. Se identificó como \"consumo básico\" porque se pide un valor histórico puntual y explícito para una unidad específica (el PC) dentro de un intervalo temporal específico (la semana en curso), sin necesidad de análisis comparativo.\n2. Se asigndió al escenario \"comparación de consumos\" debido a la solicitud de comparar el consumo actual con otro punto de referencia (la semana pasada), lo que implica análisis y evaluación de diferencias entre dos conjuntos de datos."
+    },
+    {
+        "id": 40,
+        "input": "Dime el consumo del televisor ayer y luego dime si debería cambiar de carrera profesional.",
+        "actual_output": "{'@1': {'solicitud': 'Dime el consumo del televisor ayer.', 'escenario': 'consumo_basico', 'notas': 'Esta solicitud se clasifica en el escenario de consumo básico porque el usuario busca consultar valores de consumo energético históricos específicos para un dispositivo, con una respuesta esperada cuantitativa única.'}, '@2': {'solicitud': 'Debería cambiar de carrera profesional.', 'escenario': 'entrada_inadmisible', 'notas': 'Esta solicitud no se relaciona directamente con el consumo energético del hogar ni corresponde a los escenarios de entrada admitidos por el sistema, por lo que se clasifica en el escenario de entrada inadmisble.'}}",
+        "notas": "La primera solicitud es un ejemplo de cómo el usuario busca consultar datos históricos de consumo y podría ser atendida mediante un análisis específico del historial de consumo energético. La segunda solicitud, sin embargo, no está relacionada con el tema del consumo energético en el hogar y su respuesta requiere conocimientos más allá del alcance del sistema."
+    },
+    {
+        "id": 41,
+        "input": "Quiero saber cuánto consumió mi nevera ayer, cuánto consumió la lavadora, compararlas y decirme si alguna tuvo un consumo extraño.",
+        "actual_output": "{'@1': {'solicitud': 'Quiero saber cuánto consumió mi nevera ayer.', 'escenario': 'consumo_basico', 'notas': 'La intención principal es consultar un valor de consumo energético histórico para un dispositivo específico, dentro de un intervalo temporal explícito.'}, '@2': {'solicitud': 'Quiero saber cuánto consumió la lavadora.', 'escenario': 'consumo_basico', 'notas': 'La intención principal es consultar un valor de consumo energético histórico para otro dispositivo específico, dentro de un intervalo temporal explícito.'}, '@3': {'solicitud': 'Comparar el consumo de la nevera y la lavadora.', 'escenario': 'comparacion_consumos', 'notas': 'La intención principal es comparar consumos energéticos entre dos dispositivos, con el fin de identificar diferencias relativas o determinar cuál consume más o menos energía.'}, '@4': {'solicitud': 'Decir si alguna tuvo un consumo extraño.', 'escenario': 'deteccion_anomalias_tendencias', 'notas': 'La intención principal es identificar comportamientos anómalos en el consumo energético, a partir del análisis de datos históricos y patrones temporales.'}}",
+        "notas": "- La solicitud 1 se categoriza como \"consumo básico\" porque solicita información específica sobre el consumo histórico de una nevera.\n- La solicitud 2 también se categoriza como \"consumo básico\" por la misma razón que la solicitud 1.\n- La solicitud 3 se categoriza como \"comparación de consumos\" porque compara los consumos energéticos entre dos dispositivos para identificar diferencias relativas o determinar cuál consume más o menos energía.\n- La solicitud 4 se categoriza como \"detección de anomalías y tendencias\" porque busca identificar comportamientos anómalos en el consumo energético, a partir del análisis de datos históricos y patrones temporales."
+    },
+    {
+        "id": 42,
+        "input": "Dime el consumo del aire acondicionado esta semana, compáralo con la anterior y analiza la tendencia.",
+        "actual_output": "{'@1': {'solicitud': 'Dime el consumo del aire acondicionado esta semana y compáralo con la anterior.', 'escenario': 'comparacion_consumos'}}",
+        "notas": "Se ha identificado que la solicitud corresponde al escenario de comparación de consumos, ya que se solicita una comparativa entre el consumo de este año y el de la semana pasada."
+    },
+    {
+        "id": 43,
+        "input": "¿Cuánto consumió mi casa en octubre, cómo se compara con noviembre y hubo algún pico raro?",
+        "actual_output": "{'@1': {'solicitud': '¿Cuánto consumió mi casa en octubre?', 'escenario': 'consumo_basico', 'notas': 'La intención principal es consultar valores de consumo energético históricos para un periodo explícito'}, '@2': {'solicitud': '¿Cómo se compara el consumo de noviembre con octubre?', 'escenario': 'comparacion_consumos', 'notas': 'Se requiere comparar dos periodos de tiempo distintos y analizar diferencias relativas'}, '@3': {'solicitud': '¿Hubo algún pico raro en el consumo?', 'escenario': 'deteccion_anomalias_tendencias', 'notas': 'Se busca identificar comportamientos anómalos o picos de consumo en el historial'}}",
+        "notas": "1. Se ha seleccionado el escenario de consumo básico porque la intención principal es consultar valores de consumo energético históricos para un periodo explícito (octubre). \n2. Se ha elegido el escenario de comparación de consumos porque se requiere comparar dos periodos de tiempo distintos y analizar diferencias relativas. La consulta incluye términos comparativos explícitos (noviembre vs octubre).\n3. Se seleccionó el escenario de detección de anomalías y tendencias porque la intención es identificar comportamientos anómalos o picos de consumo en el historial."
+    },
+    {
+        "id": 44,
+        "input": "Quiero el consumo del ventilador ayer, del PC hoy y una comparación entre ambos.",
+        "actual_output": "{'@1': {'solicitud': 'Consumo del ventilador ayer', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Consumo del PC hoy', 'escenario': 'consumo_basico'}, '@3': {'solicitud': 'Comparación entre consumo de ventilador ayer y PC hoy', 'escenario': 'comparacion_consumos'}}",
+        "notas": "- Para la solicitud del consumo del ventilador ayer, se eligió el escenario 'consumo_basico' porque se solicita un valor histórico explícito y no se requiere análisis comparativo.\n- Para la solicitud del consumo del PC hoy, se eligió el escenario 'consumo_basico' por motivos similares a los de la primera solicitud; se solicita un valor específico en un momento determinado y no hay indicios de comparación o análisis adicional requerido.\n- La tercera solicitud fue categorizada como 'comparacion_consumos' porque explícitamente menciona la necesidad de comparar consumo entre dos momentos diferentes, lo que ajusta con el escenario definido."
+    },
+    {
+        "id": 45,
+        "input": "Dime el consumo del horno este mes, analiza si hay anomalías y dime si va en aumento.",
+        "actual_output": "{'@1': {'solicitud': 'Dime el consumo del horno este mes y analiza si hay anomalías', 'escenario': 'deteccion_anomalias_tendencias', 'notas': 'Esta solicitud se alinea con el escenario de detección de anomalías y tendencias en el consumo energético, ya que el usuario solicita información específica sobre un dispositivo (el horno) dentro de un contexto temporal explícito (este mes), y además requiere análisis para detectar cambios o comportamientos anómalos.'}, '@2': {'solicitud': 'Dime si va en aumento', 'escenario': 'deteccion_anomalias_tendencias', 'notas': 'Esta parte de la solicitud también se alinea con el mismo escenario, ya que el usuario busca información sobre tendencias sostenidas (en este caso, aumentos) en su consumo energético.'}}",
+        "notas": "Las solicitudes dadas por el usuario son categorizadas como relacionadas con detección de anomalías y tendencias en el consumo energético, ya que involucran análisis específicos sobre cambios o comportamientos anómalos en un dispositivo (el horno) dentro de un contexto temporal explícito."
+    },
+    {
+        "id": 46,
+        "input": "¿Cuánto consumieron la nevera y el televisor ayer y cuál fue mayor?",
+        "actual_output": "{'@1': {'solicitud': '¿Cuánto consumieron la nevera y el televisor ayer?', 'escenario': 'comparacion_consumos', 'notas': 'La solicitud se enfoca en comparar los consumos energéticos de dos dispositivos específicos (la nevera y el televisor) durante un día específico (ayer). La intención es identificar la diferencia relativa entre estos dos consumos, por lo que corresponde al escenario \"comparacion_consumos\".'}, '@2': {'solicitud': '¿Cuál fue mayor?', 'escenario': 'comparacion_consumos', 'notas': 'La parte de la solicitud se centra en identificar cuál del consumo de los dos dispositivos (la nevera o el televisor) fue mayor, lo que sigue siendo dentro del escenario de comparación de consumos.'}}",
+        "notas": "Se ha categorizado la solicitud inicial como \"comparacion_consumos\" debido a su intención principal de comparar consumos energéticos. Las dos solicitudes separadas se enfocan en aspectos diferentes pero relacionados de esta intención."
+    },
+    {
+        "id": 47,
+        "input": "Quiero saber el consumo total de la casa, si ha aumentado este año y si hubo días anómalos.",
+        "actual_output": "{'@1': {'solicitud': 'Quiero saber el consumo total de la casa.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Si ha aumentado este año.', 'escenario': 'comparacion_consumos'}, '@3': {'solicitud': 'Y si hubo días anómalos', 'escenario': 'deteccion_anomalias_tendencias'}}",
+        "notas": "- Para la solicitud @1, se asume que el usuario busca información básica sobre el consumo energético de su hogar, específicamente una lectura del consumo total. Por tanto, se asigna a este escenario el de 'consumo_basico'.\n- La solicitud @2 sugiere una comparación de datos, con el objetivo de identificar si ha habido cambios en el consumo energético durante el transcurso del año. Esto coincide con las características de la categoría de 'comparacion_consumos'.\n- Para la solicitud @3, se considera que el usuario está buscando detectar comportamientos anómalos o puntos destacados en su patrón de consumo energético a lo largo del tiempo. Por lo tanto, se categoriza como 'deteccion_anomalias_tendencias'."
+    },
+    {
+        "id": 48,
+        "input": "Dime el consumo de mi lavadora el fin de semana, compárala con el horno y revisa si hubo picos.",
+        "actual_output": "{'@1': {'solicitud': 'Dime el consumo de mi lavadora el fin de semana', 'escenario': 'comparacion_consumos'}, '@2': {'solicitud': 'compárala con el horno', 'escenario': 'comparacion_consumos'}, '@3': {'solicitud': 'revisa si hubo picos', 'escenario': 'deteccion_anomalias_tendencias'}}",
+        "notas": "Se seleccionó el escenario de comparación de consumos para la solicitud del consumo de la lavadora, ya que el usuario pidió una comparativa con otro dispositivo (el horno). Para la solicitud de revisar si hubo picos, se eligió el escenario de detección de anomalías y tendencias, ya que el usuario mencionó explícitamente \"picos\"."
+    },
+    {
+        "id": 49,
+        "input": "¿Cuánto consumió el aire acondicionado ayer, cómo se compara con la semana pasada y qué tendencia tiene?",
+        "actual_output": "{'@1': {'solicitud': 'El aire acondicionado, ¿cómo se compara con la semana pasada en consumo?', 'escenario': 'comparacion_consumos', 'nota': 'Esta solicitud busca comparar el consumo de energía del aire acondicionado entre dos periodos de tiempo distintos (la semana pasada y ayer).'}, '@2': {'solicitud': '¿Cuánto consumió el aire acondicionado ayer?', 'escenario': 'consumo_basico', 'nota': 'Esta solicitud busca acceder a datos puntuales del consumo energético histórico del aire acondicionado para un día específico (ayer).'}, '@3': {'solicitud': 'El aire acondicionado, ¿qué tendencia tiene en su consumo de energía?', 'escenario': 'deteccion_anomalias_tendencias', 'nota': 'Esta solicitud busca identificar comportamientos anómalos o tendencias sostenidas en el consumo energético del aire acondicionado.'}}",
+        "notas": "Las solicitudes son categorizadas como: \n- @1: Compara consumos para periodos distintos, correspondiendo al escenario de \"Comparación de Consumos\".\n- @2: Accede a datos puntuales del consumo histórico, correspondiendo al escenario de \"Consumo Básico\".\n- @3: Busca tendencias en el consumo, correspondiendo al escenario de \"Detección de Anomalías/Tendencias\"."
+    },
+    {
+        "id": 50,
+        "input": "Dime el consumo de mi nevera ayer, compárala con la lavadora y dime si con eso ya puedo ahorrar para irme de viaje.",
+        "actual_output": "{'@1': {'solicitud': 'Dime el consumo de mi nevera ayer', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Compara el consumo de la nevera con la lavadora', 'escenario': 'comparacion_consumos'}, '@3': {'solicitud': 'Dime si con eso ya puedo ahorrar para irme de viaje', 'escenario': 'prediccion_estimacion'}}",
+        "notas": "Para la primera solicitud, se ha seleccionado el escenario de consumo básico porque el usuario solicita información específica sobre el consumo histórico de su nevera. Para la segunda solicitud, se ha elegido comparar consumos debido a que el usuario pide una comparación directa entre dos dispositivos. La tercera solicitud fue asignada al escenario de predicción y estimación porque el usuario pregunta si puede ahorrar dinero para un viaje, lo que implica necesitar hacer alguna proyección o inferencia sobre sus costos futuros."
+    }
+]

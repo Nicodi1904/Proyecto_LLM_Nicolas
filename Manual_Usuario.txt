@@ -1,0 +1,37 @@
+# Manual de Usuario - Agente Energético
+
+## 1. Introducción
+El **Agente Energético** es una herramienta inteligente diseñada para facilitar la comprensión y el análisis del consumo eléctrico en el hogar. A diferencia de las aplicaciones tradicionales de monitoreo, este sistema permite interactuar mediante **lenguaje natural**, permitiéndole realizar consultas complejas como si estuviera hablando con un experto en energía.
+
+## 2. Capacidades de la Herramienta
+El sistema está capacitado para procesar cinco escenarios principales:
+*   **Consulta de Consumo Básico:** Obtener valores específicos de dispositivos o zonas en un tiempo determinado (ej: "¿Cuánto consumió la nevera ayer?").
+*   **Comparación de Consumos:** Contrastar el gasto energético entre diferentes dispositivos o periodos de tiempo (ej: "¿Consumí más energía este mes o el anterior?").
+*   **Detección de Anomalías:** Identificar comportamientos inusuales o picos inesperados de consumo (ej: "¿Hubo algún consumo extraño el fin de semana?").
+*   **Análisis de Tendencias:** Determinar si el consumo está aumentando, disminuyendo o se mantiene estable (ej: "¿Cómo ha sido la tendencia de mi consumo en la última semana?").
+*   **Predicciones y Estimaciones:** Evaluar escenarios hipotéticos o proyecciones futuras basadas en sus hábitos actuales.
+
+## 3. Guía de Uso
+### Paso 1: Configuración de Modelos
+Antes de realizar consultas, debe asegurarse de tener configurado al menos un Modelo de Lenguaje (LLM). 
+1. En la pantalla principal, haga clic en el botón **"+"** junto al selector de modelos.
+2. Ingrese el nombre del modelo (ej: `gpt-4o`, `gemini-1.5-flash` o modelos locales de Ollama como `llama3`).
+3. Proporcione la **Base URL** y su **API Key** (esta será almacenada de forma segura y encriptada).
+
+### Paso 2: Realizar una Consulta
+1. Escriba su pregunta en el cuadro de texto central.
+2. (Opcional) Ajuste la fecha y hora de referencia si desea realizar consultas relativas al pasado.
+3. (Opcional) Active la opción **"Few-Shots"** si desea que el modelo utilice ejemplos previos para mejorar su precisión.
+4. Presione **"Consultar"** o la tecla Enter.
+
+### Paso 3: Interpretación de Resultados
+Una vez procesada la solicitud, la interfaz cambiará a la **Ventana de Resultados**, la cual se divide en:
+*   **Respuesta Principal:** Una explicación clara y detallada en lenguaje natural con la respuesta a su pregunta.
+*   **Recursos y Datos:** En el panel derecho podrá ver gráficas interactivas (líneas, barras, etc.) que respaldan la respuesta.
+*   **Panel de Auditoría (Izquierda):** Permite ver "detrás de escena" cómo el sistema interpretó su pregunta, qué plan diseñó, qué datos obtuvo de la base de datos y cómo generó la respuesta final.
+
+## 4. ¿Cómo funciona la interfaz?
+La interfaz es minimalista y moderna, diseñada para no abrumar al usuario:
+*   **Barra Lateral de Auditoría:** Muestra el progreso en 4 etapas (Interpretador, Planeador, Ejecución y Respuesta). Si un paso está en verde, se completó con éxito; si está en rojo, hubo un error técnico.
+*   **Modo Oscuro/Claro:** El diseño se adapta a una estética premium (Glassmorphism) para una lectura cómoda.
+*   **Interactividad:** Las gráficas permiten pasar el cursor para ver valores exactos y detalles técnicos del consumo.

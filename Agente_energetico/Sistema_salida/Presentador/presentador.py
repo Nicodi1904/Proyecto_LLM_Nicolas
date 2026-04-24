@@ -105,7 +105,7 @@ if __name__ == "__main__":
     import json
 
     # Configuración del modelo Gemini
-    gemini_model = dspy.LM(model='gemini/gemini-2.5-flash', api_key='AIzaSyCDi0fhhRVNPVokMOvd5T1Dg9TStT4oD9U')
+    gemini_model = dspy.LM(model='gemini/gemini-2.5-flash', api_key='')
     dspy.configure(lm=gemini_model)
 
     # Datos de prueba simulados

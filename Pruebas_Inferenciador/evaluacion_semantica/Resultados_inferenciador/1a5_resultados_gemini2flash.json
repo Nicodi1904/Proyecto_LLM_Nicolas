@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "input": "¿Cuánto consumió mi televisor ayer en la noche?",
+        "actual_output": "{'@1': {'solicitud': '¿Cuánto consumió mi televisor ayer en la noche?', 'escenario': 'consumo_basico'}}",
+        "notas": "La solicitud pregunta por el consumo energético de un dispositivo (televisor) en un período de tiempo específico (ayer en la noche), lo que se alinea con el escenario 'consumo_basico'."
+    },
+    {
+        "id": 2,
+        "input": "Dime el consumo de mi lavadora el lunes pasado.",
+        "actual_output": "{'@1': {'solicitud': 'Proporciona el consumo energético de la lavadora el lunes pasado.', 'escenario': 'consumo_basico'}}",
+        "notas": "La solicitud se clasifica como 'consumo_basico' porque el usuario solicita un valor de consumo específico (de la lavadora) en un período de tiempo determinado (el lunes pasado). No hay comparaciones, detección de anomalías ni predicciones involucradas."
+    },
+    {
+        "id": 3,
+        "input": "¿Cuál fue el consumo total de la casa durante marzo de 2024?",
+        "actual_output": "{'@1': {'solicitud': '¿Cuál fue el consumo total de energía de toda la casa durante el mes de marzo de 2024?', 'escenario': 'consumo_basico'}}",
+        "notas": "La solicitud se clasifica como \"consumo_basico\" porque el usuario está pidiendo el valor del consumo total para un período de tiempo específico (marzo de 2024) sin solicitar comparaciones, predicciones o análisis de anomalías. La solicitud implica una consulta directa de un valor de consumo histórico, lo cual se ajusta a la descripción del escenario."
+    },
+    {
+        "id": 4,
+        "input": "Quiero saber cuánta energía gastó mi computador hoy.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo de energía del computador durante el día de hoy.', 'escenario': 'consumo_basico'}}",
+        "notas": "La solicitud se clasifica como 'consumo_basico' porque el usuario desea conocer un valor de consumo energético específico para un dispositivo (computador) y un período de tiempo (hoy). No hay necesidad de realizar comparaciones, predicciones o detección de anomalías."
+    },
+    {
+        "id": 5,
+        "input": "¿Cuánto consumió el aire acondicionado el fin de semana pasado?",
+        "actual_output": "{'@1': {'solicitud': '¿Cuánto consumió el aire acondicionado el fin de semana pasado?', 'escenario': 'consumo_basico'}}",
+        "notas": "La solicitud pregunta por el consumo de un dispositivo (aire acondicionado) en un periodo de tiempo específico (el fin de semana pasado), por lo que se clasifica como 'consumo_basico'."
+    }
+]

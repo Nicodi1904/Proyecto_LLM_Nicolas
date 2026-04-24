@@ -1,0 +1,302 @@
+[
+    {
+        "id": 1,
+        "input": "¿Cuánto consumió mi televisor ayer en la noche?",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético del televisor durante la noche de ayer.', 'escenario': 'consumo_basico'}}",
+        "notas": "Consulta directa de un valor histórico de consumo para un dispositivo en un periodo definido."
+    },
+    {
+        "id": 2,
+        "input": "Dime el consumo de mi lavadora el lunes pasado.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético de la lavadora el lunes pasado.', 'escenario': 'consumo_basico'}}",
+        "notas": "Solicitud de consumo histórico puntual sin comparación ni análisis."
+    },
+    {
+        "id": 3,
+        "input": "¿Cuál fue el consumo total de la casa durante marzo de 2024?",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético total del hogar durante marzo de 2024.', 'escenario': 'consumo_basico'}}",
+        "notas": "Consulta de consumo agregado del hogar en un intervalo temporal explícito."
+    },
+    {
+        "id": 4,
+        "input": "Quiero saber cuánta energía gastó mi computador hoy.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético del computador durante el día de hoy.', 'escenario': 'consumo_basico'}}",
+        "notas": "Consulta directa de consumo diario de un dispositivo."
+    },
+    {
+        "id": 5,
+        "input": "¿Cuánto consumió el aire acondicionado el fin de semana pasado?",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético del aire acondicionado durante el fin de semana pasado.', 'escenario': 'consumo_basico'}}",
+        "notas": "Consulta histórica con periodo claramente definido."
+    },
+    {
+        "id": 6,
+        "input": "Muéstrame el consumo del ventilador el día de ayer.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético del ventilador durante el día de ayer.', 'escenario': 'consumo_basico'}}",
+        "notas": "Solicitud de valor histórico simple."
+    },
+    {
+        "id": 7,
+        "input": "¿Cuál fue el consumo energético de mi horno el 15 de noviembre?",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético del horno el 15 de noviembre.', 'escenario': 'consumo_basico'}}",
+        "notas": "Consulta puntual con fecha explícita."
+    },
+    {
+        "id": 8,
+        "input": "Dime cuántos kWh consumió mi casa la semana pasada.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético total del hogar durante la semana pasada.', 'escenario': 'consumo_basico'}}",
+        "notas": "Consulta agregada del hogar en un intervalo temporal."
+    },
+    {
+        "id": 9,
+        "input": "¿Cuánto consumió mi nevera durante el mes de enero?",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético de la nevera durante el mes de enero.', 'escenario': 'consumo_basico'}}",
+        "notas": "Consulta histórica mensual de un dispositivo."
+    },
+    {
+        "id": 10,
+        "input": "¿Qué tan feliz estuvo mi casa ayer con el consumo de energía?",
+        "actual_output": "{'@1': {'solicitud': 'Evaluar el estado emocional del hogar respecto al consumo energético de ayer.', 'escenario': 'entrada_inadmisible'}}",
+        "notas": "La intención no corresponde a una acción técnica válida dentro del dominio energético."
+    },
+    {
+        "id": 11,
+        "input": "Dime el consumo de mi nevera ayer y el consumo de mi lavadora ayer.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético de la nevera durante el día de ayer.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Consultar el consumo energético de la lavadora durante el día de ayer.', 'escenario': 'consumo_basico'}}",
+        "notas": "Dos consultas independientes de consumo histórico sin comparación explícita."
+    },
+    {
+        "id": 12,
+        "input": "¿Cuánto consumieron el televisor y el computador el sábado pasado?",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético del televisor el sábado pasado.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Consultar el consumo energético del computador el sábado pasado.', 'escenario': 'consumo_basico'}}",
+        "notas": "Consultas paralelas de consumo histórico."
+    },
+    {
+        "id": 13,
+        "input": "Quiero saber el consumo del aire acondicionado en la mañana y en la noche de ayer.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético del aire acondicionado durante la mañana de ayer.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Consultar el consumo energético del aire acondicionado durante la noche de ayer.', 'escenario': 'consumo_basico'}}",
+        "notas": "Incluye dos consultas individuales del mismo dispositivo."
+    },
+    {
+        "id": 14,
+        "input": "¿Cuánto consumió mi casa el lunes y cuánto consumió el martes?",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético total del hogar el lunes.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Consultar el consumo energético total del hogar el martes.', 'escenario': 'consumo_basico'}}",
+        "notas": "Se solicitan valores de consumo total del hogar de dos días diferentes."
+    },
+    {
+        "id": 15,
+        "input": "Dime el consumo del ventilador esta semana y el de la lavadora la semana pasada.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético del ventilador durante esta semana.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Consultar el consumo energético de la lavadora durante la semana pasada.', 'escenario': 'consumo_basico'}}",
+        "notas": "Consultas históricas independientes en distintos intervalos."
+    },
+    {
+        "id": 16,
+        "input": "¿Cuánta energía gastaron mi PC, mi monitor y mi router ayer?",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético del PC durante el día de ayer.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Consultar el consumo energético del monitor durante el día de ayer.', 'escenario': 'consumo_basico'}, '@3': {'solicitud': 'Consultar el consumo energético del router durante el día de ayer.', 'escenario': 'consumo_basico'}}",
+        "notas": "Múltiples consultas de consumo básico para distintos dispositivos."
+    },
+    {
+        "id": 17,
+        "input": "Muéstrame el consumo del horno en enero y en febrero.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético del horno durante el mes de enero.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Consultar el consumo energético del horno durante el mes de febrero.', 'escenario': 'consumo_basico'}}",
+        "notas": "Consultas mensuales con comparación implícita entre periodos."
+    },
+    {
+        "id": 18,
+        "input": "¿Cuánto consumió mi casa en junio, julio y agosto?",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético total del hogar en junio.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Consultar el consumo energético total del hogar en julio.', 'escenario': 'consumo_basico'}, '@3': {'solicitud': 'Consultar el consumo energético total del hogar en agosto.', 'escenario': 'consumo_basico'}}",
+        "notas": "Consultas independientes por mes sin comparación explícita."
+    },
+    {
+        "id": 19,
+        "input": "Quiero saber el consumo de mi nevera, mi lavadora y mi secadora el domingo.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético de la nevera el domingo.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Consultar el consumo energético de la lavadora el domingo.', 'escenario': 'consumo_basico'}, '@3': {'solicitud': 'Consultar el consumo energético de la secadora el domingo.', 'escenario': 'consumo_basico'}}",
+        "notas": "Consultas múltiples de consumo básico en un mismo día."
+    },
+    {
+        "id": 20,
+        "input": "Dime el consumo de mi televisor ayer y dime también si eso fue moralmente correcto.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético del televisor durante el día de ayer.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Evaluar si el consumo energético fue moralmente correcto.', 'escenario': 'entrada_inadmisible'}}",
+        "notas": "Incluye una consulta válida y otra fuera del dominio del sistema."
+    },
+    {
+        "id": 21,
+        "input": "¿Cuánto consumió mi nevera ayer y cuál consumió más, la nevera o el horno?",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético de la nevera durante el día de ayer.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Comparar el consumo energético entre la nevera y el horno durante el día de ayer.', 'escenario': 'comparacion_consumos'}}",
+        "notas": "Consulta de consumo y comparación explícita entre dispositivos."
+    },
+    {
+        "id": 22,
+        "input": "Dime el consumo del aire acondicionado esta semana y compáralo con la semana pasada.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético del aire acondicionado durante esta semana.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Comparar el consumo energético del aire acondicionado entre esta semana y la semana pasada.', 'escenario': 'comparacion_consumos'}}",
+        "notas": "Incluye consulta histórica y comparación temporal."
+    },
+    {
+        "id": 23,
+        "input": "¿Cuánto consumió mi PC ayer y ha venido aumentando su consumo este mes?",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético del PC durante el día de ayer.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Analizar si el consumo energético del PC ha mostrado una tendencia creciente durante el mes.', 'escenario': 'deteccion_anomalias_tendencias'}}",
+        "notas": "Consulta puntual combinada con análisis de tendencia."
+    },
+    {
+        "id": 24,
+        "input": "Quiero saber el consumo del ventilador y si hubo algún pico extraño ayer.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético del ventilador durante el día de ayer.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Detectar picos o anomalías en el consumo energético del ventilador durante el día de ayer.', 'escenario': 'deteccion_anomalias_tendencias'}}",
+        "notas": "Consulta de consumo y detección de anomalías."
+    },
+    {
+        "id": 25,
+        "input": "¿Cuánto consumió mi casa en noviembre y cómo se compara con octubre?",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético total del hogar durante noviembre.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Comparar el consumo energético total del hogar entre octubre y noviembre.', 'escenario': 'comparacion_consumos'}}",
+        "notas": "Consulta mensual y comparación entre periodos."
+    },
+    {
+        "id": 26,
+        "input": "Dime el consumo del televisor ayer y analiza si su consumo va en aumento.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético del televisor durante el día de ayer.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Analizar la tendencia del consumo energético del televisor.', 'escenario': 'deteccion_anomalias_tendencias'}}",
+        "notas": "Consulta histórica combinada con análisis de tendencia."
+    },
+    {
+        "id": 27,
+        "input": "¿Cuánto consumió la lavadora el sábado y fue más que el domingo?",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético de la lavadora el sábado.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Comparar el consumo energético de la lavadora entre el sábado y el domingo.', 'escenario': 'comparacion_consumos'}}",
+        "notas": "Consulta de consumo y comparación temporal."
+    },
+    {
+        "id": 28,
+        "input": "Quiero el consumo del horno este mes y saber si hay alguna anomalía.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético del horno durante el mes actual.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Detectar anomalías en el consumo energético del horno durante el mes actual.', 'escenario': 'deteccion_anomalias_tendencias'}}",
+        "notas": "Consulta mensual con detección de anomalías."
+    },
+    {
+        "id": 29,
+        "input": "¿Cuánto consumió mi nevera ayer, compárala con la lavadora y dime si hay picos raros?",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético de la nevera durante el día de ayer.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Comparar el consumo energético entre la nevera y la lavadora durante el día de ayer.', 'escenario': 'comparacion_consumos'}, '@3': {'solicitud': 'Detectar picos o anomalías en el consumo energético de la nevera y la lavadora durante el día de ayer.', 'escenario': 'deteccion_anomalias_tendencias'}}",
+        "notas": "Incluye consulta, comparación y detección de anomalías."
+    },
+    {
+        "id": 30,
+        "input": "Dime el consumo del aire acondicionado ayer y dime si eso significa que soy irresponsable.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético del aire acondicionado durante el día de ayer.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Evaluar la responsabilidad personal a partir del consumo energético.', 'escenario': 'entrada_inadmisible'}}",
+        "notas": "Consulta válida acompañada de una petición fuera del dominio técnico."
+    },
+    {
+        "id": 31,
+        "input": "Dime el consumo de mi nevera ayer y luego compáralo con el consumo del sábado pasado.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético de la nevera durante el día de ayer.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Comparar el consumo energético de la nevera entre ayer y el sábado pasado.', 'escenario': 'comparacion_consumos'}}",
+        "notas": "Consulta histórica seguida de comparación temporal."
+    },
+    {
+        "id": 32,
+        "input": "Primero quiero saber cuánto consumió mi casa este mes y después si aumentó respecto al mes pasado.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético total del hogar durante el mes actual.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Comparar el consumo energético total del hogar entre el mes actual y el mes pasado.', 'escenario': 'comparacion_consumos'}}",
+        "notas": "Consulta mensual y comparación entre meses."
+    },
+    {
+        "id": 33,
+        "input": "Dime el consumo del aire acondicionado la semana pasada y luego analiza si hubo anomalías.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético del aire acondicionado durante la semana pasada.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Detectar anomalías en el consumo energético del aire acondicionado durante la semana pasada.', 'escenario': 'deteccion_anomalias_tendencias'}}",
+        "notas": "Consulta histórica combinada con detección de anomalías."
+    },
+    {
+        "id": 34,
+        "input": "Obtén el consumo del televisor ayer y compáralo con el de hoy.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético del televisor durante el día de ayer.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Consultar el consumo energético del televisor durante el día de hoy.', 'escenario': 'consumo_basico'}, '@3': {'solicitud': 'Comparar el consumo energético del televisor entre ayer y hoy.', 'escenario': 'comparacion_consumos'}}",
+        "notas": "Consultas diarias con comparación explícita."
+    },
+    {
+        "id": 35,
+        "input": "Quiero saber el consumo del ventilador este mes y luego dime si la tendencia es creciente.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético del ventilador durante el mes actual.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Analizar la tendencia del consumo energético del ventilador durante el mes.', 'escenario': 'deteccion_anomalias_tendencias'}}",
+        "notas": "Consulta mensual combinada con análisis de tendencia."
+    },
+    {
+        "id": 36,
+        "input": "Dime cuánto consumió la lavadora el lunes y luego compárala con el martes.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético de la lavadora el lunes.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Comparar el consumo energético de la lavadora entre el lunes y el martes.', 'escenario': 'comparacion_consumos'}}",
+        "notas": "Consulta diaria seguida de comparación."
+    },
+    {
+        "id": 37,
+        "input": "Primero dime el consumo total de la casa y luego dime si ha ido aumentando en el año.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético total del hogar en el periodo actual.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Analizar la tendencia anual del consumo energético total del hogar.', 'escenario': 'deteccion_anomalias_tendencias'}}",
+        "notas": "Consulta agregada con análisis de tendencia anual."
+    },
+    {
+        "id": 38,
+        "input": "Dime el consumo del horno ayer y luego dime si fue anormal.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético del horno durante el día de ayer.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Detectar si el consumo energético del horno ayer fue anómalo.', 'escenario': 'deteccion_anomalias_tendencias'}}",
+        "notas": "Consulta puntual combinada con detección de anomalías."
+    },
+    {
+        "id": 39,
+        "input": "Quiero saber el consumo de mi PC esta semana y luego compararlo con la semana pasada.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético del PC durante esta semana.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Comparar el consumo energético del PC entre esta semana y la semana pasada.', 'escenario': 'comparacion_consumos'}}",
+        "notas": "Consulta semanal seguida de comparación temporal."
+    },
+    {
+        "id": 40,
+        "input": "Dime el consumo del televisor ayer y luego dime si debería cambiar de carrera profesional.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético del televisor durante el día de ayer.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Recomendar un cambio de carrera profesional basado en el consumo energético.', 'escenario': 'entrada_inadmisible'}}",
+        "notas": "Consulta válida acompañada de una petición fuera del alcance del sistema."
+    },
+    {
+        "id": 41,
+        "input": "Quiero saber cuánto consumió mi nevera ayer, cuánto consumió la lavadora, compararlas y decirme si alguna tuvo un consumo extraño.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético de la nevera durante el día de ayer.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Consultar el consumo energético de la lavadora durante el día de ayer.', 'escenario': 'consumo_basico'}, '@3': {'solicitud': 'Comparar el consumo energético entre la nevera y la lavadora durante el día de ayer.', 'escenario': 'comparacion_consumos'}, '@4': {'solicitud': 'Detectar anomalías en el consumo energético de la nevera y la lavadora durante el día de ayer.', 'escenario': 'deteccion_anomalias_tendencias'}}",
+        "notas": "Incluye consultas, comparación y detección de anomalías."
+    },
+    {
+        "id": 42,
+        "input": "Dime el consumo del aire acondicionado esta semana, compáralo con la anterior y analiza la tendencia.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético del aire acondicionado durante esta semana.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Comparar el consumo energético del aire acondicionado entre esta semana y la semana anterior.', 'escenario': 'comparacion_consumos'}, '@3': {'solicitud': 'Analizar la tendencia del consumo energético del aire acondicionado.', 'escenario': 'deteccion_anomalias_tendencias'}}",
+        "notas": "Consulta semanal con comparación y análisis de tendencia."
+    },
+    {
+        "id": 43,
+        "input": "¿Cuánto consumió mi casa en octubre, cómo se compara con noviembre y hubo algún pico raro?",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético total del hogar durante octubre.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Comparar el consumo energético total del hogar entre octubre y noviembre.', 'escenario': 'comparacion_consumos'}, '@3': {'solicitud': 'Detectar picos o anomalías en el consumo energético del hogar durante octubre y noviembre.', 'escenario': 'deteccion_anomalias_tendencias'}}",
+        "notas": "Consulta mensual combinada con comparación y detección de anomalías."
+    },
+    {
+        "id": 44,
+        "input": "Quiero el consumo del ventilador ayer, del PC hoy y una comparación entre ambos.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético del ventilador durante el día de ayer.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Consultar el consumo energético del PC durante el día de hoy.', 'escenario': 'consumo_basico'}, '@3': {'solicitud': 'Comparar el consumo energético entre el ventilador ayer y el PC hoy.', 'escenario': 'comparacion_consumos'}}",
+        "notas": "Consultas independientes seguidas de comparación."
+    },
+    {
+        "id": 45,
+        "input": "Dime el consumo del horno este mes, analiza si hay anomalías y dime si va en aumento.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético del horno durante el mes actual.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Detectar anomalías en el consumo energético del horno durante el mes actual.', 'escenario': 'deteccion_anomalias_tendencias'}, '@3': {'solicitud': 'Analizar la tendencia del consumo energético del horno durante el mes.', 'escenario': 'deteccion_anomalias_tendencias'}}",
+        "notas": "Consulta mensual con análisis de anomalías y tendencia."
+    },
+    {
+        "id": 46,
+        "input": "¿Cuánto consumieron la nevera y el televisor ayer y cuál fue mayor?",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético de la nevera durante el día de ayer.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Consultar el consumo energético del televisor durante el día de ayer.', 'escenario': 'consumo_basico'}, '@3': {'solicitud': 'Comparar el consumo energético entre la nevera y el televisor durante el día de ayer.', 'escenario': 'comparacion_consumos'}}",
+        "notas": "Consultas diarias con comparación explícita."
+    },
+    {
+        "id": 47,
+        "input": "Quiero saber el consumo total de la casa, si ha aumentado este año y si hubo días anómalos.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético total del hogar en el año actual.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Analizar la tendencia anual del consumo energético total del hogar.', 'escenario': 'deteccion_anomalias_tendencias'}, '@3': {'solicitud': 'Detectar días con consumo anómalo en el hogar durante el año.', 'escenario': 'deteccion_anomalias_tendencias'}}",
+        "notas": "Consulta agregada con análisis de tendencia y anomalías."
+    },
+    {
+        "id": 48,
+        "input": "Dime el consumo de mi lavadora el fin de semana, compárala con el horno y revisa si hubo picos.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético de la lavadora durante el fin de semana.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Comparar el consumo energético entre la lavadora y el horno durante el fin de semana.', 'escenario': 'comparacion_consumos'}, '@3': {'solicitud': 'Detectar picos o anomalías en el consumo energético de la lavadora y el horno durante el fin de semana.', 'escenario': 'deteccion_anomalias_tendencias'}}",
+        "notas": "Consulta histórica con comparación y detección de picos."
+    },
+    {
+        "id": 49,
+        "input": "¿Cuánto consumió el aire acondicionado ayer, cómo se compara con la semana pasada y qué tendencia tiene?",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético del aire acondicionado durante el día de ayer.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Comparar el consumo energético del aire acondicionado entre ayer y la semana pasada.', 'escenario': 'comparacion_consumos'}, '@3': {'solicitud': 'Analizar la tendencia del consumo energético del aire acondicionado.', 'escenario': 'deteccion_anomalias_tendencias'}}",
+        "notas": "Consulta puntual con comparación temporal y análisis de tendencia."
+    },
+    {
+        "id": 50,
+        "input": "Dime el consumo de mi nevera ayer, compárala con la lavadora y dime si con eso ya puedo ahorrar para irme de viaje.",
+        "actual_output": "{'@1': {'solicitud': 'Consultar el consumo energético de la nevera durante el día de ayer.', 'escenario': 'consumo_basico'}, '@2': {'solicitud': 'Comparar el consumo energético entre la nevera y la lavadora durante el día de ayer.', 'escenario': 'comparacion_consumos'}, '@3': {'solicitud': 'Evaluar si el consumo energético permite ahorrar para un viaje.', 'escenario': 'entrada_inadmisible'}}",
+        "notas": "Incluye consultas y comparación válidas junto con una petición fuera del dominio del sistema."
+    }
+]

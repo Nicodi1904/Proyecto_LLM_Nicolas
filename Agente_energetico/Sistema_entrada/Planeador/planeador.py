@@ -270,7 +270,7 @@ class PlaneadorAgente(dspy.Module):
 if __name__ == "__main__":
     
     # Configuración del modelo Gemini
-    gemini_model = dspy.LM(model='gemini/gemini-2.5-flash', api_key='AIzaSyAzFKB2KaM-NugOu2SkkQKqT9T8IHflrvk')
+    gemini_model = dspy.LM(model='gemini/gemini-2.5-flash', api_key='')
     dspy.configure(lm=gemini_model)
 
     # Datos de prueba
