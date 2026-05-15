@@ -2,7 +2,8 @@ import sys
 import os
 import json
 from PySide6.QtWidgets import QApplication, QWidget, QStackedWidget, QVBoxLayout, QMessageBox
-from PySide6.QtCore import Qt, QTimer
+from PySide6.QtCore import Qt, QTimer, QPoint
+import sqlite3
 
 # Asegurar visibilidad de los módulos de Interfaz_usuario
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -16,7 +17,7 @@ from ResultWindow.result_window import Result_Window
 from Recursos_compartidos.Recursos_entrada import QueryRequest
 from Recursos_compartidos.Recursos_salida import RecursosSalida
 from QueryWindow.DbWindow.db_window import DbWindow
-import sqlite3
+from FloatingWidget.floating_widget import FloatingWidget
 from cript import encriptar_clave, desencriptar_clave
 
 class Navigator(QWidget):
@@ -37,12 +38,15 @@ class Navigator(QWidget):
         self.hilo_presentador = None
         self.paso_actual_mas = 0 # Rastreador del hilo en ejecución
         self.mensaje_espera_actual = "" # Almacena el texto de carga de fondo
+        self.settings_path = os.path.join(script_dir, "settings.json")
+        self.floating_widget = None
 
         self._inicializar_tabla_modelos()
         self._configurar_ventana()
         self._setup_ui()
         self._cargar_modelos_dropdown()
         self._conectar_senales()
+        self._cargar_settings()
 
     def _configurar_ventana(self):
         self.setWindowTitle("Agente Energético - MAS")
@@ -79,6 +83,9 @@ class Navigator(QWidget):
         # Botones de gestión
         self.query_window.status_info.editar_modelo_solicitado.connect(self._editar_modelo_actual)
         self.query_window.status_info.eliminar_modelo_solicitado.connect(self._eliminar_modelo_actual)
+        
+        # Switch de Widget
+        self.query_window.right_bar.sw_widget.toggled.connect(self._toggle_modo_widget)
 
     def _inicializar_tabla_modelos(self):
         try:
@@ -446,7 +453,62 @@ class Navigator(QWidget):
         self.query_window.limpiar_interfaz()
         self.stacked_widget.setCurrentIndex(0)
 
-    # Métodos de arrastre removidos
+    # --- Gestión de Configuración y Widget ---
+    def _cargar_settings(self):
+        if os.path.exists(self.settings_path):
+            try:
+                with open(self.settings_path, 'r') as f:
+                    settings = json.load(f)
+                
+                # Aplicar estado del widget
+                active = settings.get("widget_active", False)
+                pos = settings.get("widget_pos", [100, 100])
+                
+                if active:
+                    # Sincronizar el switch visualmente sin disparar señal recursiva
+                    self.query_window.right_bar.sw_widget.blockSignals(True)
+                    self.query_window.right_bar.sw_widget.setChecked(True)
+                    self.query_window.right_bar.sw_widget.blockSignals(False)
+                    # Forzar entrada a modo widget
+                    QTimer.singleShot(500, lambda: self._toggle_modo_widget(True))
+            except Exception as e:
+                print(f"Error cargando settings: {e}")
+
+    def _guardar_settings(self):
+        settings = {
+            "widget_active": self.query_window.right_bar.sw_widget.isChecked(),
+            "widget_pos": [self.floating_widget.x(), self.floating_widget.y()] if self.floating_widget else [100, 100]
+        }
+        try:
+            with open(self.settings_path, 'w') as f:
+                json.dump(settings, f, indent=4)
+        except Exception as e:
+            print(f"Error guardando settings: {e}")
+
+    def _toggle_modo_widget(self, active):
+        if active:
+            # Leer posición guardada
+            pos_x, pos_y = 100, 100
+            if os.path.exists(self.settings_path):
+                with open(self.settings_path, 'r') as f:
+                    s = json.load(f)
+                    pos_x, pos_y = s.get("widget_pos", [100, 100])
+
+            self.hide()
+            if not self.floating_widget:
+                self.floating_widget = FloatingWidget(QPoint(pos_x, pos_y))
+                self.floating_widget.solicitar_restauracion.connect(self._restaurar_desde_widget)
+            self.floating_widget.show()
+        else:
+            if self.floating_widget:
+                self.floating_widget.hide()
+            self.show()
+        
+        self._guardar_settings()
+
+    def _restaurar_desde_widget(self):
+        # Desactivar switch (esto disparará _toggle_modo_widget(False) automáticamente)
+        self.query_window.right_bar.sw_widget.setChecked(False)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

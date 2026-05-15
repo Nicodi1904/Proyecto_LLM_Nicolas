@@ -16,6 +16,67 @@ mcp = FastMCP("MCP_Server_Gravity")
 DB_PATH = r'C:\sqlite_tesis\Base_datos_tesis\Hogar_Sincelejo.db'
 TABLE_NAME = "Energy Consumption in KWh of a Typical House Sincelejo Colombia"
 
+# Mapeo de nombres humanos a nombres de columnas en la DB
+MAPEO_DISPOSITIVOS = {
+    # AC
+    "ac": "AC",
+    "aire": "AC",
+    "aire acondicionado": "AC",
+    "refrigeracion": "AC",
+    "clima": "AC",
+    "enfriamiento": "AC",
+    
+    # Ventilador
+    "ventilador": "Ventilador",
+    "abanico": "Ventilador",
+    "fan": "Ventilador",
+    "soplador": "Ventilador",
+    
+    # PC
+    "pc": "PC",
+    "computador": "PC",
+    "computadora": "PC",
+    "ordenador": "PC",
+    "computador personal": "PC",
+    "laptop": "PC",
+    "portatil": "PC",
+    
+    # Lampara
+    "lampara": "Lampara",
+    "luz": "Lampara",
+    "luces": "Lampara",
+    "iluminacion": "Lampara",
+    "iluminación": "Lampara",
+    "bombillo": "Lampara",
+    "foco": "Lampara",
+    "luminaria": "Lampara",
+    
+    # TV
+    "tv": "TV",
+    "televisor": "TV",
+    "tele": "TV",
+    "pantalla": "TV",
+    "television": "TV",
+    
+    # Total
+    "total_casa": "Total_Casa",
+    "total": "Total_Casa",
+    "casa": "Total_Casa",
+    "todo": "Total_Casa",
+    "consumo general": "Total_Casa",
+    "consumo total": "Total_Casa",
+    "hogar": "Total_Casa"
+}
+
+def normalizar_dispositivo(nombre: str) -> str:
+    """
+    Normaliza el nombre del dispositivo usando el mapeo.
+    Si no se encuentra, devuelve el nombre original.
+    """
+    if not isinstance(nombre, str): return nombre
+    nombre_clean = nombre.lower().strip()
+    return MAPEO_DISPOSITIVOS.get(nombre_clean, nombre)
+
 def get_data_from_db(fecha_inicio: str = None, fecha_fin: str = None) -> pd.DataFrame:
     """
     Conecta a la DB y devuelve el dataset (o un fragmento) como DataFrame.
@@ -25,7 +86,10 @@ def get_data_from_db(fecha_inicio: str = None, fecha_fin: str = None) -> pd.Data
         query = f'SELECT * FROM "{TABLE_NAME}"'
         
         if fecha_inicio and fecha_fin:
-            query += f" WHERE TimeStamp BETWEEN '{fecha_inicio}' AND '{fecha_fin}'"
+            # Normalizar formato ISO (T -> espacio) para compatibilidad con SQLite string compare
+            fi = fecha_inicio.replace("T", " ")
+            ff = fecha_fin.replace("T", " ")
+            query += f" WHERE TimeStamp BETWEEN '{fi}' AND '{ff}'"
         
         df = pd.read_sql_query(query, conn)
         conn.close()
@@ -91,7 +155,8 @@ def obtener_consumo(dispositivos: list[str], fecha_inicio: str, fecha_fin: str, 
         
         # Selección de columnas
         cols_to_sum = []
-        for disp in dispositivos:
+        for disp_raw in dispositivos:
+            disp = normalizar_dispositivo(disp_raw)
             if disp == "Total_Casa":
                 numeric_cols = df_filtered.select_dtypes(include=[np.number]).columns.tolist()
                 df_filtered["Total_Casa"] = df_filtered[numeric_cols].sum(axis=1)
@@ -99,7 +164,7 @@ def obtener_consumo(dispositivos: list[str], fecha_inicio: str, fecha_fin: str, 
             elif disp in df_filtered.columns:
                 cols_to_sum.append(disp)
             else:
-                return {"status": "error", "mensaje": f"Dispositivo no encontrado: {disp}"}
+                return {"status": "error", "mensaje": f"Dispositivo no encontrado: {disp_raw} (Normalizado como: {disp})"}
                 
         # Resampling
         df_filtered.set_index('TimeStamp', inplace=True)
@@ -180,7 +245,8 @@ def analizar_comparacion(objetivo_a: dict, objetivo_b: dict) -> dict:
         # Usamos la función de acceso a DB para obtener solo el fragmento necesario
         df = get_data_from_db(obj['fecha_inicio'], obj['fecha_fin'])
         if df.empty: return 0.0
-        disp = obj['dispositivo']
+        disp_raw = obj['dispositivo']
+        disp = normalizar_dispositivo(disp_raw)
         if disp == "Total_Casa":
              numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
              return df[numeric_cols].sum().sum()
@@ -251,13 +317,12 @@ def detectar_anomalias(dispositivo: str, fecha_inicio: str, fecha_fin: str, sens
     if df.empty:
         return {"status": "no_data"}
         
-    target_col = dispositivo
-    if dispositivo == "Total_Casa":
+    target_col = normalizar_dispositivo(dispositivo)
+    if target_col == "Total_Casa":
         numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
         df["Total_Casa"] = df[numeric_cols].sum(axis=1)
-        target_col = "Total_Casa"
-    elif dispositivo not in df.columns:
-         return {"status": "error", "mensaje": "Dispositivo no encontrado"}
+    elif target_col not in df.columns:
+         return {"status": "error", "mensaje": f"Dispositivo no encontrado: {dispositivo} (Normalizado como: {target_col})"}
          
     series = df[target_col]
     mean = series.mean()
@@ -321,11 +386,12 @@ def analizar_tendencia(dispositivo: str, fecha_inicio: str, fecha_fin: str) -> d
     
     if df.empty: return {"status": "no_data"}
     
-    target_col = dispositivo
-    if dispositivo == "Total_Casa":
+    target_col = normalizar_dispositivo(dispositivo)
+    if target_col == "Total_Casa":
         numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
         df["Total_Casa"] = df[numeric_cols].sum(axis=1)
-        target_col = "Total_Casa"
+    elif target_col not in df.columns:
+         return {"status": "error", "mensaje": f"Dispositivo no encontrado: {dispositivo} (Normalizado como: {target_col})"}
         
     # Preparar datos para regresión
     # Convertir fecha a numérico (días desde el inicio)

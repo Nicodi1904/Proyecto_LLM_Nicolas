@@ -26,7 +26,7 @@ load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file_
 
 # Usa MINA_API_KEY o GEMINI_API_KEY si estás usando gemini vía la API OpenAI-compatible
 #API_KEY = os.environ.get("MINA_API_KEY") or os.environ.get("GEMINI_API_KEY") or os.environ.get("OPENAI_API_KEY")
-API_KEY = "AIzaSyCxejQhlCY9S5E7YEQb4zgMyr3bNHS3Aes"
+API_KEY = ""
 
 
 if not API_KEY:
